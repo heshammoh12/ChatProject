@@ -1,0 +1,55 @@
+#name{
+    -fx-background-color: #607D8B; 
+    -fx-background-radius: 10;
+    -fx-padding: 5px;
+    -fx-text-fill:#fff;
+}
+#WelcomPage_Button_Login{
+    -fx-background-color: #e45652;  
+}
+#WelcomPage_Button_Login:hover {
+    -fx-background-color: #FBE9E7;  
+}
+#WelcomPage_Button_SignUp{
+    -fx-background-color: #e45652; 
+}
+#WelcomPage_Button_SignUp:hover {
+    -fx-background-color: #FBE9E7;  
+}
+#WelcomePage_Button_minimize{
+    -fx-background-color: transparent;
+}
+#WelcomePage_Button_minimize:hover{
+    -fx-background-color: #FBE9E7; 
+}
+#WelcomePage_Button_Close{
+    -fx-background-color: transparent;
+}
+#WelcomePage_Button_Close:hover{
+    -fx-background-color: #FBE9E7; 
+}
+
+#SignUP_BtnClose{
+    -fx-background-color: transparent;
+}
+#SignUP_BtnClose:hover {
+    -fx-background-color: #FBE9E7;  
+}
+#SignUp_BtnMin{
+    -fx-background-color: transparent;
+}
+#SignUp_BtnMin:hover {
+    -fx-background-color: #FBE9E7;  
+}
+#SignUpPage_Btn_ImageChooser{
+    -fx-background-color: #e45652;
+}
+#SignUpPage_Btn_ImageChooser:hover {
+    -fx-background-color: #FBE9E7;  
+}
+#SignUpPage_btn_SignUp{
+    -fx-background-color: #e45652;
+}
+#SignUpPage_btn_SignUp:hover {
+    -fx-background-color: #FBE9E7;  
+}

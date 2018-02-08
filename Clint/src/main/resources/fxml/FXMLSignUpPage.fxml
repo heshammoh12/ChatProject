@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="anchorSignup" prefHeight="532.0" prefWidth="392.0" style="-fx-background-color: #9c2b27;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iti.chat.clint.FXMLSignUpPageController">
+   <children>
+      <Label layoutX="141.0" layoutY="17.0" prefHeight="30.0" prefWidth="125.0" text="SignUp Page" textFill="#e8e5e5">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Label>
+      <Button fx:id="SignUP_BtnClose" layoutX="342.0" layoutY="-1.0" mnemonicParsing="false" onAction="#close" prefHeight="36.0" prefWidth="32.0" text="X">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+      <Button fx:id="SignUp_BtnMin" layoutX="297.0" layoutY="-1.0" mnemonicParsing="false" onAction="#minimize" prefHeight="36.0" prefWidth="32.0" text="_" />
+      <TextField fx:id="SignUpPage_TextField_Email" layoutX="94.0" layoutY="150.0" prefHeight="25.0" prefWidth="219.0" promptText="Email" style="-fx-background-radius: 10;" />
+      <PasswordField fx:id="SignUpPage_TextField_Password" layoutX="94.0" layoutY="192.0" prefHeight="25.0" prefWidth="219.0" promptText="password" style="-fx-background-radius: 10;" />
+      <TextField fx:id="SignUpPage_TextField_UserName" layoutX="94.0" layoutY="108.0" prefHeight="25.0" prefWidth="219.0" promptText="User Name" style="-fx-background-radius: 10;" />
+      <Button fx:id="SignUpPage_Btn_ImageChooser" layoutX="94.0" layoutY="356.0" mnemonicParsing="false" text="Choose your image" />
+      <ImageView fx:id="SignUpPage_ImageView_ImageChoodes" fitHeight="99.0" fitWidth="88.0" layoutX="225.0" layoutY="306.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="SignUpPage_btn_SignUp" layoutX="137.0" layoutY="464.0" mnemonicParsing="false" onAction="#getSignUpData" prefHeight="25.0" prefWidth="133.0" text="Sign Up" />
+      <TextField fx:id="SignUpPage_TextField_FullName" layoutX="94.0" layoutY="68.0" prefHeight="25.0" prefWidth="219.0" promptText="Full Name" style="-fx-background-radius: 10;" />
+      <ComboBox fx:id="SignUpPage_CompoBox_Country" layoutX="94.0" layoutY="275.0" prefWidth="150.0" />
+      <RadioButton fx:id="SignUpPage_RadioButton_Male" layoutX="94.0" layoutY="234.0" mnemonicParsing="false" selected="true" text="Male" textFill="#f5e3e3">
+         <toggleGroup>
+            <ToggleGroup fx:id="GenderGroup" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="SignUpPage_RadioButton_Female" layoutX="160.0" layoutY="234.0" mnemonicParsing="false" text="Female" textFill="#e8e4e4" toggleGroup="$GenderGroup" />
+   </children>
+</AnchorPane>
