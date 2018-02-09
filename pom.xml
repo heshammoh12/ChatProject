@@ -10,7 +10,7 @@
     </properties>
   <modules>
     <module>Clint</module>
-    <module>ProjectServer</module>
     <module>Common</module>
+    <module>Server</module>
   </modules>
 </project>
