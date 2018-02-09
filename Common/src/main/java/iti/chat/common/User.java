@@ -10,10 +10,28 @@ public class User implements Serializable{
     private String password;
     private int status;
     private int mode;
-
     private String fullname;
     private String gender;
     private String country;
+    Message message ;
+    
+    /*variables added by Nagib  */
+
+
+    /*variables added by Dina  */
+
+
+    /*variables added by Hassna  */
+
+
+    /*variables added by Hesham  */
+
+
+    /*variables added by Fatma  */
+
+  
+
+
 
     public void setEmail(String email) {
         this.email = email;
@@ -46,6 +64,11 @@ public class User implements Serializable{
     public void setCountry(String country) {
         this.country = country;
     }
+    
+    public void setMessage(Message message) {
+        this.message = message;
+    }
+
 
     public String getEmail() {
         return email;
@@ -78,5 +101,32 @@ public class User implements Serializable{
     public String getCountry() {
         return country;
     }
+    
+    public Message getMessage() {
+        return message;
+    }
+    
+    
+
+    /*Methods added by Nagib  */
+    
+    
+ /*Methods added by Dina  */
+    
+    //
+    
+ /*Methods added by Hassna  */
+    
+    //
+    
+ /*Methods added by Hesham  */
+    
+    //
+    
+ /*Methods added by Fatma  */
+    
+    //
+    
+    
 
 }
