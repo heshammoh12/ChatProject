@@ -1,4 +1,4 @@
-package iti.chat.clint;
+package client.models;
 
 import javafx.animation.PauseTransition;
 import javafx.application.Application;

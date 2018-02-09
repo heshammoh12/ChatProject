@@ -1,4 +1,4 @@
-package iti.chat.server;
+package server.models;
 
 import javafx.application.Application;
 import static javafx.application.Application.launch;

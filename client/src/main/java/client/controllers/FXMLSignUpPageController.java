@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package iti.chat.clint;
+package client.controllers;
 
+import client.interfaces.SignUpValidationInter;
 import iti.chat.common.User;
 import java.net.URL;
 import java.util.ResourceBundle;

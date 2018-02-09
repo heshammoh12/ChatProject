@@ -10,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="Anchor" prefHeight="381.0" prefWidth="900.0" style="-fx-background-color: #20120f;" xmlns:fx="http://javafx.com/fxml" fx:controller="iti.chat.clint.FXMLController">
+<AnchorPane id="AnchorPane" fx:id="Anchor" prefHeight="381.0" prefWidth="900.0" style="-fx-background-color: #20120f;" xmlns:fx="http://javafx.com/fxml" fx:controller="client.controllers.FXMLController">
     <children>
         <AnchorPane layoutX="589.0" layoutY="48.0" prefHeight="319.0" prefWidth="297.0" style="-fx-background-color: #9c2b27;">
             <children>

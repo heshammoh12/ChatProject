@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorSignup" prefHeight="532.0" prefWidth="392.0" style="-fx-background-color: #9c2b27;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iti.chat.clint.FXMLSignUpPageController">
+<AnchorPane id="AnchorPane" fx:id="anchorSignup" prefHeight="532.0" prefWidth="392.0" style="-fx-background-color: #9c2b27;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.FXMLSignUpPageController">
    <children>
       <Label layoutX="141.0" layoutY="17.0" prefHeight="30.0" prefWidth="125.0" text="SignUp Page" textFill="#e8e5e5">
          <font>

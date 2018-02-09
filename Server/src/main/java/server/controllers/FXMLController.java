@@ -1,4 +1,4 @@
-package iti.chat.server;
+package server.controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;

@@ -1,4 +1,4 @@
-package iti.chat.clint;
+package client.controllers;
 
 import java.io.IOException;
 import java.net.URL;

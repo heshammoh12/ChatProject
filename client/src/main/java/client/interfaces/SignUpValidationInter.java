@@ -1,4 +1,4 @@
-package iti.chat.clint;
+package client.interfaces;
 
 public interface SignUpValidationInter {
 

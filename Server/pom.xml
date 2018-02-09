@@ -16,7 +16,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mainClass>iti.chat.server.MainApp</mainClass>
+        <mainClass>server.models.MainApp</mainClass>
     </properties>
 
     <organization>
