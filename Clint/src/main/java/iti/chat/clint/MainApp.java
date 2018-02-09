@@ -1,5 +1,6 @@
 package iti.chat.clint;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.event.EventHandler;
@@ -9,59 +10,32 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 public class MainApp extends Application {
 
     private double xOffset = 0;
     private double yOffset = 0;
+    Scene scene;
 
-//    @Override
-//    public void start(Stage primaryStage) throws Exception {
-//
-//        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
-//        primaryStage.initStyle(StageStyle.UNDECORATED);
-//        //movable pane
-//        root.setOnMousePressed(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                xOffset = event.getSceneX();
-//                yOffset = event.getSceneY();
-//            }
-//        });
-//
-//        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                primaryStage.setX(event.getScreenX() - xOffset);
-//                primaryStage.setY(event.getScreenY() - yOffset);
-//            }
-//        });
-//
-//        Scene scene = new Scene(root);
-//        scene.getStylesheets().add("/styles/Styles.css");
-//
-//        primaryStage.setTitle("JavaFX and Maven");
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
-//    }
-
-        @Override
+    @Override
     public void start(final Stage primaryStage) throws Exception {
-        
+
         FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getResource("/fxml/Scene.fxml").openStream());        
+        FXMLLoader loader2 = new FXMLLoader();
+        Parent root = loader.load(getClass().getResource("/fxml/Scene.fxml").openStream());
+        Parent root2 = loader2.load(getClass().getResource("/fxml/SplashScreen.fxml").openStream());
         primaryStage.initStyle(StageStyle.UNDECORATED);
         //movable pane
-        root.setOnMousePressed(new EventHandler<MouseEvent>(){
+        root.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 xOffset = event.getSceneX();
                 yOffset = event.getSceneY();
-            }    
+            }
         });
-        
-        root.setOnMouseDragged(new EventHandler<MouseEvent>()
-        {
+
+        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 primaryStage.setX(event.getScreenX() - xOffset);
@@ -69,10 +43,23 @@ public class MainApp extends Application {
             }
         });
 
-        Scene scene = new Scene(root);
+        scene = new Scene(root2);
         scene.getStylesheets().add(getClass().getResource("/styles/Styles.css").toString());
         primaryStage.setScene(scene);
         primaryStage.show();
+        PauseTransition splashScreenDelay = new PauseTransition(Duration.seconds(3));
+        splashScreenDelay.setOnFinished(f -> {
+            primaryStage.hide();
+            System.out.println("working");
+            scene = new Scene(root);
+//            stage.initStyle(StageStyle.DECORATED);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+            System.out.println("seen");
+
+        });
+        splashScreenDelay.playFromStart();
+
     }
 
     /**
