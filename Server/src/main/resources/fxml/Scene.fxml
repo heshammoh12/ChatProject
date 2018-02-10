@@ -6,9 +6,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml" fx:controller="server.controllers.FXMLController">
+<AnchorPane id="AnchorPane" prefHeight="443.0" prefWidth="536.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="server.controllers.FXMLController">
     <children>
-        <Button layoutX="126" layoutY="90" text="Click Me!" onAction="#handleButtonAction" fx:id="button" />
-        <Label layoutX="126" layoutY="120" minHeight="16" minWidth="69" fx:id="label" />
+      <BorderPane prefHeight="443.0" prefWidth="536.0">
+         <top>
+            <HBox prefHeight="40.0" prefWidth="536.0" BorderPane.alignment="CENTER">
+               <children>
+                    <Button fx:id="button" alignment="CENTER" onAction="#handleButtonAction" style="-fx-alignment: center;" text="Start Server" />
+                  <Button alignment="CENTER" mnemonicParsing="false" text="Stop Server" textAlignment="CENTER" />
+               </children>
+            </HBox>
+         </top>
+      </BorderPane>
+        <Label fx:id="label" alignment="CENTER" minHeight="16" minWidth="69" textAlignment="CENTER" />
     </children>
 </AnchorPane>
