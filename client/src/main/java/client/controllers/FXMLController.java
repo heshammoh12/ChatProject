@@ -1,7 +1,16 @@
 package client.controllers;
 
+import iti.chat.common.ClientInter;
+import iti.chat.common.LogInVerificationInter;
+import iti.chat.common.ServerInter;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,11 +21,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class FXMLController implements Initializable {
+public class FXMLController extends UnicastRemoteObject implements Initializable {
     
    
     /**
@@ -25,8 +36,26 @@ public class FXMLController implements Initializable {
     private double xOffset = 0;
     private double yOffset = 0;
     Stage stage ;
+    private LogInVerificationInter logInVerificationInter=null;
+    private ServerInter server = null;
+
+    public ServerInter getServer() {
+        return server;
+    }
+    ClientInter client;
+    Registry registry ;
+    
     @FXML
     private AnchorPane Anchor;
+    @FXML
+    private TextField TextFieldUserName;
+    @FXML
+    private TextField TextFieldPassword;
+    
+    public FXMLController() throws RemoteException
+    {
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -83,6 +112,11 @@ public class FXMLController implements Initializable {
         FXMLLoader loader;
         Parent root; 
         loader = new FXMLLoader();
+        String email,password;
+        email = TextFieldUserName.getText();
+        password = TextFieldPassword.getText();
+        
+
         try {
             root = loader.load(getClass().getResource("/fxml/ChatPage.fxml").openStream());
             Stage stage = (Stage) Anchor.getScene().getWindow();
@@ -101,12 +135,32 @@ public class FXMLController implements Initializable {
                 stage.setY(event.getScreenY() - yOffset);
                 }
             });
+            System.out.println("before if");
+            if(email.isEmpty() || password.isEmpty())
+            {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning Dialog");
+                alert.setHeaderText("Wrong Data");
+                alert.setContentText("Complete Data Please !!!!");
+                alert.showAndWait();
+            }else{
+                try {
+                    registry = LocateRegistry.getRegistry(2000);
+                    server = (ServerInter) registry.lookup("ChatService");
+                } catch (RemoteException ex) {
+                    Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (NotBoundException ex) {
+                    Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                Scene scene = new Scene(root);
+                scene.getStylesheets().add(getClass().getResource("/styles/Styles.css").toString());
+                stage.setScene(scene);
             
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/Styles.css").toString());
-            stage.setScene(scene);
-            stage.show();
             
+                System.out.println("after if");
+                stage.show();  
+            }
             
             
         } catch (IOException ex) {
