@@ -31,7 +31,7 @@ public class FXMLController implements Initializable {
             registry = LocateRegistry.createRegistry(2000);
             registry.rebind("ChatService", new ServerImpl());
 
-        } catch (SQLException | RemoteException ex) {
+        } catch (RemoteException ex) {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
         label.setText("Hello World!");

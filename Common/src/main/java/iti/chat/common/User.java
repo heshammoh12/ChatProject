@@ -26,11 +26,17 @@ public class User implements Serializable{
             this.status = status;
             this.mode = mode;
             this.gender = gender;
-        }
+    }
     
 
     /*variables added by Hassna  */
 
+    public User() {
+        this.email = null;
+        this.username = null;
+        this.status = -1;
+        this.gender = null;
+    }
 
     /*variables added by Hesham  */
 
