@@ -3,6 +3,7 @@ package client.controllers;
 import iti.chat.common.ClientInter;
 import iti.chat.common.LogInVerificationInter;
 import iti.chat.common.ServerInter;
+import iti.chat.common.User;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.AccessException;
@@ -38,6 +39,7 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
     Stage stage ;
     private LogInVerificationInter logInVerificationInter=null;
     private ServerInter server = null;
+    User user;
 
     public ServerInter getServer() {
         return server;
@@ -109,6 +111,7 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
     @FXML
     private void logIn(ActionEvent event)
     {
+        System.out.println("log in is here");
         FXMLLoader loader;
         Parent root; 
         loader = new FXMLLoader();
@@ -147,19 +150,25 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
                 try {
                     registry = LocateRegistry.getRegistry(2000);
                     server = (ServerInter) registry.lookup("ChatService");
+                    logInVerificationInter= (LogInVerificationInter) registry.lookup("LoginVary");
+                    System.out.println("server is : "+server);
+                    System.out.println("logInVerificationInter is : "+logInVerificationInter);
+                    user = logInVerificationInter.login(email, password);
+                    
+                    
                 } catch (RemoteException ex) {
                     Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (NotBoundException ex) {
                     Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                Scene scene = new Scene(root);
-                scene.getStylesheets().add(getClass().getResource("/styles/Styles.css").toString());
-                stage.setScene(scene);
-            
-            
-                System.out.println("after if");
-                stage.show();  
+                if(user != null)
+                {
+                    Scene scene = new Scene(root);
+                    scene.getStylesheets().add(getClass().getResource("/styles/Styles.css").toString());
+                    stage.setScene(scene);
+                    stage.show(); 
+                }
+                 
             }
             
             

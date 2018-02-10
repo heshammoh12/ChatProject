@@ -40,7 +40,7 @@ public class DBconnect {
               Connection con=null;  
               Class.forName("com.mysql.jdbc.Driver");  
             try {  
-                con= DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe","chat","chat");
+                con= DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1522:xe","chat","chat");
             } catch (SQLException ex) {
                 con= DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","chat","chat");
             }

@@ -8,6 +8,7 @@ package server.models;
 import iti.chat.common.LogInVerificationInter;
 import iti.chat.common.User;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -17,11 +18,16 @@ import java.util.logging.Logger;
  *
  * @author Hasnaa Mohammed
  */
-public class LogInVerificationImpl implements LogInVerificationInter{
-
+public class LogInVerificationImpl extends UnicastRemoteObject implements LogInVerificationInter{
+    
+    public LogInVerificationImpl() throws RemoteException{
+        System.out.println("LogInVerificationImpl");
+    }
+    
     @Override
     public User login(String email, String password) throws RemoteException {
        User user = new User();
+       System.out.println("log in is here");
        DBconnect dbconn = DBconnect.getInstance();
         try {
             user= dbconn.getUserData(email, password);

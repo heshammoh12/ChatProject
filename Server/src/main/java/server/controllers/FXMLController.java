@@ -14,6 +14,7 @@ import java.rmi.registry.Registry;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import server.models.LogInVerificationImpl;
 import server.models.ServerImpl;
 
 public class FXMLController implements Initializable {
@@ -30,6 +31,7 @@ public class FXMLController implements Initializable {
         try {
             registry = LocateRegistry.createRegistry(2000);
             registry.rebind("ChatService", new ServerImpl());
+            registry.rebind("LoginVary", new LogInVerificationImpl());
 
         } catch (RemoteException ex) {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);

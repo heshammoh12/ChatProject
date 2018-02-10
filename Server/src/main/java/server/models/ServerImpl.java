@@ -18,7 +18,7 @@ import oracle.jdbc.OracleDriver;
 public class ServerImpl extends UnicastRemoteObject implements ServerInter {
    
     public ServerImpl ()throws RemoteException{
-    
+        System.out.println("ServerImpl");
     }
     
     @Override
