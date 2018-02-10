@@ -77,5 +77,44 @@ public class FXMLController implements Initializable {
 //            Logger.getLogger(FXMLFirstPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    @FXML
+    private void logIn(ActionEvent event)
+    {
+        FXMLLoader loader;
+        Parent root; 
+        loader = new FXMLLoader();
+        try {
+            root = loader.load(getClass().getResource("/fxml/ChatPage.fxml").openStream());
+            Stage stage = (Stage) Anchor.getScene().getWindow();
+            
+            root.setOnMousePressed(new EventHandler<MouseEvent>(){
+                @Override
+                public void handle(MouseEvent event) {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+                }    
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>(){
+                @Override
+                public void handle(MouseEvent event) {
+                stage.setX(event.getScreenX() - xOffset);
+                stage.setY(event.getScreenY() - yOffset);
+                }
+            });
+            
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/Styles.css").toString());
+            stage.setScene(scene);
+            stage.show();
+            
+            
+            
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+ 
+    }
+    
+
   
 }

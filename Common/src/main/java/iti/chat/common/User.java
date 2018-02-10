@@ -19,14 +19,28 @@ public class User implements Serializable{
 
 
     /*variables added by Dina  */
-
+    public User(String email, String fullname,String gender,String country ,int status,int mode) {
+            this.email = email;
+            this.fullname = fullname;
+            this.country = country;
+            this.status = status;
+            this.mode = mode;
+            this.gender = gender;
+        }
+    
 
     /*variables added by Hassna  */
 
 
     /*variables added by Hesham  */
 
-
+    public User(String email, String username, int status, String gender) {
+        this.email = email;
+        this.username = username;
+        this.status = status;
+        this.gender = gender;
+    }
+    
     /*variables added by Fatma  */
 
   
@@ -118,7 +132,7 @@ public class User implements Serializable{
  /*Methods added by Hassna  */
     
     //
-    
+   
  /*Methods added by Hesham  */
     
     //

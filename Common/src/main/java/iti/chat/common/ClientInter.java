@@ -13,7 +13,7 @@ public interface ClientInter {
     
  /*Methods added by Dina  */
     
-    //
+    public User getUser();
     
  /*Methods added by Hassna  */
     

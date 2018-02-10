@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="client.controllers.ChatPageController">
+   <children>
+      <Pane layoutY="-5.0" prefHeight="72.0" prefWidth="600.0">
+         <children>
+            <ImageView fitHeight="55.0" fitWidth="54.0" layoutX="233.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="file:/C:/Users/Hesham%20Kadry/Desktop/images/chat.png" />
+               </image>
+            </ImageView>
+            <Text fill="#b20303" layoutX="287.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Life Etshat" wrappingWidth="100.0">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Text>
+            <HBox layoutX="14.0" layoutY="12.0" prefHeight="54.0" prefWidth="186.0">
+               <children>
+                  <ImageView fitHeight="54.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:/C:/Users/Hesham%20Kadry/Desktop/images/download.png" />
+                     </image>
+                  </ImageView>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="97.0" text="User Name">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <ComboBox prefHeight="20.0" prefWidth="94.0" promptText="Online" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <Button layoutX="565.0" layoutY="6.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="28.0" text="X" />
+            <Button layoutX="531.0" layoutY="6.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="28.0" text="-" />
+            <Button layoutX="532.0" layoutY="37.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="LogOut" />
+         </children>
+      </Pane>
+      <SplitPane dividerPositions="0.3411371237458194" layoutY="68.0" prefHeight="330.0" prefWidth="600.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="328.0" prefWidth="203.0">
+               <children>
+                  <TabPane layoutX="1.0" prefHeight="328.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="OnlineUsers">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <ListView fx:id="ChatPage_List_OnlineUsers" layoutY="-1.0" prefHeight="295.0" prefWidth="200.0" />
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                      <Tab text="AllUsers">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <ListView fx:id="ChatPage_List_AllUsers" layoutY="1.0" prefHeight="295.0" prefWidth="200.0" />
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="174.0" prefWidth="315.0">
+               <children>
+                  <TabPane fx:id="ChatPage_TabPane_Users" prefHeight="328.0" prefWidth="514.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="Friend1">
+                           <content>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                           </content>
+                      </Tab>
+                      <Tab text="Friend 2">
+                           <content>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                           </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
