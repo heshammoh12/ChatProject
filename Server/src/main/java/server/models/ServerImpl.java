@@ -27,7 +27,7 @@ public class ServerImpl implements ServerInter {
 
     @Override
     public ArrayList<User> getFrinds(String email) throws RemoteException {
-        PreparedStatement pst;
+        PreparedStatement pst, query;
         ArrayList<User> friendsNames = null;
         try {
             pst = con.prepareStatement("select friendemail from userfriends where email = ?",
@@ -36,7 +36,27 @@ public class ServerImpl implements ServerInter {
             pst.setString(1, email);
             rs = pst.executeQuery();
             friendsNames = new ArrayList<>();
-            if (rs.next()) {
+            while (rs.next()) {
+                String friendEmail = rs.getString(1);
+                /*new query to get user friend's data*/
+                query = con.prepareStatement("select a.email,a.fullname,a.gender,a.country,b.userstatus,b.usermode \n"
+                        + "from userinfo a,userlogin b\n"
+                        + "where \n"
+                        + "a.email = b.email\n"
+                        + "and a.email = ? ",
+                        ResultSet.TYPE_SCROLL_SENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE);
+                query.setString(1, friendEmail);
+                ResultSet result = query.executeQuery();
+                /*create a new user object,set the friends data on it and add it to the arraylist*/
+                User friend = null;
+                friend.setEmail(result.getString(1));
+                friend.setFullname(result.getString(2));
+                friend.setGender(result.getString(3));
+                friend.setCountry(result.getString(4));
+                friend.setStatus(result.getInt(5));
+                friend.setMode(result.getInt(6));
+                friendsNames.add(friend);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);

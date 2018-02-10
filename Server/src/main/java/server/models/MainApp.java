@@ -1,5 +1,7 @@
 package server.models;
 
+import iti.chat.common.User;
+import java.util.ArrayList;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
