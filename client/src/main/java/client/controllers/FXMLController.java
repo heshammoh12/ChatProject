@@ -1,6 +1,7 @@
 package client.controllers;
 
 import iti.chat.common.ClientInter;
+import iti.chat.common.LogInVerificationInter;
 import iti.chat.common.ServerInter;
 import java.io.IOException;
 import java.net.URL;
@@ -20,6 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -34,6 +36,7 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
     private double xOffset = 0;
     private double yOffset = 0;
     Stage stage ;
+    private LogInVerificationInter logInVerificationInter=null;
     private ServerInter server = null;
 
     public ServerInter getServer() {
@@ -113,17 +116,7 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
         email = TextFieldUserName.getText();
         password = TextFieldPassword.getText();
         
-        
-        try {
-            registry = LocateRegistry.getRegistry(2000);
-            server = (ServerInter) registry.lookup("ChatService");
-        } catch (RemoteException ex) {
-            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
+
         try {
             root = loader.load(getClass().getResource("/fxml/ChatPage.fxml").openStream());
             Stage stage = (Stage) Anchor.getScene().getWindow();
@@ -143,15 +136,30 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
                 }
             });
             System.out.println("before if");
-            if(email.equals("hesham"))
+            if(email.isEmpty() || password.isEmpty())
             {
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/Styles.css").toString());
-            stage.setScene(scene);
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning Dialog");
+                alert.setHeaderText("Wrong Data");
+                alert.setContentText("Complete Data Please !!!!");
+                alert.showAndWait();
+            }else{
+                try {
+                    registry = LocateRegistry.getRegistry(2000);
+                    server = (ServerInter) registry.lookup("ChatService");
+                } catch (RemoteException ex) {
+                    Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (NotBoundException ex) {
+                    Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                Scene scene = new Scene(root);
+                scene.getStylesheets().add(getClass().getResource("/styles/Styles.css").toString());
+                stage.setScene(scene);
             
             
                 System.out.println("after if");
-                stage.show();
+                stage.show();  
             }
             
             
