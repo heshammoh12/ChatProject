@@ -49,13 +49,13 @@ public class ServerImpl implements ServerInter {
                 query.setString(1, friendEmail);
                 ResultSet result = query.executeQuery();
                 /*create a new user object,set the friends data on it and add it to the arraylist*/
-                User friend = null;
-                friend.setEmail(result.getString(1));
-                friend.setFullname(result.getString(2));
-                friend.setGender(result.getString(3));
-                friend.setCountry(result.getString(4));
-                friend.setStatus(result.getInt(5));
-                friend.setMode(result.getInt(6));
+                String fEmail = result.getString(1);
+                String fName = result.getString(2);
+                String fgender = result.getString(3);
+                String fCountry = result.getString(4);
+                int fStatus = result.getInt(5);
+                int fMode = result.getInt(6);
+                User friend = new User(fEmail, fName, fgender, fCountry, fStatus,fMode);
                 friendsNames.add(friend);
             }
         } catch (SQLException ex) {
@@ -66,7 +66,7 @@ public class ServerImpl implements ServerInter {
 
     @Override
     public void sendMessage(ClientInter sender, ClientInter receiver) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            receiver.recieveMessage(sender.getUser());
     }
 
     @Override

@@ -19,7 +19,15 @@ public class User implements Serializable{
 
 
     /*variables added by Dina  */
-
+    public User(String email, String fullname,String gender,String country ,int status,int mode) {
+            this.email = email;
+            this.fullname = fullname;
+            this.country = country;
+            this.status = status;
+            this.mode = mode;
+            this.gender = gender;
+        }
+    
 
     /*variables added by Hassna  */
 
