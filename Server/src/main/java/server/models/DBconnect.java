@@ -11,6 +11,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -32,12 +34,16 @@ public class DBconnect {
              }  
             
    // to get the connection from methods like insert, view etc.   
-          private static Connection getConnection()throws ClassNotFoundException, SQLException  
+          private static Connection getConnection()throws ClassNotFoundException, SQLException 
           {  
                 
               Connection con=null;  
               Class.forName("com.mysql.jdbc.Driver");  
-              con= DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe","chat","chat");  
+            try {  
+                con= DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe","chat","chat");
+            } catch (SQLException ex) {
+                con= DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","chat","chat");
+            }
               return con;  
                 
           }  
