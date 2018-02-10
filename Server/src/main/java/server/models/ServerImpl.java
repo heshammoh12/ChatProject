@@ -66,7 +66,7 @@ public class ServerImpl implements ServerInter {
 
     @Override
     public void sendMessage(ClientInter sender, ClientInter receiver) throws RemoteException {
-            receiver.recieveMessage(sender.getUser());
+           receiver.recieveMessage(sender.getUser());
     }
 
     @Override
