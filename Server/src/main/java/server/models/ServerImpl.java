@@ -17,6 +17,7 @@ import oracle.jdbc.OracleDriver;
  */
 public class ServerImpl extends UnicastRemoteObject implements ServerInter {
    
+    static ArrayList<ClientInter> clientsArrayList =new ArrayList<ClientInter>();
     public ServerImpl ()throws RemoteException{
         System.out.println("ServerImpl");
     }
@@ -58,12 +59,12 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 
     @Override
     public void registerClint(ClientInter client) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        clientsArrayList.add(client);
     }
 
     @Override
     public void unregisterClint(ClientInter client) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        clientsArrayList.remove(client);
     }
 
 }
