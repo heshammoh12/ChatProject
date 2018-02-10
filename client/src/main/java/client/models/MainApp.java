@@ -52,6 +52,7 @@ public class MainApp extends Application {
             primaryStage.hide();
             System.out.println("working");
             scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/Styles.css").toString());
 //            stage.initStyle(StageStyle.DECORATED);
             primaryStage.setScene(scene);
             primaryStage.show();
