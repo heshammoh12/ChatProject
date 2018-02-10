@@ -15,39 +15,18 @@ import oracle.jdbc.OracleDriver;
  * @author Dina PC
  */
 public class ServerImpl implements ServerInter {
-
-    ResultSet rs;
-    Connection con;
-
-    public ServerImpl() throws SQLException {
-        DriverManager.registerDriver(new OracleDriver());
-        con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "chat", "chat");
-        con.setAutoCommit(false);
-    }
-
     @Override
     public ArrayList<User> getFrinds(String email) throws RemoteException {
-        PreparedStatement pst, query;
         ArrayList<User> friendsNames = null;
         try {
-            pst = con.prepareStatement("select friendemail from userfriends where email = ?",
-                    ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
-            pst.setString(1, email);
-            rs = pst.executeQuery();
+            DBconnect conn = DBconnect.getInstance();
+            ResultSet rs = conn.getUserFriends(email);
             friendsNames = new ArrayList<>();
             while (rs.next()) {
                 String friendEmail = rs.getString(1);
                 /*new query to get user friend's data*/
-                query = con.prepareStatement("select a.email,a.fullname,a.gender,a.country,b.userstatus,b.usermode \n"
-                        + "from userinfo a,userlogin b\n"
-                        + "where \n"
-                        + "a.email = b.email\n"
-                        + "and a.email = ? ",
-                        ResultSet.TYPE_SCROLL_SENSITIVE,
-                        ResultSet.CONCUR_UPDATABLE);
-                query.setString(1, friendEmail);
-                ResultSet result = query.executeQuery();
+                
+                ResultSet result = conn.getUserFriendsData(friendEmail);
                 /*create a new user object,set the friends data on it and add it to the arraylist*/
                 String fEmail = result.getString(1);
                 String fName = result.getString(2);
@@ -59,6 +38,8 @@ public class ServerImpl implements ServerInter {
                 friendsNames.add(friend);
             }
         } catch (SQLException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return friendsNames;

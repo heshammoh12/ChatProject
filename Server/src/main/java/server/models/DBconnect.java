@@ -232,5 +232,28 @@ public class DBconnect {
               }   
            }  
              return recordCounter;  
-          }  
+          } 
+         
+         public ResultSet getUserFriends(String email) throws SQLException, ClassNotFoundException{
+            Connection con = this.getConnection();
+            PreparedStatement pst = con.prepareStatement("select friendemail from userfriends where email = ?",
+                    ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            pst.setString(1, email);
+            ResultSet rs = pst.executeQuery();
+            return rs;
+         }
+         public ResultSet getUserFriendsData(String friendEmail) throws ClassNotFoundException, SQLException{
+            Connection con = this.getConnection();
+            PreparedStatement query = con.prepareStatement("select a.email,a.fullname,a.gender,a.country,b.userstatus,b.usermode \n"
+                        + "from userinfo a,userlogin b\n"
+                        + "where \n"
+                        + "a.email = b.email\n"
+                        + "and a.email = ? ",
+                        ResultSet.TYPE_SCROLL_SENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE);
+            query.setString(1, friendEmail);
+            ResultSet rs = query.executeQuery();
+            return rs;
+         }
 }
