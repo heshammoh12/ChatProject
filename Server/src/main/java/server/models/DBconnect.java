@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -191,7 +192,56 @@ public class DBconnect {
         }
         else return null;
       } 
+       
+       public  ArrayList<User> getUsersByName(String name) throws SQLException  
+      {  
+        ArrayList<User> users = new ArrayList<>();
+        User user=new User();
+        boolean exist=false;
+        Connection con = null;  
+        PreparedStatement ps = null;  
+        PreparedStatement ps2 = null;
+        ResultSet rs = null;
+        ResultSet rs2 = null;
+           try {  
+                      
+                        con=this.getConnection();  
+                        ps=con.prepareStatement("select * from USERINFO WHERE FULLNAME LIKE '%?%'");
+                        ps.setString(1, name); 
+                        
+                        rs=ps.executeQuery();
+                        while(rs.next()){
+                                user.setEmail(rs.getString("EMAIL"));
+                                user.setCountry(rs2.getString("COUNTRY"));
+                                user.setFullname(rs2.getString("FULLNAME"));
+                                user.setGender(rs2.getString("GENDER"));
+                                
+                                ps2=con.prepareStatement("Select * from USERLOGIN WHERE EMAIL =?");
+                                ps2.setString(1, user.getEmail());
+                                rs2=ps2.executeQuery();
+                                if(rs2.next()){
+                                    user.setMode(rs.getInt("USERMODE"));
+                                    user.setPassword(rs.getString("PASSWORD"));
+                                    user.setUsername(rs.getString("USERNAME"));
+                                    user.setStatus(rs.getInt("USERSTATUS"));
+                                }
+                                users.add(user);
+			}
+                
+          } catch (Exception e) { System.out.println(e);}  
+          finally{  
+                    if(rs!=null){  
+                        rs.close();  
+                    }if (ps!=null){  
+                      ps.close();  
+                  }if(con!=null){  
+                      con.close();  
+                  }   
+                } 
+        return users;
         
+      }
+      
      // to update the password for the given username  
       public int update(String name, String password) throws SQLException  {  
               Connection c=null;  
