@@ -106,6 +106,66 @@ public class DBconnect {
              return recordCounter;  
           }
     
+       
+    public int addFriendRequest(String senderEmail, String recieverEmail ) throws SQLException  
+          {  
+              Connection c=null;  
+                
+              PreparedStatement ps=null;  
+                
+              int recordCounter=0;  
+                
+              try {  
+                    
+                      c=this.getConnection();  
+                      ps=c.prepareStatement("INSERT INTO FRIENDSREQUESTS(EMAIL, MYFRIENDEMAIL) VALUES (?,?)");
+                      ps.setString(1, senderEmail);  
+                      ps.setString(2, recieverEmail); 
+                      
+                      recordCounter=ps.executeUpdate();  
+                        
+              } catch (Exception e) { e.printStackTrace(); } finally{  
+                    if (ps!=null){  
+                      ps.close();  
+                  }if(c!=null){  
+                      c.close();  
+                  }   
+              }  
+             return recordCounter;  
+          }
+    
+    public int acceptFriendRequest(String senderEmail, String recieverEmail ) throws SQLException  
+          {  
+              Connection c=null;  
+                
+              PreparedStatement ps=null;  
+               PreparedStatement ps2=null; 
+              int recordCounter=0;  
+               int recordCounter2=0;  
+              try {  
+                    
+                      c=this.getConnection();  
+                      ps=c.prepareStatement("INSERT INTO USERFRIENDS(EMAIL, FRIENDEMAIL) VALUES (?,?)");
+                      ps.setString(1, senderEmail);  
+                      ps.setString(2, recieverEmail); 
+                      
+                      recordCounter=ps.executeUpdate();  
+                      
+                      ps2=c.prepareStatement(" delete from FRIENDSREQUESTS where EMAIL=? AND MYFRIENDEMAIL=?");
+                      ps2.setString(1, senderEmail);  
+                      ps2.setString(2, recieverEmail);
+                      recordCounter2=ps2.executeUpdate();
+                      
+              } catch (Exception e) { e.printStackTrace(); } finally{  
+                    if (ps!=null){  
+                      ps.close();  
+                  }if(c!=null){  
+                      c.close();  
+                  }   
+              }  
+             return recordCounter;  
+          }
+    
 //to view the data from the database        
       public  boolean checkEmail(String email) throws SQLException  
       {  
