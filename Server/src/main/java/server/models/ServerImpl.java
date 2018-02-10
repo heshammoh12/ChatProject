@@ -4,6 +4,7 @@ import iti.chat.common.ClientInter;
 import iti.chat.common.ServerInter;
 import iti.chat.common.User;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -14,14 +15,15 @@ import oracle.jdbc.OracleDriver;
  *
  * @author Dina PC
  */
-public class ServerImpl implements ServerInter {
+public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 
     ResultSet rs;
     Connection con;
 
-    public ServerImpl() throws SQLException {
+    
+    public ServerImpl() throws SQLException , RemoteException {
         DriverManager.registerDriver(new OracleDriver());
-        con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "chat", "chat");
+        con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE", "chat", "chat");
         con.setAutoCommit(false);
     }
 
