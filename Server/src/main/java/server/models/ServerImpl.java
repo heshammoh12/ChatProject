@@ -16,34 +16,26 @@ import oracle.jdbc.OracleDriver;
  * @author Dina PC
  */
 public class ServerImpl extends UnicastRemoteObject implements ServerInter {
-   
-    static ArrayList<ClientInter> clientsArrayList =new ArrayList<ClientInter>();
-    public ServerImpl ()throws RemoteException{
+
+    static ArrayList<ClientInter> clientsArrayList = new ArrayList<ClientInter>();
+
+    public ServerImpl() throws RemoteException {
         System.out.println("ServerImpl");
     }
-    
+
     @Override
     public ArrayList<User> getFrinds(String email) throws RemoteException {
         ArrayList<User> friendsNames = null;
+        DBconnect conn;
         try {
-            DBconnect conn = DBconnect.getInstance();
-            ResultSet rs = conn.getUserFriends(email);
+            conn = DBconnect.getInstance();
+            ArrayList<String> frindEmails = conn.getUserFriends(email);
             friendsNames = new ArrayList<>();
-            while (rs.next()) {
-                String friendEmail = rs.getString(1);
-                /*new query to get user friend's data*/
-                
-                ResultSet result = conn.getUserFriendsData(friendEmail);
-                /*create a new user object,set the friends data on it and add it to the arraylist*/
-                String fEmail = result.getString(1);
-                String fName = result.getString(2);
-                String fgender = result.getString(3);
-                String fCountry = result.getString(4);
-                int fStatus = result.getInt(5);
-                int fMode = result.getInt(6);
-                User friend = new User(fEmail, fName, fgender, fCountry, fStatus,fMode);
+            for (String frindEmail : frindEmails) {
+                User friend = conn.getUserFriendsData(frindEmail);
                 friendsNames.add(friend);
             }
+
         } catch (SQLException ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -54,7 +46,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 
     @Override
     public void sendMessage(ClientInter sender, ClientInter receiver) throws RemoteException {
-           receiver.recieveMessage(sender.getUser());
+        receiver.recieveMessage(sender.getUser());
     }
 
     @Override
