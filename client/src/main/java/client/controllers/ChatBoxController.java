@@ -67,6 +67,13 @@ public class ChatBoxController implements Initializable {
     @FXML
     private ComboBox ChatBox_ComboBox_FontSize;
     
+    //
+    
+    //attrs added by nagib
+    
+    
+    //
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
@@ -226,4 +233,13 @@ public class ChatBoxController implements Initializable {
         ChatBox_ComboBox_FontSize.getItems().addAll("8", "14", "18", "22");
         ChatBox_ComboBox_FontSize.getSelectionModel().select("size");
     }
+    
+    
+    //
+    
+    //methods added by nagib
+    
+    
+    //
+
 }
