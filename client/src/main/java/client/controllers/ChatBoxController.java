@@ -66,17 +66,12 @@ public class ChatBoxController implements Initializable {
     private ComboBox ChatBox_ComboBox_FontType;
     @FXML
     private ComboBox ChatBox_ComboBox_FontSize;
-    
+
     //
-    
     //attrs added by nagib
-    
-    
     //
-    
     @Override
-    public void initialize(URL url, ResourceBundle rb) 
-    {
+    public void initialize(URL url, ResourceBundle rb) {
         //make scroll pan scrollable
         ChatBoxScrollPane.vvalueProperty().bind(ChatBox_AreaMessages.heightProperty());
         setCircleMsg();
@@ -84,81 +79,87 @@ public class ChatBoxController implements Initializable {
         initializeCompoBoxFontsSize();
         buttonImages();
         // TODO
-        
+
         //listner on text field on enter button
-        ChatBox_TextField.setOnKeyPressed(new EventHandler<KeyEvent>()
-        {
+        ChatBox_TextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                
-                
+
                 if (event.getCode() == KeyCode.ENTER) {
                     ///////// these code is for testing purpose reblace it with yours
-                       System.out.println("tmaaaaaaaaaaaaaaaaam");
-                              Text data= new Text(getDate());
-            data.setFont(Font.font("", 10.0));
-            data.setFill(Color.DIMGREY);
-            
-            Text t = new Text(ChatBox_TextField.getText());
-            
-            TextFlow textFlow = new TextFlow(t,data);
-            textFlow.setStyle("-fx-background-color: #2196F3; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
-           
-            imageSmallCirlce = new Image("/images/personal-website-design.png");
-            smallImageCircle.setFill(new ImagePattern(imageSmallCirlce));
-            HBox h = new HBox(textFlow,smallImageCircle);
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    ChatBox_AreaMessages.setSpacing(5);
-                    h.setAlignment(Pos.BASELINE_RIGHT);
-                    ChatBox_AreaMessages.getChildren().add(h);
-                    ChatBox_TextField.setText("");
+                    System.out.println("tmaaaaaaaaaaaaaaaaam");
+                    Text data = new Text(getDate());
+                    data.setFont(Font.font("", 10.0));
+                    data.setFill(Color.DIMGREY);
+
+                    Text t = new Text(ChatBox_TextField.getText());
+
+                    TextFlow textFlow = new TextFlow(t, data);
+                    textFlow.setStyle("-fx-background-color: #2196F3; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
+
+                    imageSmallCirlce = new Image("/images/personal-website-design.png");
+                    smallImageCircle.setFill(new ImagePattern(imageSmallCirlce));
+                    HBox h = new HBox(textFlow, smallImageCircle);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            ChatBox_AreaMessages.setSpacing(5);
+                            h.setAlignment(Pos.BASELINE_RIGHT);
+                            ChatBox_AreaMessages.getChildren().add(h);
+                            ChatBox_TextField.setText("");
+                        }
+                    });
+                    //
+
+                    //attrs added by nagib
+                    //   
                 }
-            });
-                    
-                    
-                    }
-                
+
             }
-           
+
         });
-    } 
-    
-    public void buttonImages()
-    {
+        //
+
+        //attrs added by nagib
+        //
+    }
+
+    public void buttonImages() {
         File file = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\ChatProject\\client\\src\\main\\resources\\images\\003-group-.png");
         Image image = new Image(file.toURI().toString());
         ChatBox_Button_AddFirendToChat.setGraphic(new ImageView(image));
-        
+
         //File attach = new File("/images/attach-icon.png");
         File attach = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\ChatProject\\client\\src\\main\\resources\\images\\004-external.png");
         Image imgAttach = new Image(attach.toURI().toString());
         ChatBox_Button_AttachFile.setGraphic(new ImageView(imgAttach));
-        
+
         //File email = new File("/images/icon-email-128.png");
         File email = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\ChatProject\\client\\src\\main\\resources\\images\\note.png");
         Image imgEmail = new Image(email.toURI().toString());
         ChatBox_Button_Email.setGraphic(new ImageView(imgEmail));
+
+        //
         
+        //attrs added by nagib
+        
+        //
     }
-    
-    public void Render(User user)
-    {
-        if(isSender)
-        {
-            Text data= new Text(getDate());
+
+    public void Render(User user) {
+        if (isSender) {
+            Text data = new Text(getDate());
             data.setFont(Font.font("", 10.0));
             data.setFill(Color.DIMGREY);
-            
+
             Text t = new Text(user.getMessage().getContent());
-            
-            TextFlow textFlow = new TextFlow(t,data);
+
+            TextFlow textFlow = new TextFlow(t, data);
             textFlow.setStyle("-fx-background-color: #2196F3; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
             imageSmallCirlce = new Image("/images/personal-website-design.png");
             smallImageCircle.setFill(new ImagePattern(imageSmallCirlce));
-            
-            HBox h = new HBox(textFlow,smallImageCircle);
+
+            HBox h = new HBox(textFlow, smallImageCircle);
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
@@ -167,21 +168,20 @@ public class ChatBoxController implements Initializable {
                     ChatBox_AreaMessages.getChildren().add(h);
                 }
             });
-            
-        }else if(!isSender)
-        {
-            Text data= new Text(getDate());
+
+        } else if (!isSender) {
+            Text data = new Text(getDate());
             data.setFont(Font.font("", 10.0));
             data.setFill(Color.DIMGREY);
-            
+
             Text t = new Text(user.getMessage().getContent());
-            
-            TextFlow textFlow = new TextFlow(t,data);
+
+            TextFlow textFlow = new TextFlow(t, data);
             textFlow.setStyle("-fx-background-color: #2196F3; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
             imageSmallCirlce = new Image("/images/personal-website-design.png");
             smallImageCircle.setFill(new ImagePattern(imageSmallCirlce));
-            
-            HBox h = new HBox(smallImageCircle,textFlow);
+
+            HBox h = new HBox(smallImageCircle, textFlow);
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
@@ -190,56 +190,48 @@ public class ChatBoxController implements Initializable {
                 }
             });
         }
-        
+
     }
-    
-    public void sendMessage(User user)
-    {
+
+    public void sendMessage(User user) {
         isSender = true;
         Render(user);
-        
+
     }
-    
-    public void recieveMeddage(User user)
-    {
+
+    public void recieveMeddage(User user) {
         isSender = false;
         Render(user);
     }
 
-    public String getDate()
-    {
+    public String getDate() {
         Date date = new Date();
         String strDateFormat = " hh:mm a";
         DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
-        String formattedDate= dateFormat.format(date);
-        System.out.println("Current time of the day using Date - 12 hour format: " + formattedDate); 
+        String formattedDate = dateFormat.format(date);
+        System.out.println("Current time of the day using Date - 12 hour format: " + formattedDate);
         return formattedDate;
     }
-    
-    public void setCircleMsg()
-    {
+
+    public void setCircleMsg() {
         //initialize the node circle
-        smallImageCircle = new Circle(10,10,5);
+        smallImageCircle = new Circle(10, 10, 5);
         smallImageCircle.setStroke(Color.SEAGREEN);
     }
-    
+
     public void initializeCompoBoxFontsType() {
         ChatBox_ComboBox_FontType.getItems().removeAll(ChatBox_ComboBox_FontType.getItems());
         ChatBox_ComboBox_FontType.getItems().addAll("normal", "Verdana", "Serif Bold", "Arial");
         ChatBox_ComboBox_FontType.getSelectionModel().select("font type");
     }
+
     public void initializeCompoBoxFontsSize() {
         ChatBox_ComboBox_FontSize.getItems().removeAll(ChatBox_ComboBox_FontSize.getItems());
         ChatBox_ComboBox_FontSize.getItems().addAll("8", "14", "18", "22");
         ChatBox_ComboBox_FontSize.getSelectionModel().select("size");
     }
-    
-    
-    //
-    
-    //methods added by nagib
-    
-    
-    //
 
+    //
+    //methods added by nagib
+    //
 }

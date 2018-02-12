@@ -5,6 +5,7 @@
  */
 package client.controllers;
 
+import client.models.ClientImpl;
 import iti.chat.common.ClientInter;
 import iti.chat.common.LogInVerificationInter;
 import iti.chat.common.ServerInter;
@@ -111,7 +112,7 @@ public class ChatPageController implements Initializable {
                         System.out.println(item.getGender());
                         if (ChatPage_TabPane_Users.getTabs().size() <= 5) {
                             try {
-                                getFrindClint();
+                                getFrindClint(item.getEmail());
                                 Tab tab = new Tab(item.getFullname());
                                 //Button tabA_button = new Button("Button@Tab A");
                                 Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/fxml/ChatBox.fxml"));
@@ -184,8 +185,21 @@ public class ChatPageController implements Initializable {
 
     //
     /*Methods added by Nagib  */
-    private void getFrindClint(){
-    
+    private void getFrindClint(String mail) {
+        try {
+            ClientInter friend = (ClientInter) server.getFriendClient(mail);
+            if (friend != null) {
+                System.out.println("friend is -> " + friend.getUser().getFullname());
+
+            } else {
+                System.out.println("friend is null-> " + friend);
+            }
+
+        } catch (RemoteException ex) {
+            System.out.println("Error in getFrindClint method");
+            Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
     //
     //

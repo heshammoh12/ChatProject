@@ -66,10 +66,18 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 
 //
     /*Methods added by Nagib  */
-    @Override
+    
+   @Override
     public ClientInter getFriendClient(String mail) throws RemoteException {
-        return clientsArrayList.get(0);
-    }
+        ClientInter friendClient= null;
+        for (ClientInter clientInter : clientsArrayList) {
+            if(clientInter.getUser().getEmail().equals(mail))
+                friendClient = clientInter;
+        }
+        return friendClient;
+        
+    }  
+    
     //
     //
     /*Methods added by Dina  */

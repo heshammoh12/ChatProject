@@ -15,7 +15,7 @@ public interface ServerInter extends Remote {
     public void unregisterClint(ClientInter client) throws RemoteException;
     
    /*Methods added by Nagib  */
-    public ClientInter getFriendClient(String Mail) throws RemoteException;
+    public ClientInter getFriendClient(String mail) throws RemoteException;
     //
     
    /*Methods added by Dina  */
