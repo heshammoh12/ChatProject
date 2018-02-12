@@ -17,7 +17,7 @@ public interface ClientInter {
     
  /*Methods added by Hassna  */
     
-    //
+    public void getNotification(String content);
     
  /*Methods added by Hesham  */
     

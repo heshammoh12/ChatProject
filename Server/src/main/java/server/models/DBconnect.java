@@ -83,9 +83,10 @@ public class DBconnect {
               Connection c=null;  
                 
               PreparedStatement ps=null;  
-                
+               PreparedStatement ps2=null;
+               
               int recordCounter=0;  
-                
+               int recordCounter2=0; 
               try {  
                     
                       c=this.getConnection();  
@@ -96,6 +97,12 @@ public class DBconnect {
                       ps.setInt(4, state);
                       ps.setInt(5, mode);
                       recordCounter=ps.executeUpdate();  
+                      
+                      //update status to online
+                      ps2=c.prepareStatement(" update USERLOGIN set USERSTATUS=1 where USERSTATUS=?");  
+                      ps2.setString(1, email);  
+                      recordCounter2=ps2.executeUpdate();
+                      
                         
               } catch (Exception e) { e.printStackTrace(); } finally{  
                     if (ps!=null){  
@@ -344,7 +351,29 @@ public class DBconnect {
            }  
              return recordCounter;  
           } 
+      
+         public int signOutdb(String email) throws SQLException  {  
+              Connection c=null;  
+              PreparedStatement ps=null;  
+                
+              int recordCounter=0;  
+              try {  
+                      c=this.getConnection();  
+                      ps=c.prepareStatement(" update USERLOGIN set USERSTATUS=0 where USERSTATUS=?");  
+                      ps.setString(1, email);  
+                      recordCounter=ps.executeUpdate();  
+              } catch (Exception e) {  e.printStackTrace(); } finally{  
+                      
+                  if (ps!=null){  
+                      ps.close();  
+                  }if(c!=null){  
+                      c.close();  
+                  }   
+               }  
+             return recordCounter;  
+          }  
          
+//Dina's methods
          public ResultSet getUserFriends(String email) throws SQLException, ClassNotFoundException{
             Connection con = this.getConnection();
             PreparedStatement pst = con.prepareStatement("select friendemail from userfriends where email = ?",

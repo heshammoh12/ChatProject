@@ -47,7 +47,11 @@ public class ClientImpl implements ClientInter{
     
  /*Methods added by Hassna  */
     
-    //
+    public boolean signOut(){
+        boolean done = false;
+        //serverObject.signOurServer(this.user.email);
+        return done;
+    }
     
  /*Methods added by Hesham  */
     
@@ -56,5 +60,10 @@ public class ClientImpl implements ClientInter{
  /*Methods added by Fatma  */
     
     //
+
+    @Override
+    public void getNotification(String content) {
+        //serverObject.displayNotification(content);
+    }
     
 }
