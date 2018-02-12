@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import server.models.LogInVerificationImpl;
+import server.models.SignUpVerificationImpl;
 import server.models.ServerImpl;
 
 public class FXMLController implements Initializable {
@@ -22,21 +23,24 @@ public class FXMLController implements Initializable {
     @FXML
     private Label label;
 
-    Registry registry;
+    Registry registry = null;
 
     @FXML
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
 
         try {
-            registry = LocateRegistry.createRegistry(2000);
-            registry.rebind("ChatService", new ServerImpl());
-            registry.rebind("LoginVary", new LogInVerificationImpl());
+            if (registry == null) {
+                registry = LocateRegistry.createRegistry(2000);
+                registry.rebind("ChatService", new ServerImpl());
+                registry.rebind("LogInVary", new LogInVerificationImpl());
+                registry.rebind("SignUpVary", new SignUpVerificationImpl());
+            }
 
         } catch (RemoteException ex) {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        label.setText("Hello World!");
+        label.setStyle("-fx-text-fill: green;");
     }
 
     @Override

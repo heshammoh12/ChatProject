@@ -54,8 +54,7 @@ public class ChatPageController implements Initializable {
         onlineUsers.add(new User("kadry@gmail.com","Kadry",1,"Male"));
         onlineUsers.add(new User("noora@yahoo.com","nora1990",1,"Female"));
         onlineUsers.add(new User("lol@yahoo.com","kareem",1,"Male"));
-        ChatPage_List_OnlineUsers.setItems(onlineUsers);
-        
+        ChatPage_List_OnlineUsers.setItems(onlineUsers);        
         ChatPage_List_OnlineUsers.setCellFactory(new Callback<ListView<User>, ListCell<User>>()
         {
             @Override
