@@ -6,6 +6,7 @@
 package client.controllers;
 
 import client.interfaces.SignUpValidationInter;
+import client.models.ClientImpl;
 import client.models.SignUpValidInterImp;
 import iti.chat.common.LogInVerificationInter;
 import iti.chat.common.ServerInter;
@@ -263,7 +264,7 @@ public class FXMLSignUpPageController implements Initializable {
                 if (!exist) {
                     boolean inserted = signUpVerificationInter.insertUser(user);
                     if (inserted) {
-                        startChat();
+                        startChat(user);
                     } else {
                         showAlert("Error in Insertion");
                     }
@@ -333,11 +334,17 @@ public class FXMLSignUpPageController implements Initializable {
 
     }
 
-    private void startChat() {
+    private void startChat(User user) {
         try {
             loader = new FXMLLoader();
             System.out.println("Loged in");
             root = loader.load(getClass().getResource("/fxml/ChatPage.fxml").openStream());
+            ChatPageController chatController = (ChatPageController) loader.getController();
+            chatController.setLoginer(user);
+            chatController.buildChatPageList(user.getEmail());
+            ClientImpl clientImpl = new ClientImpl(user);
+            chatController.setClient(clientImpl);
+            server.registerClint(clientImpl);
             Stage stage = (Stage) anchorSignup.getScene().getWindow();
             root.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override

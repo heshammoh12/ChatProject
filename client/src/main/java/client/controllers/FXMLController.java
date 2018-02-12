@@ -1,5 +1,6 @@
 package client.controllers;
 
+import client.models.ClientImpl;
 import iti.chat.common.ClientInter;
 import iti.chat.common.LogInVerificationInter;
 import iti.chat.common.ServerInter;
@@ -43,7 +44,7 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
     private ServerInter server = null;
     private User user;
     private ClientInter client;
-  
+
     @FXML
     private AnchorPane Anchor;
     @FXML
@@ -156,7 +157,7 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
                 }
                 user = logInVerificationInter.login(email, password);
                 if (user != null) {
-                    startChat();
+                    startChat(user);
                 } else {
                     showAlert("Incorrect Username or Password !!!!");
                 }
@@ -185,11 +186,19 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
         }
     }
 
-    private void startChat() {
+    private void startChat(User user) {
         try {
             loader = new FXMLLoader();
             System.out.println("Loged in");
             root = loader.load(getClass().getResource("/fxml/ChatPage.fxml").openStream());
+            ChatPageController chatController = (ChatPageController) loader.getController();
+            chatController.setLoginer(user);
+            chatController.buildChatPageList(user.getEmail());
+            ClientImpl clientImpl =new ClientImpl(user);
+            chatController.setClient(clientImpl);
+            try{
+            server.registerClint(clientImpl);
+            }catch(Exception e){System.out.println("baaaaaaaaaaaaaaaaayz");}
             Stage stage = (Stage) Anchor.getScene().getWindow();
             root.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
