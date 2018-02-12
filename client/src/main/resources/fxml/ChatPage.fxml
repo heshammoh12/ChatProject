@@ -8,8 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="client.controllers.ChatPageController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.ChatPageController">
    <children>
       <Pane layoutY="-5.0" prefHeight="72.0" prefWidth="600.0">
          <children>
@@ -81,7 +80,7 @@
                     <tabs>
                       <Tab text="Friend1">
                            <content>
-                              <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                              <AnchorPane prefHeight="200.0" prefWidth="180.0" />
                            </content>
                       </Tab>
                       <Tab text="Friend 2">
