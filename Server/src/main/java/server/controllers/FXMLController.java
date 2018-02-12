@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import iti.chat.common.User;
+import java.rmi.NotBoundException;
 import java.util.ArrayList;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -14,6 +15,7 @@ import java.rmi.registry.Registry;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.*;
 import server.models.LogInVerificationImpl;
 import server.models.ServerImpl;
 
@@ -21,22 +23,46 @@ public class FXMLController implements Initializable {
 
     @FXML
     private Label label;
+    @FXML private Button stopButton;
+    @FXML private Button button;
 
-    Registry registry;
+    Registry registry=null;
 
     @FXML
+    /*start server button*/
     private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-
+        System.out.println("run server!");
         try {
-            registry = LocateRegistry.createRegistry(2000);
-            registry.rebind("ChatService", new ServerImpl());
-            registry.rebind("LoginVary", new LogInVerificationImpl());
-
+            if(registry == null)
+            {
+                registry = LocateRegistry.createRegistry(2000);
+            }
+                registry.rebind("ChatService", new ServerImpl());
+                registry.rebind("LoginVary", new LogInVerificationImpl());
+                label.setText("Server is Running");
+                stopButton.setDisable(false);
+                button.setDisable(true);
         } catch (RemoteException ex) {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        label.setText("Hello World!");
+        
+    }
+    /*Stop server button*/
+    @FXML
+    private void stopServer(ActionEvent event){
+        System.out.println("stop server!");
+        try {
+            registry.unbind("ChatService");
+            registry.unbind("LoginVary");
+            label.setText("Server is Stopped");
+            button.setDisable(false);
+            stopButton.setDisable(true);
+        } catch (RemoteException ex) {
+            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     @Override

@@ -1,23 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="443.0" prefWidth="536.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="server.controllers.FXMLController">
+<AnchorPane id="AnchorPane" prefHeight="443.0" prefWidth="536.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.controllers.FXMLController">
     <children>
       <BorderPane prefHeight="443.0" prefWidth="536.0">
          <top>
             <HBox prefHeight="40.0" prefWidth="536.0" BorderPane.alignment="CENTER">
                <children>
-                    <Button fx:id="button" alignment="CENTER" onAction="#handleButtonAction" style="-fx-alignment: center;" text="Start Server" />
-                  <Button alignment="CENTER" mnemonicParsing="false" text="Stop Server" textAlignment="CENTER" />
+                  <Separator prefHeight="40.0" prefWidth="190.0" />
+                  <Pane prefHeight="40.0" prefWidth="156.0">
+                     <children>
+                        <Button fx:id="stopButton" alignment="CENTER" disable="true" layoutX="78.0" mnemonicParsing="false" onAction="#stopServer" text="Stop Server" textAlignment="CENTER" />
+                          <Button fx:id="button" alignment="CENTER" onAction="#handleButtonAction" style="-fx-alignment: center;" text="Start Server" />
+                     </children>
+                  </Pane>
+                  <Separator prefHeight="34.0" prefWidth="187.0" />
                </children>
             </HBox>
          </top>
+         <center>
+            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+              <tabs>
+                  <Tab text="ServerStatus">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                                <Label fx:id="label" alignment="CENTER" layoutX="23.0" layoutY="79.0" minHeight="16" minWidth="69" prefHeight="216.0" prefWidth="491.0" textAlignment="CENTER" textFill="#940a0a">
+                                 <font>
+                                    <Font name="System Bold" size="36.0" />
+                                 </font></Label>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                <Tab text="Online Users">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </Tab>
+                <Tab text="Statistics">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </center>
       </BorderPane>
-        <Label fx:id="label" alignment="CENTER" minHeight="16" minWidth="69" textAlignment="CENTER" />
     </children>
 </AnchorPane>
