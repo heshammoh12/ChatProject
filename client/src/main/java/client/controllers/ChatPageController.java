@@ -113,7 +113,7 @@ public class ChatPageController implements Initializable {
                             try {
                                 Tab tab = new Tab(item.getFullname());
                                 //Button tabA_button = new Button("Button@Tab A");
-                                Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/fxml/FXMLSignUpPage.fxml"));
+                                Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/fxml/ChatBox.fxml"));
                                 //secPane.getChildren().add(newLoadedPane);
                                 tab.setContent(newLoadedPane);
                                 ChatPage_TabPane_Users.getTabs().add(tab);
