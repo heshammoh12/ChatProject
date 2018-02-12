@@ -1,8 +1,10 @@
 package client.controllers;
 
+import client.models.ClientImpl;
 import iti.chat.common.ClientInter;
 import iti.chat.common.LogInVerificationInter;
 import iti.chat.common.ServerInter;
+import iti.chat.common.SignUpVerificationInter;
 import iti.chat.common.User;
 import java.io.IOException;
 import java.net.URL;
@@ -15,6 +17,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -29,155 +32,195 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class FXMLController extends UnicastRemoteObject implements Initializable {
-    
-   
-    /**
-     * Initializes the controller class.
-     */
+
+    private FXMLLoader loader;
+    private Parent root;
     private double xOffset = 0;
     private double yOffset = 0;
-    Stage stage ;
-    private LogInVerificationInter logInVerificationInter=null;
+    private Stage stage;
+    private Registry registry = null;
+    private LogInVerificationInter logInVerificationInter = null;
+    private SignUpVerificationInter signUpVerificationInter = null;
     private ServerInter server = null;
-    User user;
+    private User user;
+    private ClientInter client;
 
-    public ServerInter getServer() {
-        return server;
-    }
-    ClientInter client;
-    Registry registry ;
-    
     @FXML
     private AnchorPane Anchor;
     @FXML
     private TextField TextFieldUserName;
     @FXML
     private TextField TextFieldPassword;
-    
-    public FXMLController() throws RemoteException
-    {
+
+    public FXMLController() throws RemoteException {
     }
-    
+
+    public ServerInter getServer() {
+        return server;
+    }
+
+    public void setServer(ServerInter server) {
+        this.server = server;
+    }
+
+    public void setRegistry(Registry registry) {
+        this.registry = registry;
+    }
+
+    public void setLogInVerificationInter(LogInVerificationInter logInVerificationInter) {
+        this.logInVerificationInter = logInVerificationInter;
+    }
+
+    public Registry getRegistry() {
+        return registry;
+    }
+
+    public LogInVerificationInter getLogInVerificationInter() {
+        return logInVerificationInter;
+    }
+
+    public void setSignUpVerificationInter(SignUpVerificationInter signUpVerificationInter) {
+        this.signUpVerificationInter = signUpVerificationInter;
+    }
+
+    public SignUpVerificationInter getSignUpVerificationInter() {
+        return signUpVerificationInter;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }  
-    
+    }
+
     //close Button Action
     @FXML
     private void close(ActionEvent event) {
         Stage stage = (Stage) Anchor.getScene().getWindow();
         stage.close();
+        Platform.exit();
+        System.exit(0);
     }
+
     //minimize Button Action
     @FXML
     private void minimize(ActionEvent event) {
         Stage stage = (Stage) Anchor.getScene().getWindow();
         stage.setIconified(true);
     }
+
     //SignUP to open signup Scene Button Action
     @FXML
     private void signUp(ActionEvent event) {
-        FXMLLoader loader;
-        Parent root; 
         try {
             loader = new FXMLLoader();
             root = loader.load(getClass().getResource("/fxml/FXMLSignUpPage.fxml").openStream());
-             stage = (Stage) Anchor.getScene().getWindow();
+            FXMLSignUpPageController controller = (FXMLSignUpPageController) loader.getController();
+            controller.setRegistry(getRegistry());
+            controller.setSignUpVerificationInter(getSignUpVerificationInter());
+            controller.setLogInVerificationInter(getLogInVerificationInter());
+            stage = (Stage) Anchor.getScene().getWindow();
             // to make it draggable
-            root.setOnMousePressed(new EventHandler<MouseEvent>(){
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                xOffset = event.getSceneX();
-                yOffset = event.getSceneY();
-                }    
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
             });
-            root.setOnMouseDragged(new EventHandler<MouseEvent>(){
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                stage.setX(event.getScreenX() - xOffset);
-                stage.setY(event.getScreenY() - yOffset);
+                    stage.setX(event.getScreenX() - xOffset);
+                    stage.setY(event.getScreenY() - yOffset);
                 }
             });
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/styles/Styles.css").toString());
             stage.setScene(scene);
             stage.show();
-            
         } catch (IOException ex) {
 //            Logger.getLogger(FXMLFirstPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    @FXML
-    private void logIn(ActionEvent event)
-    {
-        System.out.println("log in is here");
-        FXMLLoader loader;
-        Parent root; 
-        loader = new FXMLLoader();
-        String email,password;
-        email = TextFieldUserName.getText();
-        password = TextFieldPassword.getText();
-        
 
+    //logIn to open Chat Scene 
+    @FXML
+    private void logIn(ActionEvent event) {
+        String email = TextFieldUserName.getText();
+        String password = TextFieldPassword.getText();
         try {
-            root = loader.load(getClass().getResource("/fxml/ChatPage.fxml").openStream());
-            Stage stage = (Stage) Anchor.getScene().getWindow();
-            
-            root.setOnMousePressed(new EventHandler<MouseEvent>(){
-                @Override
-                public void handle(MouseEvent event) {
-                xOffset = event.getSceneX();
-                yOffset = event.getSceneY();
-                }    
-            });
-            root.setOnMouseDragged(new EventHandler<MouseEvent>(){
-                @Override
-                public void handle(MouseEvent event) {
-                stage.setX(event.getScreenX() - xOffset);
-                stage.setY(event.getScreenY() - yOffset);
+            if (email.isEmpty() || password.isEmpty()) {
+                showAlert("Complete Data Please !!!!");
+            } else {
+                if (registry == null || server == null || logInVerificationInter == null) {
+                    seviceLookUp();
                 }
-            });
-            System.out.println("before if");
-            if(email.isEmpty() || password.isEmpty())
-            {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning Dialog");
-                alert.setHeaderText("Wrong Data");
-                alert.setContentText("Complete Data Please !!!!");
-                alert.showAndWait();
-            }else{
-                try {
-                    registry = LocateRegistry.getRegistry(2000);
-                    server = (ServerInter) registry.lookup("ChatService");
-                    logInVerificationInter= (LogInVerificationInter) registry.lookup("LoginVary");
-                    System.out.println("server is : "+server);
-                    System.out.println("logInVerificationInter is : "+logInVerificationInter);
-                    user = logInVerificationInter.login(email, password);
-                    
-                    
-                } catch (RemoteException ex) {
-                    Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (NotBoundException ex) {
-                    Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                user = logInVerificationInter.login(email, password);
+                if (user != null) {
+                    startChat(user);
+                } else {
+                    showAlert("Incorrect Username or Password !!!!");
                 }
-                if(user != null)
-                {
-                    Scene scene = new Scene(root);
-                    scene.getStylesheets().add(getClass().getResource("/styles/Styles.css").toString());
-                    stage.setScene(scene);
-                    stage.show(); 
-                }
-                 
             }
-            
-            
         } catch (IOException ex) {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
- 
     }
-    
 
-  
+    private void showAlert(String s) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Error");
+        alert.setContentText(s);
+        alert.showAndWait();
+    }
+
+    private void seviceLookUp() {
+        try {
+            setRegistry(LocateRegistry.getRegistry(2000));
+            setServer((ServerInter) registry.lookup("ChatService"));
+            setLogInVerificationInter((LogInVerificationInter) registry.lookup("LogInVary"));
+
+        } catch (NotBoundException | RemoteException ex) {
+            Logger.getLogger(FXMLSignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void startChat(User user) {
+        try {
+            loader = new FXMLLoader();
+            System.out.println("Loged in");
+            root = loader.load(getClass().getResource("/fxml/ChatPage.fxml").openStream());
+            ChatPageController chatController = (ChatPageController) loader.getController();
+            chatController.setLoginer(user);
+            chatController.buildChatPageList(user.getEmail());
+            ClientImpl clientImpl =new ClientImpl(user);
+            chatController.setClient(clientImpl);
+            try{
+            server.registerClint(clientImpl);
+            }catch(Exception e){System.out.println("baaaaaaaaaaaaaaaaayz");}
+            Stage stage = (Stage) Anchor.getScene().getWindow();
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    stage.setX(event.getScreenX() - xOffset);
+                    stage.setY(event.getScreenY() - yOffset);
+                }
+            });
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/Styles.css").toString());
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }
