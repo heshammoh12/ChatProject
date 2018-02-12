@@ -64,27 +64,11 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-
 //
     /*Methods added by Nagib  */
     @Override
-    public ClientInter getFriendClient(String mail)throws RemoteException{
-            return new ClientInter() {
-                @Override
-                public void recieveMessage(User sender) throws RemoteException {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public User getUser() throws RemoteException {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void getNotification(String content) throws RemoteException {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-            };
+    public ClientInter getFriendClient(String mail) throws RemoteException {
+        return clientsArrayList.get(0);
     }
     //
     //
@@ -100,6 +84,5 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
     /*Methods added by Fatma  */
     //
     //
-
 
 }

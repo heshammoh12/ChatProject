@@ -111,6 +111,7 @@ public class ChatPageController implements Initializable {
                         System.out.println(item.getGender());
                         if (ChatPage_TabPane_Users.getTabs().size() <= 5) {
                             try {
+                                getFrindClint();
                                 Tab tab = new Tab(item.getFullname());
                                 //Button tabA_button = new Button("Button@Tab A");
                                 Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/fxml/ChatBox.fxml"));
@@ -181,6 +182,12 @@ public class ChatPageController implements Initializable {
 
     }
 
+    //
+    /*Methods added by Nagib  */
+    private void getFrindClint(){
+    
+    }
+    //
     //
     /*Methods added by Dina  */
     //
