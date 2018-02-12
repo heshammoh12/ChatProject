@@ -37,4 +37,24 @@ public class ClientImpl implements ClientInter{
     public Message getMessage() {
        return msg;
     }
+    
+    /*Methods added by Nagib  */
+    
+    
+ /*Methods added by Dina  */
+
+//    
+    
+ /*Methods added by Hassna  */
+    
+    //
+    
+ /*Methods added by Hesham  */
+    
+    //
+    
+ /*Methods added by Fatma  */
+    
+    //
+    
 }
