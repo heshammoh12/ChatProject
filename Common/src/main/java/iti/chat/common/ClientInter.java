@@ -1,30 +1,26 @@
 package iti.chat.common;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
 /**
  *
  * @author nagib
  */
-public interface ClientInter {
+public interface ClientInter extends Remote {
 
-    public void recieveMessage(User sender);
+    public void recieveMessage(User sender) throws RemoteException;
 
     /*Methods added by Nagib  */
-    
-    
+    //
+    //
  /*Methods added by Dina  */
-    
-    public User getUser();
-    
- /*Methods added by Hassna  */
-    
+    public User getUser() throws RemoteException;
+
+    /*Methods added by Hassna  */
     //
-    
- /*Methods added by Hesham  */
-    
+    /*Methods added by Hesham  */
     //
-    
- /*Methods added by Fatma  */
-    
+    /*Methods added by Fatma  */
     //
-    
 }
