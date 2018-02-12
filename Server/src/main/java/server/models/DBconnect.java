@@ -83,9 +83,10 @@ public class DBconnect {
               Connection c=null;  
                 
               PreparedStatement ps=null;  
-                
+               PreparedStatement ps2=null;
+               
               int recordCounter=0;  
-                
+               int recordCounter2=0; 
               try {  
                     
                       c=this.getConnection();  
@@ -96,6 +97,12 @@ public class DBconnect {
                       ps.setInt(4, state);
                       ps.setInt(5, mode);
                       recordCounter=ps.executeUpdate();  
+                      
+                      //update status to online
+                      ps2=c.prepareStatement(" update USERLOGIN set USERSTATUS=1 where USERSTATUS=?");  
+                      ps2.setString(1, email);  
+                      recordCounter2=ps2.executeUpdate();
+                      
                         
               } catch (Exception e) { e.printStackTrace(); } finally{  
                     if (ps!=null){  
@@ -344,27 +351,68 @@ public class DBconnect {
            }  
              return recordCounter;  
           } 
+      
+         public int signOutdb(String email) throws SQLException  {  
+              Connection c=null;  
+              PreparedStatement ps=null;  
+                
+              int recordCounter=0;  
+              try {  
+                      c=this.getConnection();  
+                      ps=c.prepareStatement(" update USERLOGIN set USERSTATUS=0 where USERSTATUS=?");  
+                      ps.setString(1, email);  
+                      recordCounter=ps.executeUpdate();  
+              } catch (Exception e) {  e.printStackTrace(); } finally{  
+                      
+                  if (ps!=null){  
+                      ps.close();  
+                  }if(c!=null){  
+                      c.close();  
+                  }   
+               }  
+             return recordCounter;  
+          }  
          
-         public ResultSet getUserFriends(String email) throws SQLException, ClassNotFoundException{
-            Connection con = this.getConnection();
-            PreparedStatement pst = con.prepareStatement("select friendemail from userfriends where email = ?",
-                    ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
-            pst.setString(1, email);
-            ResultSet rs = pst.executeQuery();
-            return rs;
-         }
-         public ResultSet getUserFriendsData(String friendEmail) throws ClassNotFoundException, SQLException{
-            Connection con = this.getConnection();
-            PreparedStatement query = con.prepareStatement("select a.email,a.fullname,a.gender,a.country,b.userstatus,b.usermode \n"
-                        + "from userinfo a,userlogin b\n"
-                        + "where \n"
-                        + "a.email = b.email\n"
-                        + "and a.email = ? ",
-                        ResultSet.TYPE_SCROLL_SENSITIVE,
-                        ResultSet.CONCUR_UPDATABLE);
-            query.setString(1, friendEmail);
-            ResultSet rs = query.executeQuery();
-            return rs;
-         }
+//Dina's methods
+    public ArrayList<String> getUserFriends(String email) throws SQLException, ClassNotFoundException {
+        Connection con = this.getConnection();
+        ArrayList<String> frindEmails = new ArrayList<>();
+        PreparedStatement pst = con.prepareStatement("select friendemail from userfriends where email = ?",
+                ResultSet.TYPE_SCROLL_SENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+        pst.setString(1, email);
+        ResultSet rs = pst.executeQuery();
+        while (rs.next()) {
+            frindEmails.add(rs.getString(1));
+        }
+        rs.close();
+        return frindEmails;
+    }
+
+    public User getUserFriendsData(String friendEmail) throws ClassNotFoundException, SQLException {
+        Connection con = this.getConnection();
+        User friend = null;
+        PreparedStatement query = con.prepareStatement("select a.email,a.fullname,a.gender,a.country,b.userstatus,b.usermode \n"
+                + "from userinfo a,userlogin b\n"
+                + "where \n"
+                + "a.email = b.email\n"
+                + "and a.email = ? ",
+                ResultSet.TYPE_SCROLL_SENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+        query.setString(1, friendEmail);
+        ResultSet rs = query.executeQuery();
+        while (rs.next()) {
+            String fEmail = rs.getString(1);
+            String fName = rs.getString(2);
+            String fgender = rs.getString(3);
+            String fCountry = rs.getString(4);
+            int fStatus = rs.getInt(5);
+            int fMode = rs.getInt(6);
+            friend = new User(fEmail, fName, fgender, fCountry, fStatus, fMode);
+        }
+
+        rs.close();
+        return friend;
+    }
+
 }

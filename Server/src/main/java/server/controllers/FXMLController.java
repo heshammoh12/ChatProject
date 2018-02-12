@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.*;
 import server.models.LogInVerificationImpl;
+import server.models.SignUpVerificationImpl;
 import server.models.ServerImpl;
 
 public class FXMLController implements Initializable {
@@ -26,6 +27,7 @@ public class FXMLController implements Initializable {
     @FXML private Button stopButton;
     @FXML private Button button;
 
+
     Registry registry=null;
 
     @FXML
@@ -33,12 +35,14 @@ public class FXMLController implements Initializable {
     private void handleButtonAction(ActionEvent event) {
         System.out.println("run server!");
         try {
+
             if(registry == null)
             {
                 registry = LocateRegistry.createRegistry(2000);
             }
                 registry.rebind("ChatService", new ServerImpl());
-                registry.rebind("LoginVary", new LogInVerificationImpl());
+                registry.rebind("LogInVary", new LogInVerificationImpl());
+                registry.rebind("SignUpVary", new SignUpVerificationImpl());
                 label.setText("Server is Running");
                 stopButton.setDisable(false);
                 button.setDisable(true);
@@ -53,7 +57,8 @@ public class FXMLController implements Initializable {
         System.out.println("stop server!");
         try {
             registry.unbind("ChatService");
-            registry.unbind("LoginVary");
+            registry.unbind("LogInVary");
+            registry.unbind("SignUpVary");
             label.setText("Server is Stopped");
             button.setDisable(false);
             stopButton.setDisable(true);
@@ -63,6 +68,7 @@ public class FXMLController implements Initializable {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+
     }
 
     @Override

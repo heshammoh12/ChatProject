@@ -24,7 +24,7 @@ public interface ServerInter extends Remote {
     
    /*Methods added by Hassna  */
     
-    //
+    public boolean signOurServer(String email) throws RemoteException;
     
    /*Methods added by Hesham  */
     
