@@ -105,6 +105,7 @@ public class DBconnect {
             if (ps != null) {
                 ps.close();
             }
+<<<<<<< HEAD
             if (c != null) {
                 c.close();
             }
@@ -175,6 +176,136 @@ public class DBconnect {
         return recordCounter;
     }
 
+=======
+              return con;  
+                
+          }  
+            
+ //to insert the record into the database   
+          public int insertToUserInfo(String email, String fullname, String gender, String country) throws SQLException  
+          {  
+              Connection c=null;  
+                
+              PreparedStatement ps=null;  
+                
+              int recordCounter=0;  
+                
+              try {  
+                    
+                      c=this.getConnection();  
+                      ps=c.prepareStatement("INSERT INTO USERINFO(EMAIL, FULLNAME, GENDER, COUNTRY) VALUES (?,?,?,?)");
+                      ps.setString(1, email);  
+                      ps.setString(2, fullname); 
+                      ps.setString(3, gender);  
+                      ps.setString(4, country); 
+                      recordCounter=ps.executeUpdate();  
+                        
+              } catch (Exception e) { e.printStackTrace(); } finally{  
+                    if (ps!=null){  
+                      ps.close();  
+                  }if(c!=null){  
+                      c.close();  
+                  }   
+              }  
+             return recordCounter;  
+          }  
+    public int insertToUserLogIn(String email, String username, String password, int state, int mode) throws SQLException  
+          {  
+              Connection c=null;  
+                
+              PreparedStatement ps=null;  
+               PreparedStatement ps2=null;
+               
+              int recordCounter=0;  
+               int recordCounter2=0; 
+              try {  
+                    
+                      c=this.getConnection();  
+                      ps=c.prepareStatement("INSERT INTO USERLOGIN(EMAIL, USERNAME, PASSWORD, USERSTATUS, USERMODE) VALUES (?,?,?,?,?)");
+                      ps.setString(1, email);  
+                      ps.setString(2, username); 
+                      ps.setString(3, password);  
+                      ps.setInt(4, state);
+                      ps.setInt(5, mode);
+                      recordCounter=ps.executeUpdate();  
+                      
+                      //update status to online
+                      ps2=c.prepareStatement(" update USERLOGIN set USERSTATUS=1 where USERSTATUS=?");  
+                      ps2.setString(1, email);  
+                      recordCounter2=ps2.executeUpdate();
+                      
+                        
+              } catch (Exception e) { e.printStackTrace(); } finally{  
+                    if (ps!=null){  
+                      ps.close();  
+                  }if(c!=null){  
+                      c.close();  
+                  }   
+              }  
+             return recordCounter;  
+          }
+    
+       
+    public int addFriendRequest(String senderEmail, String recieverEmail ) throws SQLException  
+          {  
+              Connection c=null;  
+                
+              PreparedStatement ps=null;  
+                
+              int recordCounter=0;  
+                
+              try {  
+                    
+                      c=this.getConnection();  
+                      ps=c.prepareStatement("INSERT INTO FRIENDSREQUESTS(EMAIL, MYFRIENDEMAIL) VALUES (?,?)");
+                      ps.setString(1, senderEmail);  
+                      ps.setString(2, recieverEmail); 
+                      
+                      recordCounter=ps.executeUpdate();  
+                        
+              } catch (Exception e) { e.printStackTrace(); } finally{  
+                    if (ps!=null){  
+                      ps.close();  
+                  }if(c!=null){  
+                      c.close();  
+                  }   
+              }  
+             return recordCounter;  
+          }
+    
+    public int acceptFriendRequest(String senderEmail, String recieverEmail ) throws SQLException  
+          {  
+              Connection c=null;  
+                
+              PreparedStatement ps=null;  
+               PreparedStatement ps2=null; 
+              int recordCounter=0;  
+               int recordCounter2=0;  
+              try {  
+                    
+                      c=this.getConnection();  
+                      ps=c.prepareStatement("INSERT INTO USERFRIENDS(EMAIL, FRIENDEMAIL) VALUES (?,?)");
+                      ps.setString(1, senderEmail);  
+                      ps.setString(2, recieverEmail); 
+                      
+                      recordCounter=ps.executeUpdate();  
+                      
+                      ps2=c.prepareStatement(" delete from FRIENDSREQUESTS where EMAIL=? AND MYFRIENDEMAIL=?");
+                      ps2.setString(1, senderEmail);  
+                      ps2.setString(2, recieverEmail);
+                      recordCounter2=ps2.executeUpdate();
+                      
+              } catch (Exception e) { e.printStackTrace(); } finally{  
+                    if (ps!=null){  
+                      ps.close();  
+                  }if(c!=null){  
+                      c.close();  
+                  }   
+              }  
+             return recordCounter;  
+          }
+    
+>>>>>>> 6978348962e214bde49b06637f8a3da96f716ee5
 //to view the data from the database        
     public boolean checkEmail(String email) throws SQLException {
         boolean exist = false;
@@ -344,6 +475,7 @@ public class DBconnect {
     }
 
 // to delete the data from the database   
+<<<<<<< HEAD
     public int delete(int userid) throws SQLException {
         Connection c = null;
         PreparedStatement ps = null;
@@ -405,4 +537,69 @@ public class DBconnect {
         rs.close();
         return friend;
     }
+=======
+         public int delete(int userid) throws SQLException{  
+              Connection c=null;  
+              PreparedStatement ps=null;  
+              int recordCounter=0;  
+              try {  
+                       c=this.getConnection();  
+                      ps=c.prepareStatement(" delete from userdata where uid='"+userid+"' ");  
+                      recordCounter=ps.executeUpdate();  
+              } catch (Exception e) { e.printStackTrace(); }   
+              finally{  
+              if (ps!=null){  
+                      ps.close();  
+             }if(c!=null){  
+                      c.close();  
+              }   
+           }  
+             return recordCounter;  
+          } 
+      
+         public int signOutdb(String email) throws SQLException  {  
+              Connection c=null;  
+              PreparedStatement ps=null;  
+                
+              int recordCounter=0;  
+              try {  
+                      c=this.getConnection();  
+                      ps=c.prepareStatement(" update USERLOGIN set USERSTATUS=0 where USERSTATUS=?");  
+                      ps.setString(1, email);  
+                      recordCounter=ps.executeUpdate();  
+              } catch (Exception e) {  e.printStackTrace(); } finally{  
+                      
+                  if (ps!=null){  
+                      ps.close();  
+                  }if(c!=null){  
+                      c.close();  
+                  }   
+               }  
+             return recordCounter;  
+          }  
+         
+//Dina's methods
+         public ResultSet getUserFriends(String email) throws SQLException, ClassNotFoundException{
+            Connection con = this.getConnection();
+            PreparedStatement pst = con.prepareStatement("select friendemail from userfriends where email = ?",
+                    ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            pst.setString(1, email);
+            ResultSet rs = pst.executeQuery();
+            return rs;
+         }
+         public ResultSet getUserFriendsData(String friendEmail) throws ClassNotFoundException, SQLException{
+            Connection con = this.getConnection();
+            PreparedStatement query = con.prepareStatement("select a.email,a.fullname,a.gender,a.country,b.userstatus,b.usermode \n"
+                        + "from userinfo a,userlogin b\n"
+                        + "where \n"
+                        + "a.email = b.email\n"
+                        + "and a.email = ? ",
+                        ResultSet.TYPE_SCROLL_SENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE);
+            query.setString(1, friendEmail);
+            ResultSet rs = query.executeQuery();
+            return rs;
+         }
+>>>>>>> 6978348962e214bde49b06637f8a3da96f716ee5
 }

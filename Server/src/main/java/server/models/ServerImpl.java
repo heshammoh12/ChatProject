@@ -59,4 +59,9 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
         clientsArrayList.remove(client);
     }
 
+    @Override
+    public boolean signOurServer(String email) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

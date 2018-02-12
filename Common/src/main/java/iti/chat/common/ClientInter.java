@@ -17,10 +17,14 @@ public interface ClientInter extends Remote {
  /*Methods added by Dina  */
     public User getUser() throws RemoteException;
 
-    /*Methods added by Hassna  */
+    
+/*Methods added by Hassna  */
+     public void getNotification(String content)throws RemoteException;
+
+    
+ /*Methods added by Hesham  */
     //
-    /*Methods added by Hesham  */
     //
-    /*Methods added by Fatma  */
+ /*Methods added by Fatma  */
     //
 }

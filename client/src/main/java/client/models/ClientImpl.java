@@ -51,12 +51,33 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInter {
     }
 
     /*Methods added by Nagib  */
+    //
+    //
+    
  /*Methods added by Dina  */
-//    
-    /*Methods added by Hassna  */
+ //
+ //
+ //    
+    
+ /*Methods added by Hassna  */
+    
+    public boolean signOut(){
+        boolean done = false;
+        //serverObject.signOurServer(this.user.email);
+        return done;
+    }
+        @Override
+    public void getNotification(String content) {
+        //serverObject.displayNotification(content);
+    }
+    
+    
+ /*Methods added by Hesham  */
     //
-    /*Methods added by Hesham  */
     //
-    /*Methods added by Fatma  */
+    
+ /*Methods added by Fatma  */
+    //
+    //
     //
 }
