@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -46,7 +47,35 @@
                 </Tab>
                 <Tab text="Statistics">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TabPane layoutX="21.0" layoutY="14.0" prefHeight="318.0" prefWidth="495.0">
+                                 <tabs>
+                                    <Tab text="Countries Statistics">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <BarChart fx:id="countriesStatistic" layoutX="-5.0" prefHeight="278.0" prefWidth="505.0">
+                                                  <xAxis>
+                                                    <CategoryAxis side="BOTTOM" />
+                                                  </xAxis>
+                                                  <yAxis>
+                                                    <NumberAxis side="LEFT" />
+                                                  </yAxis>
+                                                </BarChart>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </Tab>
+                                    <Tab text="Gender Statistics">
+                                       <content>
+                                          <PieChart fx:id="genderStatistic" layoutX="124.0" layoutY="74.0" prefHeight="257.0" prefWidth="469.0" />
+                                       </content>
+                                    </Tab>
+                                 </tabs>
+                              </TabPane>
+                              <Button fx:id="showStatistics" layoutX="242.0" layoutY="335.0" mnemonicParsing="false" onAction="#showStatistics" text="Show Statistics" />
+                           </children></AnchorPane>
                   </content>
                 </Tab>
               </tabs>

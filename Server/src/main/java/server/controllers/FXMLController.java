@@ -15,6 +15,10 @@ import java.rmi.registry.Registry;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Side;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import server.models.LogInVerificationImpl;
 import server.models.SignUpVerificationImpl;
@@ -22,10 +26,10 @@ import server.models.ServerImpl;
 
 public class FXMLController implements Initializable {
 
-    @FXML
-    private Label label;
+    @FXML private Label label;
     @FXML private Button stopButton;
     @FXML private Button button;
+    @FXML private PieChart genderStatistic;
 
 
     Registry registry=null;
@@ -70,7 +74,14 @@ public class FXMLController implements Initializable {
         
 
     }
-
+    /*Button action to show some statistcs*/
+    public void showStatistics(ActionEvent event){
+        ObservableList<PieChart.Data> details =  FXCollections.observableArrayList();
+        details.addAll(new PieChart.Data("Male percentage", 60) , new PieChart.Data("Female percentage", 40));
+        genderStatistic.setData(details);
+        genderStatistic.setLabelsVisible(true);
+        genderStatistic.setLegendSide(Side.TOP);
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
