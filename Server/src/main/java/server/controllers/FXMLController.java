@@ -14,10 +14,14 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.sql.SQLException;
 import java.util.Map;
+import javafx.util.Callback;
+import javafx.util.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Side;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
@@ -44,8 +48,39 @@ public class FXMLController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        showStatistics();
-        displayUsersLists();
+        Timeline time = new Timeline();
+        XYChart.Series series1 = new XYChart.Series();
+        time.getKeyFrames().add(new KeyFrame(Duration.millis(3000),
+                new EventHandler<ActionEvent>(){
+                    @Override
+                    public void handle(ActionEvent event) {
+                        
+                        displayUsersLists();
+                        
+                        /*Gender statistics part in piechart */
+                        //get ratios from database
+                        DBconnect db = DBconnect.getInstance();
+                        float males = db.countMales();
+                        float females = 100-males;
+                        ObservableList<PieChart.Data> details =  FXCollections.observableArrayList();
+                        details.addAll(new PieChart.Data("Male percentage",males) , new PieChart.Data("Female percentage",females));
+                        genderStatistic.setData(details);
+                        genderStatistic.setLabelsVisible(true);
+                        genderStatistic.setLegendSide(Side.TOP);
+                        /*Countries statistics part in bar chart*/
+                        xAxis.setLabel("Value");       
+                        yAxis.setLabel("Country");
+                        
+                        Map<String,Integer> myMap = db.countUsersPerCountry();
+                         for(Map.Entry m:myMap.entrySet()){  
+                            System.out.println(m.getKey()+" "+m.getValue());  
+                            series1.getData().add(new XYChart.Data(m.getKey(),m.getValue()));
+                        }
+                    }
+            }));
+        countriesStatistic.getData().addAll(series1);
+        time.setCycleCount(Animation.INDEFINITE);
+        time.play();
     }
     
     @FXML
@@ -90,29 +125,7 @@ public class FXMLController implements Initializable {
     }
     /*Button action to show some statistcs*/
     public void showStatistics(){
-        /*Gender statistics part in piechart */
-        //get ratios from database
-        DBconnect db = DBconnect.getInstance();
-        float males = db.countMales();
-        float females = 100-males;
-        ObservableList<PieChart.Data> details =  FXCollections.observableArrayList();
-        details.addAll(new PieChart.Data("Male percentage",males) , new PieChart.Data("Female percentage",females));
-        genderStatistic.setData(details);
-        genderStatistic.setLabelsVisible(true);
-        genderStatistic.setLegendSide(Side.TOP);
         
-        /*Countries statistics part in bar chart*/
-        xAxis.setLabel("Value");       
-        yAxis.setLabel("Country");
-        
-        XYChart.Series series1 = new XYChart.Series();
-        series1.setName("2018");  
-        Map<String,Integer> myMap = db.countUsersPerCountry();
-         for(Map.Entry m:myMap.entrySet()){  
-            System.out.println(m.getKey()+" "+m.getValue());  
-            series1.getData().add(new XYChart.Data(m.getKey(),m.getValue()));
-        } 
-        countriesStatistic.getData().add(series1);
     }
     public void displayUsersLists(){
         ObservableList<String> onlist = FXCollections.observableArrayList();
