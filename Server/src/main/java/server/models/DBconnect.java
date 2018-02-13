@@ -464,4 +464,42 @@ public class DBconnect {
                 
         return myMap;
     }
+    public ArrayList<String> getOnlineUsers(){
+    
+        ArrayList<String> online = new ArrayList<String>();
+        Connection c=null;  
+        PreparedStatement ps=null;
+        ResultSet rs;
+        try {
+                c= getConnection();
+                ps= c.prepareStatement("select email from userlogin where userstatus=1 ");    
+                rs = ps.executeQuery(); 
+                
+                while(rs.next()){
+                    online.add(rs.getString(1));
+                };
+            } catch (Exception ex) {
+                Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return online;
+    }
+    public ArrayList<String> getOfflineUsers(){
+    
+        ArrayList<String> offline = new ArrayList<String>();
+        Connection c=null;  
+        PreparedStatement ps=null;
+        ResultSet rs;
+        try {
+                c= getConnection();
+                ps= c.prepareStatement("select email from userlogin where userstatus=0 ");    
+                rs = ps.executeQuery(); 
+                
+                while(rs.next()){
+                    offline.add(rs.getString(1));
+                };
+            } catch (Exception ex) {
+                Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return offline;
+    }
 }

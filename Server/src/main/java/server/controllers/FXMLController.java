@@ -35,10 +35,19 @@ public class FXMLController implements Initializable {
     @FXML private BarChart countriesStatistic;
     @FXML private CategoryAxis yAxis;
     @FXML private NumberAxis xAxis;
+    @FXML private ListView onlineList; 
+    @FXML private ListView offlineList; 
+    @FXML private TextArea annText;
 
 
     Registry registry=null;
 
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        showStatistics();
+        displayUsersLists();
+    }
+    
     @FXML
     /*start server button*/
     private void handleButtonAction(ActionEvent event) {
@@ -80,7 +89,7 @@ public class FXMLController implements Initializable {
 
     }
     /*Button action to show some statistcs*/
-    public void showStatistics(ActionEvent event){
+    public void showStatistics(){
         /*Gender statistics part in piechart */
         //get ratios from database
         DBconnect db = DBconnect.getInstance();
@@ -105,8 +114,36 @@ public class FXMLController implements Initializable {
         } 
         countriesStatistic.getData().add(series1);
     }
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+    public void displayUsersLists(){
+        ObservableList<String> onlist = FXCollections.observableArrayList();
+        ObservableList<String> oflist = FXCollections.observableArrayList();
+        DBconnect db = DBconnect.getInstance();
+        ArrayList<String> online = db.getOnlineUsers();
+        ArrayList<String> offline = db.getOfflineUsers();
+        /*check that list is not empty*/
+        if(!online.isEmpty()){
+            online.forEach((t)->{    
+                onlist.add(t);
+            });
+            onlineList.setItems(onlist);
+        }
+        if(!offline.isEmpty()){
+            offline.forEach((t)->{    
+                oflist.add(t);
+            });
+            offlineList.setItems(oflist);
+        }
     }
+    
+    public void sendAnnoncment(){
+        String text = annText.getText();
+        ServerImpl impl;
+        try {
+            impl = new ServerImpl();
+            impl.sendNotification(text);
+        } catch (RemoteException ex) {
+            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+    }
+ 
 }

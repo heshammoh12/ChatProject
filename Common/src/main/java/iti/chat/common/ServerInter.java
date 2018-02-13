@@ -21,6 +21,7 @@ public interface ServerInter extends Remote {
    /*Methods added by Dina  */
     
     //
+    public void sendNotification(String content)throws RemoteException;
     
    /*Methods added by Hassna  */
     
