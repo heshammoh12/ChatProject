@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Side;
-import javafx.scene.chart.PieChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import server.models.LogInVerificationImpl;
 import server.models.SignUpVerificationImpl;
@@ -30,6 +30,9 @@ public class FXMLController implements Initializable {
     @FXML private Button stopButton;
     @FXML private Button button;
     @FXML private PieChart genderStatistic;
+    @FXML private BarChart countriesStatistic;
+    @FXML private CategoryAxis yAxis;
+    @FXML private NumberAxis xAxis;
 
 
     Registry registry=null;
@@ -76,11 +79,24 @@ public class FXMLController implements Initializable {
     }
     /*Button action to show some statistcs*/
     public void showStatistics(ActionEvent event){
+        /*Gender statistics part in piechart */
         ObservableList<PieChart.Data> details =  FXCollections.observableArrayList();
         details.addAll(new PieChart.Data("Male percentage", 60) , new PieChart.Data("Female percentage", 40));
         genderStatistic.setData(details);
         genderStatistic.setLabelsVisible(true);
         genderStatistic.setLegendSide(Side.TOP);
+        
+        /*Countries statistics part in bar chart*/
+        xAxis.setLabel("Value");       
+        yAxis.setLabel("Country");
+        
+        XYChart.Series series1 = new XYChart.Series();
+        series1.setName("2018");       
+        series1.getData().add(new XYChart.Data("Egypt", 25601.34));
+        series1.getData().add(new XYChart.Data("America", 20148.82));
+        series1.getData().add(new XYChart.Data("France", 10000));
+        series1.getData().add(new XYChart.Data("Others", 35407.15));
+        countriesStatistic.getData().addAll(series1);
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
