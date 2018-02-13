@@ -13,6 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Side;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
+import server.models.DBconnect;
 import server.models.LogInVerificationImpl;
 import server.models.SignUpVerificationImpl;
 import server.models.ServerImpl;
@@ -80,8 +82,12 @@ public class FXMLController implements Initializable {
     /*Button action to show some statistcs*/
     public void showStatistics(ActionEvent event){
         /*Gender statistics part in piechart */
+        //get ratios from database
+        DBconnect db = DBconnect.getInstance();
+        float males = db.countMales();
+        float females = 100-males;
         ObservableList<PieChart.Data> details =  FXCollections.observableArrayList();
-        details.addAll(new PieChart.Data("Male percentage", 60) , new PieChart.Data("Female percentage", 40));
+        details.addAll(new PieChart.Data("Male percentage",males) , new PieChart.Data("Female percentage",females));
         genderStatistic.setData(details);
         genderStatistic.setLabelsVisible(true);
         genderStatistic.setLegendSide(Side.TOP);
@@ -91,12 +97,13 @@ public class FXMLController implements Initializable {
         yAxis.setLabel("Country");
         
         XYChart.Series series1 = new XYChart.Series();
-        series1.setName("2018");       
-        series1.getData().add(new XYChart.Data("Egypt", 25601.34));
-        series1.getData().add(new XYChart.Data("America", 20148.82));
-        series1.getData().add(new XYChart.Data("France", 10000));
-        series1.getData().add(new XYChart.Data("Others", 35407.15));
-        countriesStatistic.getData().addAll(series1);
+        series1.setName("2018");  
+        Map<String,Integer> myMap = db.countUsersPerCountry();
+         for(Map.Entry m:myMap.entrySet()){  
+            System.out.println(m.getKey()+" "+m.getValue());  
+            series1.getData().add(new XYChart.Data(m.getKey(),m.getValue()));
+        } 
+        countriesStatistic.getData().add(series1);
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
