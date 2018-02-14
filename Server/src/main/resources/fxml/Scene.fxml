@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -41,14 +42,84 @@
                   </Tab>
                 <Tab text="Online Users">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <SplitPane dividerPositions="0.5154440154440154" layoutX="8.0" layoutY="12.0" prefHeight="351.0" prefWidth="520.0">
+                                <items>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                       <children>
+                                          <ScrollBar layoutX="250.0" layoutY="29.0" orientation="VERTICAL" prefHeight="318.0" prefWidth="14.0" />
+                                          <ListView fx:id="onlineList" layoutX="1.0" layoutY="30.0" prefHeight="319.0" prefWidth="248.0" />
+                                          <Label layoutX="20.0" layoutY="-3.0" prefHeight="17.0" prefWidth="225.0" text="Online Users:" textFill="#ab0f0f">
+                                             <font>
+                                                <Font name="System Bold" size="24.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                       <children>
+                                          <Label layoutX="23.0" layoutY="-3.0" prefHeight="17.0" prefWidth="225.0" text="Offline Users:" textFill="#ab0f0f">
+                                             <font>
+                                                <Font name="System Bold" size="24.0" />
+                                             </font>
+                                          </Label>
+                                          <ScrollBar layoutX="234.0" layoutY="29.0" orientation="VERTICAL" prefHeight="320.0" prefWidth="14.0" />
+                                          <ListView fx:id="offlineList" layoutX="3.0" layoutY="30.0" prefHeight="317.0" prefWidth="230.0" />
+                                       </children>
+                                    </AnchorPane>
+                                </items>
+                              </SplitPane>
+                           </children></AnchorPane>
                   </content>
                 </Tab>
                 <Tab text="Statistics">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TabPane prefHeight="336.0" prefWidth="536.0">
+                                 <tabs>
+                                    <Tab text="Countries Statistics">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <BarChart fx:id="countriesStatistic" layoutX="16.0" layoutY="15.0" prefHeight="278.0" prefWidth="505.0">
+                                                  <xAxis>
+                                                    <CategoryAxis fx:id="yAxis" side="BOTTOM" />
+                                                  </xAxis>
+                                                  <yAxis>
+                                                    <NumberAxis side="LEFT" fx:id="xAxis" />
+                                                  </yAxis>
+                                                </BarChart>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </Tab>
+                                    <Tab text="Gender Statistics">
+                                       <content>
+                                          <PieChart fx:id="genderStatistic" layoutX="124.0" layoutY="74.0" prefHeight="257.0" prefWidth="469.0" />
+                                       </content>
+                                    </Tab>
+                                 </tabs>
+                              </TabPane>
+                           </children></AnchorPane>
                   </content>
                 </Tab>
+                  <Tab text="Annoncments">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="21.0" layoutY="29.0" prefHeight="35.0" prefWidth="448.0" text="Write the annoncement content:" textFill="#a41111">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                              <TextArea fx:id="annText" layoutX="21.0" layoutY="71.0" prefHeight="200.0" prefWidth="494.0" promptText="write here" />
+                              <Button fx:id="postBtn" layoutX="219.0" layoutY="305.0" mnemonicParsing="false" onAction="#sendAnnoncment" text="Post" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
               </tabs>
             </TabPane>
          </center>

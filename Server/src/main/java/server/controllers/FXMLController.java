@@ -13,23 +13,76 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.sql.SQLException;
+import java.util.Map;
+import javafx.util.Callback;
+import javafx.util.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.geometry.Side;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
+import server.models.DBconnect;
 import server.models.LogInVerificationImpl;
 import server.models.SignUpVerificationImpl;
 import server.models.ServerImpl;
 
 public class FXMLController implements Initializable {
 
-    @FXML
-    private Label label;
+    @FXML private Label label;
     @FXML private Button stopButton;
     @FXML private Button button;
+    @FXML private PieChart genderStatistic;
+    @FXML private BarChart countriesStatistic;
+    @FXML private CategoryAxis yAxis;
+    @FXML private NumberAxis xAxis;
+    @FXML private ListView onlineList; 
+    @FXML private ListView offlineList; 
+    @FXML private TextArea annText;
 
 
     Registry registry=null;
 
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        Timeline time = new Timeline();
+        XYChart.Series series1 = new XYChart.Series();
+        time.getKeyFrames().add(new KeyFrame(Duration.millis(3000),
+                new EventHandler<ActionEvent>(){
+                    @Override
+                    public void handle(ActionEvent event) {
+                        
+                        displayUsersLists();
+                        
+                        /*Gender statistics part in piechart */
+                        //get ratios from database
+                        DBconnect db = DBconnect.getInstance();
+                        float males = db.countMales();
+                        float females = 100-males;
+                        ObservableList<PieChart.Data> details =  FXCollections.observableArrayList();
+                        details.addAll(new PieChart.Data("Male percentage",males) , new PieChart.Data("Female percentage",females));
+                        genderStatistic.setData(details);
+                        genderStatistic.setLabelsVisible(true);
+                        genderStatistic.setLegendSide(Side.TOP);
+                        /*Countries statistics part in bar chart*/
+                        xAxis.setLabel("Value");       
+                        yAxis.setLabel("Country");
+                        
+                        Map<String,Integer> myMap = db.countUsersPerCountry();
+                         for(Map.Entry m:myMap.entrySet()){  
+                            System.out.println(m.getKey()+" "+m.getValue());  
+                            series1.getData().add(new XYChart.Data(m.getKey(),m.getValue()));
+                        }
+                    }
+            }));
+        countriesStatistic.getData().addAll(series1);
+        time.setCycleCount(Animation.INDEFINITE);
+        time.play();
+    }
+    
     @FXML
     /*start server button*/
     private void handleButtonAction(ActionEvent event) {
@@ -70,9 +123,40 @@ public class FXMLController implements Initializable {
         
 
     }
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+    /*Button action to show some statistcs*/
+    public void showStatistics(){
+        
     }
+    public void displayUsersLists(){
+        ObservableList<String> onlist = FXCollections.observableArrayList();
+        ObservableList<String> oflist = FXCollections.observableArrayList();
+        DBconnect db = DBconnect.getInstance();
+        ArrayList<String> online = db.getOnlineUsers();
+        ArrayList<String> offline = db.getOfflineUsers();
+        /*check that list is not empty*/
+        if(!online.isEmpty()){
+            online.forEach((t)->{    
+                onlist.add(t);
+            });
+            onlineList.setItems(onlist);
+        }
+        if(!offline.isEmpty()){
+            offline.forEach((t)->{    
+                oflist.add(t);
+            });
+            offlineList.setItems(oflist);
+        }
+    }
+    
+    public void sendAnnoncment(){
+        String text = annText.getText();
+        ServerImpl impl;
+        try {
+            impl = new ServerImpl();
+            impl.sendNotification(text);
+        } catch (RemoteException ex) {
+            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+    }
+ 
 }

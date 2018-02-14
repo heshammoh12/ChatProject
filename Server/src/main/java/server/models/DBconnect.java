@@ -11,7 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import oracle.jdbc.OracleDriver;
@@ -414,5 +414,92 @@ public class DBconnect {
         rs.close();
         return friend;
     }
-
+    public float countMales(){
+    
+        Connection c=null;  
+        PreparedStatement ps,ps1=null;
+        ResultSet rs,rs1;
+        float count=0;
+        float total=0;
+            try {
+                c= getConnection();
+                ps= c.prepareStatement("select count(*) from userinfo where gender='m'");    
+                rs = ps.executeQuery(); 
+                rs.next();
+                count = rs.getInt(1);
+                ps1= c.prepareStatement("select count(*) from userinfo ");    
+                rs1 = ps1.executeQuery(); 
+                rs1.next();
+                total = rs1.getInt(1);
+                /*close resultsets*/
+                rs.close();
+                rs1.close();
+            } catch (Exception ex) {
+                Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        float malesRatio = (count/total)*100;
+        System.out.println("in function ratio"+malesRatio);
+        return malesRatio;
+    }
+    public Map<String,Integer> countUsersPerCountry(){
+            String country;
+            int count ;
+            Connection c=null;  
+            PreparedStatement ps=null;
+            ResultSet rs;
+            Map<String,Integer> myMap = new HashMap <String,Integer>();
+            try {
+                c= getConnection();
+                ps= c.prepareStatement("select count(*),country from userinfo group by country ");    
+                rs = ps.executeQuery(); 
+                
+                while(rs.next()){
+                    country=rs.getString(2);
+                    count = rs.getInt(1);
+                    myMap.put(country,count);
+                };
+            } catch (Exception ex) {
+                Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                
+        return myMap;
+    }
+    public ArrayList<String> getOnlineUsers(){
+    
+        ArrayList<String> online = new ArrayList<String>();
+        Connection c=null;  
+        PreparedStatement ps=null;
+        ResultSet rs;
+        try {
+                c= getConnection();
+                ps= c.prepareStatement("select email from userlogin where userstatus=1 ");    
+                rs = ps.executeQuery(); 
+                
+                while(rs.next()){
+                    online.add(rs.getString(1));
+                };
+            } catch (Exception ex) {
+                Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return online;
+    }
+    public ArrayList<String> getOfflineUsers(){
+    
+        ArrayList<String> offline = new ArrayList<String>();
+        Connection c=null;  
+        PreparedStatement ps=null;
+        ResultSet rs;
+        try {
+                c= getConnection();
+                ps= c.prepareStatement("select email from userlogin where userstatus=0 ");    
+                rs = ps.executeQuery(); 
+                
+                while(rs.next()){
+                    offline.add(rs.getString(1));
+                };
+            } catch (Exception ex) {
+                Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return offline;
+    }
 }
