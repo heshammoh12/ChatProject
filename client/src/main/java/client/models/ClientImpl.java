@@ -5,6 +5,7 @@
  */
 package client.models;
 
+import client.controllers.ChatPageController;
 import iti.chat.common.ClientInter;
 import iti.chat.common.Message;
 import iti.chat.common.User;
@@ -17,8 +18,9 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class ClientImpl extends UnicastRemoteObject implements ClientInter {
 
-    User user;
-    Message msg;
+    private User user;
+    private Message msg;
+    private ChatPageController chatPageController = null;
 
     public ClientImpl() throws RemoteException {
         this.user = null;
@@ -29,8 +31,10 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInter {
     }
 
     @Override
-    public void recieveMessage(User sender) throws RemoteException {
-        System.out.println(msg.getContent());
+    public void recieveMessage(ClientInter sender) throws RemoteException {
+//        System.out.println(user.getMessage().getContent());
+        System.out.println(user.getUsername() + " Has recievedMessage");
+        chatPageController.recieveMessage(sender);
     }
 
     public void setUser(User usr) {
@@ -51,7 +55,16 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInter {
     }
 
     /*Methods added by Nagib  */
-    //
+    @Override
+    public Object getChatPageController() throws RemoteException {
+        return this.chatPageController;
+    }
+
+    @Override
+    public void setChatPageController(Object chatPageController) throws RemoteException {
+        this.chatPageController=(ChatPageController)chatPageController;
+    }
+
     //
     /*Methods added by Dina  */
     //

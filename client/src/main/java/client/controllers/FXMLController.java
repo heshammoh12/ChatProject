@@ -194,11 +194,10 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
             ChatPageController chatController = (ChatPageController) loader.getController();
             chatController.setLoginer(user);
             chatController.buildChatPageList(user.getEmail());
-            ClientImpl clientImpl =new ClientImpl(user);
+            ClientImpl clientImpl = new ClientImpl(user);
+            clientImpl.setChatPageController(chatController);
             chatController.setClient(clientImpl);
-            try{
             server.registerClint(clientImpl);
-            }catch(Exception e){System.out.println("baaaaaaaaaaaaaaaaayz");}
             Stage stage = (Stage) Anchor.getScene().getWindow();
             root.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override

@@ -5,17 +5,22 @@
  */
 package client.controllers;
 
+import iti.chat.common.ClientInter;
+import iti.chat.common.Message;
+import iti.chat.common.ServerInter;
 import iti.chat.common.User;
 import java.io.File;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -68,7 +73,11 @@ public class ChatBoxController implements Initializable {
     private ComboBox ChatBox_ComboBox_FontSize;
 
     //
-    //attrs added by nagib
+    private ClientInter mainClient = null;
+    private ArrayList<ClientInter> recievers = null;
+    private String usedTabID = null;
+    private ServerInter server = null;
+
     //
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -97,7 +106,7 @@ public class ChatBoxController implements Initializable {
                     TextFlow textFlow = new TextFlow(t, data);
                     textFlow.setStyle("-fx-background-color: #2196F3; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
 
-                    imageSmallCirlce = new Image("/images/personal-website-design.png");
+                    imageSmallCirlce = new Image("/images/personal.png");
                     smallImageCircle.setFill(new ImagePattern(imageSmallCirlce));
                     HBox h = new HBox(textFlow, smallImageCircle);
                     Platform.runLater(new Runnable() {
@@ -106,12 +115,17 @@ public class ChatBoxController implements Initializable {
                             ChatBox_AreaMessages.setSpacing(5);
                             h.setAlignment(Pos.BASELINE_RIGHT);
                             ChatBox_AreaMessages.getChildren().add(h);
-                            ChatBox_TextField.setText("");
+//                            ChatBox_TextField.setText("");
                         }
                     });
                     //
 
-                    //attrs added by nagib
+                    try {
+                        mainClient.getUser().setMessage(new Message(ChatBox_TextField.getText(), mainClient.getUser().getFullname(), usedTabID,usedTabID));
+                        server.sendMessage(mainClient, recievers.get(0));
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     //   
                 }
 
@@ -120,7 +134,7 @@ public class ChatBoxController implements Initializable {
         });
         //
 
-        //attrs added by nagib
+        recievers = new ArrayList<>();
         //
     }
 
@@ -140,9 +154,7 @@ public class ChatBoxController implements Initializable {
         ChatBox_Button_Email.setGraphic(new ImageView(imgEmail));
 
         //
-        
-        //attrs added by nagib
-        
+        //code added by nagib
         //
     }
 
@@ -178,7 +190,7 @@ public class ChatBoxController implements Initializable {
 
             TextFlow textFlow = new TextFlow(t, data);
             textFlow.setStyle("-fx-background-color: #2196F3; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
-            imageSmallCirlce = new Image("/images/personal-website-design.png");
+            imageSmallCirlce = new Image("/images/personal.png");
             smallImageCircle.setFill(new ImagePattern(imageSmallCirlce));
 
             HBox h = new HBox(smallImageCircle, textFlow);
@@ -190,18 +202,28 @@ public class ChatBoxController implements Initializable {
                 }
             });
         }
+        //
 
+        //code added by nagib
+        //
     }
 
     public void sendMessage(User user) {
         isSender = true;
         Render(user);
+        //
 
+        //code added by nagib
+        //
     }
 
-    public void recieveMeddage(User user) {
+    public void recieveMessage(User user) {
         isSender = false;
         Render(user);
+        //
+
+        //code added by nagib
+        //
     }
 
     public String getDate() {
@@ -211,27 +233,78 @@ public class ChatBoxController implements Initializable {
         String formattedDate = dateFormat.format(date);
         System.out.println("Current time of the day using Date - 12 hour format: " + formattedDate);
         return formattedDate;
+        //
+
+        //code added by nagib
+        //
     }
 
     public void setCircleMsg() {
         //initialize the node circle
         smallImageCircle = new Circle(10, 10, 5);
         smallImageCircle.setStroke(Color.SEAGREEN);
+        //
+
+        //code added by nagib
+        //
     }
 
     public void initializeCompoBoxFontsType() {
         ChatBox_ComboBox_FontType.getItems().removeAll(ChatBox_ComboBox_FontType.getItems());
         ChatBox_ComboBox_FontType.getItems().addAll("normal", "Verdana", "Serif Bold", "Arial");
         ChatBox_ComboBox_FontType.getSelectionModel().select("font type");
+        //
+
+        //code added by nagib
+        //
     }
 
     public void initializeCompoBoxFontsSize() {
         ChatBox_ComboBox_FontSize.getItems().removeAll(ChatBox_ComboBox_FontSize.getItems());
         ChatBox_ComboBox_FontSize.getItems().addAll("8", "14", "18", "22");
         ChatBox_ComboBox_FontSize.getSelectionModel().select("size");
+        //
+
+        //code added by nagib
+        //
     }
 
     //
-    //methods added by nagib
+    public void setMainClient(ClientInter mainClient) {
+        this.mainClient = mainClient;
+    }
+
+    public void setReciever(ClientInter reciever) {
+        if (this.recievers == null) {
+            this.recievers = new ArrayList<>();
+        }
+        this.recievers.add(reciever);
+    }
+
+    public void setUsedTab(String usedTab) {
+        this.usedTabID = usedTab;
+    }
+
+    public ServerInter getServer() {
+        return server;
+    }
+
+    public void setServer(ServerInter server) {
+        this.server = server;
+    }
+
+    public ArrayList<ClientInter> getRecievers() {
+        return recievers;
+    }
+    
+    
+
+    @FXML
+    private void send(ActionEvent event) {
+
+        System.out.println("sending");
+        ChatBox_TextField.setText("");
+    }
+
     //
 }
