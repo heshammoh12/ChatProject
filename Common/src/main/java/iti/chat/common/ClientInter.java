@@ -9,22 +9,23 @@ import java.rmi.RemoteException;
  */
 public interface ClientInter extends Remote {
 
-    public void recieveMessage(User sender) throws RemoteException;
+    public void recieveMessage(ClientInter sender) throws RemoteException;
 
     /*Methods added by Nagib  */
+    public Object getChatPageController() throws RemoteException;
+
+    public void setChatPageController(Object chatPageController) throws RemoteException;
+
     //
-    //
- /*Methods added by Dina  */
+    /*Methods added by Dina  */
     public User getUser() throws RemoteException;
 
-    
-/*Methods added by Hassna  */
-     public void getNotification(String content)throws RemoteException;
+    /*Methods added by Hassna  */
+    public void getNotification(String content) throws RemoteException;
 
-    
- /*Methods added by Hesham  */
+    /*Methods added by Hesham  */
     //
     //
- /*Methods added by Fatma  */
+    /*Methods added by Fatma  */
     //
 }

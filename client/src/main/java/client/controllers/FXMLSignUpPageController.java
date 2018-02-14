@@ -343,6 +343,7 @@ public class FXMLSignUpPageController implements Initializable {
             chatController.setLoginer(user);
             chatController.buildChatPageList(user.getEmail());
             ClientImpl clientImpl = new ClientImpl(user);
+            clientImpl.setChatPageController(chatController);
             chatController.setClient(clientImpl);
             server.registerClint(clientImpl);
             Stage stage = (Stage) anchorSignup.getScene().getWindow();
