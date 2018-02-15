@@ -50,6 +50,9 @@ public class ChatPageController implements Initializable {
     private ListView ChatPage_List_OnlineUsers;
     @FXML
     private TabPane ChatPage_TabPane_Users;
+    @FXML
+    private Tab tabAllUsers;
+    
     private ObservableList<User> onlineUsers;
     private ServerInter server = null;
     private Registry registry = null;
@@ -88,7 +91,10 @@ public class ChatPageController implements Initializable {
         ChatPage_TabPane_Users.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
         ChatPage_List_OnlineUsers.setItems(onlineUsers);
         setFrindesListFactory();
-
+        //hesham
+        addNewSearchPane();
+        //
+        
     }
 
     public class ListFormat extends ListCell<User> {
@@ -211,6 +217,15 @@ public class ChatPageController implements Initializable {
     //
     /*Methods added by Hesham  */
     //
+    public void addNewSearchPane()
+    {
+        try {
+            Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/fxml/searchFriends.fxml"));
+            tabAllUsers.setContent(newLoadedPane);
+        } catch (IOException ex) {
+            Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     //
     /*Methods added by Fatma  */
     //
