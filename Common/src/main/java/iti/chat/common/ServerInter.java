@@ -28,7 +28,7 @@ public interface ServerInter extends Remote {
     public boolean signOurServer(String email) throws RemoteException;
     
    /*Methods added by Hesham  */
-    
+    public ArrayList<User> search(String name) throws RemoteException;
     //
     
    /*Methods added by Fatma  */

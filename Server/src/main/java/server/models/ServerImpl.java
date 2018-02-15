@@ -104,6 +104,24 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
     //
     /*Methods added by Hesham  */
     //
+        @Override
+    public ArrayList<User> search(String name) throws RemoteException 
+    {
+        ArrayList<User> names = null;
+        DBconnect conn;
+        try {
+            conn = DBconnect.getInstance();
+            names = conn.getUsersByName(name);
+            
+            for (User frindEmail : names) {
+                System.out.println("foreach"+frindEmail.getEmail());
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return names;
+    }
     //
     /*Methods added by Fatma  */
     //

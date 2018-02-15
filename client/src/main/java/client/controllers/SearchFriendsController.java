@@ -121,7 +121,7 @@ public class SearchFriendsController implements Initializable {
         searchesEmail = TextField_SearchFriend.getText();
         allUser = new ArrayList<User>();
         try {
-            allUser=server.getFrinds(searchesEmail);
+            allUser=server.search(searchesEmail);
         } catch (RemoteException ex) {
             Logger.getLogger(SearchFriendsController.class.getName()).log(Level.SEVERE, null, ex);
         }

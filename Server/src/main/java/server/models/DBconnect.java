@@ -44,7 +44,11 @@ public class DBconnect {
             try {  
                 con= DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe","chat","chat");
             } catch (SQLException ex) {
-                con= DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","chat","chat");
+                try{
+                      con= DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl","chat","chat");
+                }catch(SQLException x){
+                      con= DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1522:xe","chat","chat");
+                }
             }
               return con;  
                 
@@ -271,18 +275,24 @@ public class DBconnect {
         PreparedStatement ps2 = null;
         ResultSet rs = null;
         ResultSet rs2 = null;
+          System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhhh");
            try {  
                       
                         con=this.getConnection();  
-                        ps=con.prepareStatement("select EMAIL, FULLNAME, GENDER, COUNTRY from USERINFO WHERE FULLNAME LIKE '%?%'");
-                        ps.setString(1, name); 
+                        System.out.println("after conn");
+                        ps=con.prepareStatement("select EMAIL, FULLNAME, GENDER, COUNTRY from USERINFO WHERE FULLNAME LIKE '%s%'");
+                       System.out.println("zzzzzzzzzzzzz");
+//                        ps.setString(1, "s"); 
+                        System.out.println("before excute");
                         
                         rs=ps.executeQuery();
+                        System.out.println("after excute");
                         while(rs.next()){
                                 user.setEmail(rs.getString("EMAIL"));
                                 user.setCountry(rs2.getString("COUNTRY"));
                                 user.setFullname(rs2.getString("FULLNAME"));
                                 user.setGender(rs2.getString("GENDER"));
+                                System.out.println("first rs"+user.getEmail());
                                 
                                 ps2=con.prepareStatement("Select USERNAME , PASSWORD,USERSTATUS, USERMODE from USERLOGIN WHERE EMAIL =?");
                                 ps2.setString(1, user.getEmail());
@@ -292,7 +302,8 @@ public class DBconnect {
                                     user.setPassword(rs.getString("PASSWORD"));
                                     user.setUsername(rs.getString("USERNAME"));
                                     user.setStatus(rs.getInt("USERSTATUS"));
-                                }
+                                }  
+                                System.out.println(user.getEmail());
                                 users.add(user);
 			}
                 
@@ -306,6 +317,7 @@ public class DBconnect {
                       con.close();  
                   }   
                 } 
+           System.out.println("dbconnect"+users);
         return users;
         
       }
