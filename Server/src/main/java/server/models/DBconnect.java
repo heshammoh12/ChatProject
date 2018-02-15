@@ -274,7 +274,7 @@ public class DBconnect {
            try {  
                       
                         con=this.getConnection();  
-                        ps=con.prepareStatement("select * from USERINFO WHERE FULLNAME LIKE '%?%'");
+                        ps=con.prepareStatement("select EMAIL, FULLNAME, GENDER, COUNTRY from USERINFO WHERE FULLNAME LIKE '%?%'");
                         ps.setString(1, name); 
                         
                         rs=ps.executeQuery();
@@ -284,7 +284,7 @@ public class DBconnect {
                                 user.setFullname(rs2.getString("FULLNAME"));
                                 user.setGender(rs2.getString("GENDER"));
                                 
-                                ps2=con.prepareStatement("Select * from USERLOGIN WHERE EMAIL =?");
+                                ps2=con.prepareStatement("Select USERNAME , PASSWORD,USERSTATUS, USERMODE from USERLOGIN WHERE EMAIL =?");
                                 ps2.setString(1, user.getEmail());
                                 rs2=ps2.executeQuery();
                                 if(rs2.next()){
@@ -385,6 +385,7 @@ public class DBconnect {
         while (rs.next()) {
             frindEmails.add(rs.getString(1));
         }
+        pst.close();
         rs.close();
         return frindEmails;
     }
@@ -410,7 +411,7 @@ public class DBconnect {
             int fMode = rs.getInt(6);
             friend = new User(fEmail, fName, fgender, fCountry, fStatus, fMode);
         }
-
+        query.close();
         rs.close();
         return friend;
     }
@@ -432,6 +433,8 @@ public class DBconnect {
                 rs1.next();
                 total = rs1.getInt(1);
                 /*close resultsets*/
+                ps.close();
+                ps1.close();
                 rs.close();
                 rs1.close();
             } catch (Exception ex) {
@@ -458,6 +461,8 @@ public class DBconnect {
                     count = rs.getInt(1);
                     myMap.put(country,count);
                 };
+                ps.close();
+                rs.close();
             } catch (Exception ex) {
                 Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -478,6 +483,8 @@ public class DBconnect {
                 while(rs.next()){
                     online.add(rs.getString(1));
                 };
+                ps.close();
+                rs.close();
             } catch (Exception ex) {
                 Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -497,6 +504,8 @@ public class DBconnect {
                 while(rs.next()){
                     offline.add(rs.getString(1));
                 };
+                ps.close();
+                rs.close();
             } catch (Exception ex) {
                 Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
             }

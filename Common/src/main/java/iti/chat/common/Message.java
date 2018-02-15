@@ -15,7 +15,8 @@ public class Message implements Serializable {
     private LocalDateTime time;
 
     /*variables added by Nagib  */
-
+    private String tabId;
+            
 
     /*variables added by Dina  */
 
@@ -70,23 +71,28 @@ public class Message implements Serializable {
 
  
     /*Methods added by Nagib  */
-    
-    
- /*Methods added by Dina  */
-    
-    //
-    
- /*Methods added by Hassna  */
-    
-    //
-    
- /*Methods added by Hesham  */
-    
-    //
-    
- /*Methods added by Fatma  */
-    
-    //
-    
+    public String getTabId() {
+        return tabId;
+    }
+    public void setTabId(String tabId) {
+        this.tabId = tabId;
+    }
+    public Message(String content, String color, String font,String tabId) {
+        this.content = content;
+        this.color = color;
+        this.font = font;
+        this.time = LocalDateTime.now();
+            this.tabId=tabId;
+    }
 
+    /*Methods added by Dina  */
+    //
+    /*Methods added by Hassna  */
+    //
+    /*Methods added by Hesham  */
+    //
+    /*Methods added by Fatma  */
+    //
+    
+    
 }
