@@ -1,3 +1,8 @@
-.button {
+.btn {
     -fx-font-weight: bold;
+}
+ .tabs{
+     -fx-background-color: #6666ff;
+     -fx-background-radius: 3;
+     -fx-font-weight: bold;
 }

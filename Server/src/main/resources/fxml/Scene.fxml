@@ -12,23 +12,19 @@
     <children>
       <BorderPane prefHeight="443.0" prefWidth="536.0">
          <top>
-            <HBox prefHeight="40.0" prefWidth="536.0" BorderPane.alignment="CENTER">
+            <HBox prefHeight="40.0" prefWidth="536.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
-                  <Separator prefHeight="40.0" prefWidth="190.0" />
-                  <Pane prefHeight="40.0" prefWidth="156.0">
-                     <children>
-                        <Button fx:id="stopButton" alignment="CENTER" disable="true" layoutX="78.0" mnemonicParsing="false" onAction="#stopServer" text="Stop Server" textAlignment="CENTER" />
-                          <Button fx:id="button" alignment="CENTER" onAction="#handleButtonAction" style="-fx-alignment: center;" text="Start Server" />
-                     </children>
-                  </Pane>
-                  <Separator prefHeight="34.0" prefWidth="187.0" />
+                  <Separator prefHeight="40.0" prefWidth="172.0" />
+                    <Button fx:id="button" alignment="CENTER" onAction="#handleButtonAction" styleClass="btn" text="Start Server" />
+                  <Button fx:id="stopButton" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#stopServer" text="Stop Server" textAlignment="CENTER" />
+                  <Separator prefHeight="34.0" prefWidth="118.0" />
                </children>
             </HBox>
          </top>
          <center>
             <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
-                  <Tab text="ServerStatus">
+                  <Tab styleClass="tabs" text="ServerStatus">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -40,7 +36,7 @@
                         </AnchorPane>
                     </content>
                   </Tab>
-                <Tab text="Online Users">
+                <Tab styleClass="tabs" text="Online Users">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -73,7 +69,7 @@
                            </children></AnchorPane>
                   </content>
                 </Tab>
-                <Tab text="Statistics">
+                <Tab styleClass="tabs" text="Statistics">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -105,7 +101,7 @@
                            </children></AnchorPane>
                   </content>
                 </Tab>
-                  <Tab text="Annoncments">
+                  <Tab styleClass="tabs" text="Annoncments">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
