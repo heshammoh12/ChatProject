@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -10,43 +12,74 @@
 
 <AnchorPane id="AnchorPane" prefHeight="443.0" prefWidth="536.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.controllers.FXMLController">
     <children>
+      <Pane prefHeight="13.0" prefWidth="536.0" />
       <BorderPane prefHeight="443.0" prefWidth="536.0">
          <top>
-            <HBox prefHeight="40.0" prefWidth="536.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <HBox prefHeight="54.0" prefWidth="536.0" spacing="10.0" styleClass="btnContainer" BorderPane.alignment="CENTER">
                <children>
-                  <Separator prefHeight="40.0" prefWidth="172.0" />
-                    <Button fx:id="button" alignment="CENTER" onAction="#handleButtonAction" styleClass="btn" text="Start Server" />
-                  <Button fx:id="stopButton" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#stopServer" text="Stop Server" textAlignment="CENTER" />
-                  <Separator prefHeight="34.0" prefWidth="118.0" />
+                    <Button fx:id="button" alignment="CENTER" onAction="#handleButtonAction" prefHeight="42.0" prefWidth="148.0" styleClass="btn" text="Start Server">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#46a75e" />
+                     </effect>
+                     <HBox.margin>
+                        <Insets left="120.0" />
+                     </HBox.margin></Button>
+                  <Button fx:id="stopButton" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#stopServer" prefHeight="42.0" prefWidth="147.0" styleClass="btn" text="Stop Server" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#46a75e" />
+                     </effect>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin></Button>
+                  <Button fx:id="close" alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#closeButton" prefHeight="24.0" prefWidth="19.0" styleClass="close" text="X">
+                     <effect>
+                        <DropShadow color="#46a75e" />
+                     </effect>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="50.0" right="5.0" />
+                     </HBox.margin>
+                  </Button>
                </children>
             </HBox>
          </top>
          <center>
-            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <TabPane prefHeight="378.0" prefWidth="536.0" styleClass="tdbPane" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
                   <Tab styleClass="tabs" text="ServerStatus">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="tabPane">
                            <children>
-                                <Label fx:id="label" alignment="CENTER" layoutX="23.0" layoutY="79.0" minHeight="16" minWidth="69" prefHeight="216.0" prefWidth="491.0" textAlignment="CENTER" textFill="#940a0a">
+                                <Label fx:id="label" alignment="CENTER" layoutX="23.0" layoutY="79.0" minHeight="16" minWidth="69" prefHeight="216.0" prefWidth="491.0" textAlignment="CENTER" textFill="#086b0d">
                                  <font>
                                     <Font name="System Bold" size="36.0" />
-                                 </font></Label>
+                                 </font>
+                                 <effect>
+                                    <DropShadow color="#549054" height="148.5" radius="72.2675" width="142.57" />
+                                 </effect></Label>
                            </children>
                         </AnchorPane>
                     </content>
                   </Tab>
                 <Tab styleClass="tabs" text="Online Users">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="tabPane">
                            <children>
-                              <SplitPane dividerPositions="0.5154440154440154" layoutX="8.0" layoutY="12.0" prefHeight="351.0" prefWidth="520.0">
+                              <SplitPane dividerPositions="0.5154440154440154" layoutX="8.0" layoutY="12.0" prefHeight="340.0" prefWidth="520.0">
                                 <items>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
-                                          <ScrollBar layoutX="250.0" layoutY="29.0" orientation="VERTICAL" prefHeight="318.0" prefWidth="14.0" />
-                                          <ListView fx:id="onlineList" layoutX="1.0" layoutY="30.0" prefHeight="319.0" prefWidth="248.0" />
-                                          <Label layoutX="20.0" layoutY="-3.0" prefHeight="17.0" prefWidth="225.0" text="Online Users:" textFill="#ab0f0f">
+                                          <ScrollBar layoutX="250.0" layoutY="29.0" orientation="VERTICAL" prefHeight="305.0" prefWidth="14.0" />
+                                          <ListView fx:id="onlineList" layoutX="1.0" layoutY="30.0" prefHeight="305.0" prefWidth="248.0" />
+                                          <Label layoutX="20.0" layoutY="-3.0" prefHeight="17.0" prefWidth="225.0" text="Online Users:" textFill="#086b0d">
                                              <font>
                                                 <Font name="System Bold" size="24.0" />
                                              </font>
@@ -55,29 +88,32 @@
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
-                                          <Label layoutX="23.0" layoutY="-3.0" prefHeight="17.0" prefWidth="225.0" text="Offline Users:" textFill="#ab0f0f">
+                                          <Label layoutX="23.0" layoutY="-3.0" prefHeight="17.0" prefWidth="225.0" text="Offline Users:" textFill="#086b0d">
                                              <font>
                                                 <Font name="System Bold" size="24.0" />
                                              </font>
                                           </Label>
-                                          <ScrollBar layoutX="234.0" layoutY="29.0" orientation="VERTICAL" prefHeight="320.0" prefWidth="14.0" />
-                                          <ListView fx:id="offlineList" layoutX="3.0" layoutY="30.0" prefHeight="317.0" prefWidth="230.0" />
+                                          <ScrollBar layoutX="234.0" layoutY="29.0" orientation="VERTICAL" prefHeight="306.0" prefWidth="14.0" />
+                                          <ListView fx:id="offlineList" layoutX="3.0" layoutY="30.0" prefHeight="306.0" prefWidth="230.0" />
                                        </children>
                                     </AnchorPane>
                                 </items>
+                                 <effect>
+                                    <DropShadow color="#549054" height="148.5" radius="73.75" width="148.5" />
+                                 </effect>
                               </SplitPane>
                            </children></AnchorPane>
                   </content>
                 </Tab>
                 <Tab styleClass="tabs" text="Statistics">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="tabPane">
                            <children>
                               <TabPane prefHeight="336.0" prefWidth="536.0">
                                  <tabs>
                                     <Tab text="Countries Statistics">
                                       <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="tabPane">
                                              <children>
                                                 <BarChart fx:id="countriesStatistic" layoutX="16.0" layoutY="15.0" prefHeight="278.0" prefWidth="505.0">
                                                   <xAxis>
@@ -86,6 +122,9 @@
                                                   <yAxis>
                                                     <NumberAxis side="LEFT" fx:id="xAxis" />
                                                   </yAxis>
+                                                   <effect>
+                                                      <DropShadow color="#549054" height="154.43" radius="76.715" width="154.43" />
+                                                   </effect>
                                                 </BarChart>
                                              </children>
                                           </AnchorPane>
@@ -93,7 +132,15 @@
                                     </Tab>
                                     <Tab text="Gender Statistics">
                                        <content>
-                                          <PieChart fx:id="genderStatistic" layoutX="124.0" layoutY="74.0" prefHeight="257.0" prefWidth="469.0" />
+                                          <AnchorPane styleClass="tabPane">
+                                             <children>
+                                                <PieChart fx:id="genderStatistic" layoutX="34.0" layoutY="25.0" prefHeight="257.0" prefWidth="469.0">
+                                                   <effect>
+                                                      <DropShadow color="#549054" height="166.29" radius="82.58500000000001" width="166.05" />
+                                                   </effect>
+                                                </PieChart>
+                                             </children>
+                                          </AnchorPane>
                                        </content>
                                     </Tab>
                                  </tabs>
@@ -103,15 +150,24 @@
                 </Tab>
                   <Tab styleClass="tabs" text="Annoncments">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="tabPane">
                            <children>
-                              <Label layoutX="21.0" layoutY="29.0" prefHeight="35.0" prefWidth="448.0" text="Write the annoncement content:" textFill="#a41111">
+                              <Label layoutX="21.0" layoutY="29.0" prefHeight="35.0" prefWidth="448.0" text="Write the annoncement content:" textFill="#086b0d">
                                  <font>
                                     <Font name="System Bold" size="24.0" />
                                  </font>
                               </Label>
-                              <TextArea fx:id="annText" layoutX="21.0" layoutY="71.0" prefHeight="200.0" prefWidth="494.0" promptText="write here" />
-                              <Button fx:id="postBtn" layoutX="219.0" layoutY="305.0" mnemonicParsing="false" onAction="#sendAnnoncment" text="Post" />
+                              <TextArea fx:id="annText" layoutX="21.0" layoutY="71.0" prefHeight="200.0" prefWidth="494.0" promptText="write here" styleClass="annoncment">
+                                 <effect>
+                                    <DropShadow color="#549054" height="154.43" radius="77.45750000000001" width="157.4" />
+                                 </effect></TextArea>
+                              <Button fx:id="postBtn" layoutX="215.0" layoutY="290.0" mnemonicParsing="false" onAction="#sendAnnoncment" prefHeight="40.0" prefWidth="84.0" styleClass="btnPost" text="Post">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                                 <effect>
+                                    <DropShadow color="#549054" height="41.76" radius="18.8975" width="35.83" />
+                                 </effect></Button>
                            </children>
                         </AnchorPane>
                     </content>

@@ -1,8 +1,31 @@
+.btnContainer{
+    -fx-background-color: #004d00;
+    -fx-alignment: center;
+}
 .btn {
-    -fx-font-weight: bold;
+    -fx-background-color: #e6ffe6;
+    -fx-alignment: center;
+    -fx-background-radius: 7;
+}
+.close{
+    -fx-background-color: #e6ffe6;
+    -fx-alignment:BASELINE_LEFT;
+    -fx-background-radius: 7;
+}
+.btnPost{
+    -fx-background-color: #e6ffe6;
+    -fx-background-radius: 7;
 }
  .tabs{
-     -fx-background-color: #6666ff;
+     -fx-background-color: #ccffcc;
      -fx-background-radius: 3;
-     -fx-font-weight: bold;
+     -fx-font-weight:900 ;
+     -fx-blend-mode:overlay;
+}
+.tabPane{
+    -fx-background-color: #e6ffe6;
+}
+.annoncment{
+    -fx-background-radius:14;
+    -fx-background-color: #e6ffe6;
 }

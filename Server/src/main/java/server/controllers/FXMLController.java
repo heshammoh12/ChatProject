@@ -19,6 +19,7 @@ import javafx.util.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -42,13 +43,14 @@ public class FXMLController implements Initializable {
     @FXML private ListView onlineList; 
     @FXML private ListView offlineList; 
     @FXML private TextArea annText;
-
+    @FXML private Button close;
 
     Registry registry=null;
     
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        label.setText("Please..Start the server");
         /*Timeline time = new Timeline();
         
         time.getKeyFrames().add(new KeyFrame(Duration.millis(3000),
@@ -157,4 +159,8 @@ public class FXMLController implements Initializable {
         }    
     }
  
+    public void closeButton(ActionEvent event) {
+        Platform.exit();
+        System.exit(0);
+    }
 }
