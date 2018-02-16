@@ -17,7 +17,7 @@
          <top>
             <HBox prefHeight="54.0" prefWidth="536.0" spacing="10.0" styleClass="btnContainer" BorderPane.alignment="CENTER">
                <children>
-                    <Button fx:id="button" alignment="CENTER" onAction="#handleButtonAction" prefHeight="42.0" prefWidth="148.0" styleClass="btn" text="Start Server">
+                    <Button fx:id="button" alignment="CENTER" onAction="#startServer" prefHeight="42.0" prefWidth="148.0" styleClass="btn" text="Start Server">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
