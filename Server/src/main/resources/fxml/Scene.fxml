@@ -15,7 +15,7 @@
             <HBox prefHeight="40.0" prefWidth="536.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
                   <Separator prefHeight="40.0" prefWidth="172.0" />
-                    <Button fx:id="button" alignment="CENTER" onAction="#handleButtonAction" styleClass="btn" text="Start Server" />
+                    <Button fx:id="button" alignment="CENTER" onAction="#startServer" styleClass="btn" text="Start Server" />
                   <Button fx:id="stopButton" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#stopServer" text="Stop Server" textAlignment="CENTER" />
                   <Separator prefHeight="34.0" prefWidth="118.0" />
                </children>

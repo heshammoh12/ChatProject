@@ -5,9 +5,13 @@
  */
 package server.models;
 
+import iti.chat.common.ServerInter;
 import iti.chat.common.SignUpVerificationInter;
 import iti.chat.common.User;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -47,7 +51,21 @@ public class SignUpVerificationImpl extends UnicastRemoteObject implements SignU
         } catch (SQLException ex) {
             Logger.getLogger(SignUpVerificationImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return (inserted1 > 0) && (inserted2 > 0);
+        boolean isInserted =(inserted1 > 0) && (inserted2 > 0);
+        if(isInserted){}
+        return isInserted;
+    }
+    
+    private void seviceLookUp() {
+     ServerInter server = null;
+     Registry registry = null;
+        try {
+            registry= LocateRegistry.getRegistry(2000);
+            server=(ServerInter) registry.lookup("ChatService");
+            server.updateStatistics();
+        } catch (NotBoundException | RemoteException ex) {
+            Logger.getLogger(SignUpVerificationImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

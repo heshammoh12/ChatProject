@@ -10,12 +10,14 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import oracle.jdbc.OracleDriver;
+import server.controllers.FXMLController;
 
 /**
  *
  * @author Dina PC
  */
 public class ServerImpl extends UnicastRemoteObject implements ServerInter {
+    FXMLController serverController=null;
 
     static ArrayList<ClientInter> clientsArrayList = new ArrayList<ClientInter>();
 
@@ -52,11 +54,13 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
     @Override
     public void registerClint(ClientInter client) throws RemoteException {
         clientsArrayList.add(client);
+        serverController.displayUsersLists();
     }
 
     @Override
     public void unregisterClint(ClientInter client) throws RemoteException {
         clientsArrayList.remove(client);
+        serverController.displayUsersLists();
     }
 
     @Override
@@ -76,7 +80,26 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
         }
         return friendClient;
         
-    }  
+    }
+        @Override
+    public Object getServerController() throws RemoteException {
+        return this.serverController;  
+    }
+
+    @Override
+    public void setServerController(Object serverController) throws RemoteException {
+          this.serverController=(FXMLController)serverController;
+    }
+    
+    @Override
+    public void updateStatistics() throws RemoteException{
+        serverController.showStatistics();
+    }
+    @Override
+    public void clearClientsList() throws RemoteException {
+        clientsArrayList.clear();
+    }
+
     
     //
     //

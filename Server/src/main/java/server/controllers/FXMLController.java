@@ -45,26 +45,18 @@ public class FXMLController implements Initializable {
 
 
     Registry registry=null;
+    ServerImpl serverInstant =null;
     
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        /*Timeline time = new Timeline();
-        
-        time.getKeyFrames().add(new KeyFrame(Duration.millis(3000),
-                new EventHandler<ActionEvent>(){
-                    @Override
-                    public void handle(ActionEvent event) {
-                        displayUsersLists();  
-                    }
-            }));
-        time.setCycleCount(Animation.INDEFINITE);
-        time.play();*/
+       showStatistics();
+        displayUsersLists();
     }
     
     @FXML
     /*start server button*/
-    private void handleButtonAction(ActionEvent event) {
+    private void startServer(ActionEvent event) {
         System.out.println("run server!");
         try {
 
@@ -72,7 +64,9 @@ public class FXMLController implements Initializable {
             {
                 registry = LocateRegistry.createRegistry(2000);
             }
-                registry.rebind("ChatService", new ServerImpl());
+                serverInstant=new ServerImpl();
+                serverInstant.setServerController(this);
+                registry.rebind("ChatService", serverInstant);
                 registry.rebind("LogInVary", new LogInVerificationImpl());
                 registry.rebind("SignUpVary", new SignUpVerificationImpl());
                 label.setText("Server is Running");
@@ -88,6 +82,7 @@ public class FXMLController implements Initializable {
     private void stopServer(ActionEvent event){
         System.out.println("stop server!");
         try {
+            serverInstant.clearClientsList();
             registry.unbind("ChatService");
             registry.unbind("LogInVary");
             registry.unbind("SignUpVary");
@@ -117,13 +112,23 @@ public class FXMLController implements Initializable {
             /*Countries statistics part in bar chart*/
             xAxis.setLabel("Value");       
             yAxis.setLabel("Country"); 
-            XYChart.Series series1 = new XYChart.Series();
-            Map<String,Integer> myMap = db.countUsersPerCountry();
-            for(Map.Entry m:myMap.entrySet()){  
-                System.out.println(m.getKey()+" "+m.getValue());  
-                series1.getData().add(new XYChart.Data(m.getKey(),m.getValue()));
-            }
-            countriesStatistic.getData().addAll(series1);
+            new Thread(){
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(30000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    XYChart.Series series1 = new XYChart.Series();
+                    Map<String,Integer> myMap = db.countUsersPerCountry();
+                    for(Map.Entry m:myMap.entrySet()){  
+                        System.out.println(m.getKey()+" "+m.getValue());  
+                        series1.getData().add(new XYChart.Data(m.getKey(),m.getValue()));
+                }
+                    countriesStatistic.getData().addAll(series1);
+                }
+            }.start();
     }
     public void displayUsersLists(){
         ObservableList<String> onlist = FXCollections.observableArrayList();
