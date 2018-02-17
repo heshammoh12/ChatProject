@@ -49,7 +49,7 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <ComboBox prefHeight="20.0" prefWidth="94.0" promptText="Online" />
+                        <ComboBox fx:id="ChatBox_ComboBox_Mode" onAction="#comboAction" prefHeight="20.0" prefWidth="94.0" promptText="Online" />
                      </children>
                   </VBox>
                </children>

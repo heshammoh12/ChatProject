@@ -6,6 +6,7 @@
 package client.models;
 
 import client.controllers.ChatPageController;
+import client.interfaces.FileTransferInt;
 import iti.chat.common.ClientInter;
 import iti.chat.common.Message;
 import iti.chat.common.User;
@@ -69,6 +70,16 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInter {
     /*Methods added by Dina  */
     //
     //
+    private FileTransferInt transferFile;
+
+    public FileTransferInt getTransferFile() {
+        return transferFile;
+    }
+
+    public void setTransferFile(FileTransferInt transferFile) {
+        this.transferFile = transferFile;
+    }
+       
     //    
     /*Methods added by Hassna  */
     public boolean signOut() {

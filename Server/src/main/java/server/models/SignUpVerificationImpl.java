@@ -16,13 +16,15 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 
 /**
  *
  * @author Hasnaa Mohammed
  */
 public class SignUpVerificationImpl extends UnicastRemoteObject implements SignUpVerificationInter {
-
+    ServerInter server = null;
+    Registry registry = null;
     public SignUpVerificationImpl() throws RemoteException {
         System.out.println("SignUpVerificationImpl");
     }
@@ -57,12 +59,20 @@ public class SignUpVerificationImpl extends UnicastRemoteObject implements SignU
     }
     
     private void seviceLookUp() {
-     ServerInter server = null;
-     Registry registry = null;
         try {
             registry= LocateRegistry.getRegistry(2000);
             server=(ServerInter) registry.lookup("ChatService");
-            server.updateStatistics();
+            
+            Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                server.updateStatistics();
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(SignUpVerificationImpl.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    });
         } catch (NotBoundException | RemoteException ex) {
             Logger.getLogger(SignUpVerificationImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
