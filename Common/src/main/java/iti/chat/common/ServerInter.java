@@ -16,6 +16,11 @@ public interface ServerInter extends Remote {
     
    /*Methods added by Nagib  */
     public ClientInter getFriendClient(String mail) throws RemoteException;
+    public Object getServerController() throws RemoteException;
+    public void setServerController(Object serverController) throws RemoteException;
+    public void updateStatistics() throws RemoteException;
+    public void clearClientsList()throws RemoteException;
+
     //
     
    /*Methods added by Dina  */

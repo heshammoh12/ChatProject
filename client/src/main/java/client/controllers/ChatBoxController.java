@@ -60,7 +60,23 @@ public class ChatBoxController implements Initializable {
     Image imageSmallCirlce2;
     boolean isSender;
     
-    Color color;
+    /*variables added by Dina  */
+    //
+    //
+
+    /*variables added by Hassna  */
+    //
+    //
+
+    /*variables added by Hesham  */
+        Color color;
+
+    //
+
+    /*variables added by Fatma  */
+    //
+    //
+
     @FXML
     private Button ChatBox_Button_AddFirendToChat;
     @FXML
@@ -331,4 +347,14 @@ public class ChatBoxController implements Initializable {
     }
 
     //
+    
+     /*Methods added by Dina  */
+    //
+    /*Methods added by Hassna  */
+    //
+    /*Methods added by Hesham  */
+    //
+    /*Methods added by Fatma  */
+    //
+    
 }

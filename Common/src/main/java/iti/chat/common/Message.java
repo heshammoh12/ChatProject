@@ -1,7 +1,7 @@
 package iti.chat.common;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  *
@@ -12,14 +12,14 @@ public class Message implements Serializable {
     private String content;
     private String color;
     private String font;
-    private LocalDateTime time;
+    private LocalDate time;
 
     /*variables added by Nagib  */
     private String tabId;
             
 
     /*variables added by Dina  */
-
+    
 
     /*variables added by Hassna  */
 
@@ -34,7 +34,7 @@ public class Message implements Serializable {
         this.content = content;
         this.color = color;
         this.font = font;
-        this.time = LocalDateTime.now();
+        this.time = LocalDate.now();
     }
 
     public void setContent(String content) {
@@ -49,7 +49,7 @@ public class Message implements Serializable {
         this.font = font;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(LocalDate time) {
         this.time = time;
     }
 
@@ -65,7 +65,7 @@ public class Message implements Serializable {
         return font;
     }
 
-    public LocalDateTime getTime() {
+    public LocalDate getTime() {
         return time;
     }
 
@@ -81,7 +81,7 @@ public class Message implements Serializable {
         this.content = content;
         this.color = color;
         this.font = font;
-        this.time = LocalDateTime.now();
+        this.time = LocalDate.now();
             this.tabId=tabId;
     }
 
