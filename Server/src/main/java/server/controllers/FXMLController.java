@@ -114,6 +114,7 @@ public class FXMLController implements Initializable {
     public void showStatistics(){
         /*Gender statistics part in piechart */
             //get ratios from database
+            System.out.println("showStatistics()........");
             DBconnect db = DBconnect.getInstance();
             float males = db.countMales();
             float females = 100-males;
@@ -125,14 +126,14 @@ public class FXMLController implements Initializable {
             /*Countries statistics part in bar chart*/
             xAxis.setLabel("Value");       
             yAxis.setLabel("Country"); 
-            new Thread(){
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(30000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+//            new Thread(){
+//                @Override
+//                public void run() {
+//                    try {
+//                        Thread.sleep(30000);
+//                    } catch (InterruptedException ex) {
+//                        Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
                     XYChart.Series series1 = new XYChart.Series();
                     Map<String,Integer> myMap = db.countUsersPerCountry();
                     for(Map.Entry m:myMap.entrySet()){  
@@ -140,10 +141,11 @@ public class FXMLController implements Initializable {
                         series1.getData().add(new XYChart.Data(m.getKey(),m.getValue()));
                 }
                     countriesStatistic.getData().addAll(series1);
-                }
-            }.start();
+//                }
+//            }.start();
     }
     public void displayUsersLists(){
+        System.out.println("displayUsersLists() .....");
         ObservableList<String> onlist = FXCollections.observableArrayList();
         ObservableList<String> oflist = FXCollections.observableArrayList();
         DBconnect db = DBconnect.getInstance();

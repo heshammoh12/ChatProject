@@ -9,6 +9,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.geometry.Pos;
 import oracle.jdbc.OracleDriver;
 import server.controllers.FXMLController;
 
@@ -54,9 +56,13 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
     @Override
     public void registerClint(ClientInter client) throws RemoteException {
         clientsArrayList.add(client);
-        serverController.displayUsersLists();
-    }
-
+        Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                             serverController.displayUsersLists();
+                        }
+                    });
+       }
     @Override
     public void unregisterClint(ClientInter client) throws RemoteException {
         clientsArrayList.remove(client);
@@ -93,7 +99,15 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
     
     @Override
     public void updateStatistics() throws RemoteException{
-        serverController.showStatistics();
+        
+         Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                                System.out.println("updateStatistics()");
+                                serverController.showStatistics();
+                            
+                        }
+                    });
     }
     @Override
     public void clearClientsList() throws RemoteException {
