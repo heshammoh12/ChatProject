@@ -1,7 +1,10 @@
 package iti.chat.common;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -28,7 +31,9 @@ public class Message implements Serializable {
 
 
     /*variables added by Fatma  */
-
+private List<String> listoftos;
+ private String from;
+    private BigInteger  fontsize;
     
     public Message(String content, String color, String font) {
         this.content = content;
@@ -93,6 +98,28 @@ public class Message implements Serializable {
     //
     /*Methods added by Fatma  */
     //
+       public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
     
+     public List<String> getListoftos() {
+        return listoftos;
+    }
+
+    public void setListoftos(ArrayList<String> listoftos) {
+        this.listoftos = listoftos;
+    }
     
+     public void setFontsize(BigInteger  fontsize) {
+        this.fontsize = fontsize;
+    }
+
+    public BigInteger  getFontsize() {
+        return fontsize;
+    }
+      
 }

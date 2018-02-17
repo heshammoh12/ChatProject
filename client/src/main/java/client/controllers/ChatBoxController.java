@@ -10,6 +10,7 @@ import iti.chat.common.Message;
 import iti.chat.common.ServerInter;
 import iti.chat.common.User;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
@@ -41,6 +42,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
+import savechat.Creatxmlfile;
 
 /**
  * FXML Controller class
@@ -70,6 +73,9 @@ public class ChatBoxController implements Initializable {
     /*variables added by Fatma  */
     //
     //
+   private ArrayList<Message> messags = null;
+    @FXML
+    private Button ChatBox_Button_SaveChat;
 
     @FXML
     private Button ChatBox_Button_AddFirendToChat;
@@ -152,6 +158,27 @@ public class ChatBoxController implements Initializable {
 
         recievers = new ArrayList<>();
         //
+          messags = new ArrayList<>(); 
+            ChatBox_Button_SaveChat.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent arg0) {
+
+                try {
+                    FileChooser fileChooser = new FileChooser();
+                    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("xml files (*.xml)", "xml");
+                    fileChooser.getExtensionFilters().add(extFilter);
+                    File file = fileChooser.showSaveDialog(ChatBoxScrollPane.getScene().getWindow());
+                    System.out.println(file);
+                    
+                   
+                   Creatxmlfile.createFile(file,messags,mainClient.getUser());
+                    
+                } catch (IOException ex) {
+                    Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+          
     }
 
     public void buttonImages() {
@@ -223,7 +250,7 @@ public class ChatBoxController implements Initializable {
         //code added by nagib
         //
     }
-
+        
     public void sendMessage(User user) {
         isSender = true;
         Render(user);
@@ -231,6 +258,7 @@ public class ChatBoxController implements Initializable {
 
         //code added by nagib
         //
+               messags.add(user.getMessage());
     }
 
     public void recieveMessage(User user) {
@@ -240,6 +268,7 @@ public class ChatBoxController implements Initializable {
 
         //code added by nagib
         //
+        messags.add(user.getMessage());
     }
 
     public String getDate() {
@@ -332,5 +361,5 @@ public class ChatBoxController implements Initializable {
     //
     /*Methods added by Fatma  */
     //
-    
+      
 }
