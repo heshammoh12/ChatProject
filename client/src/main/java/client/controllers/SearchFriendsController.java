@@ -29,6 +29,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -39,8 +41,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
+import org.w3c.dom.events.Event;
 
 /**
  * FXML Controller class
@@ -57,6 +61,7 @@ public class SearchFriendsController implements Initializable {
     ArrayList<User> allUser;
     private ServerInter server = null;
     private ClientInter client = null;
+    private User loginer ;
     String searchesEmail;
     private ObservableList<User> usersSearch;
     private ObservableList<User> dummy;
@@ -66,6 +71,15 @@ public class SearchFriendsController implements Initializable {
     private Button Button_SearchFriend;
     @FXML
     private ListView ListView_SearchFriend;
+    
+    public void setLoginer(User loginer) {
+        this.loginer = loginer;
+        System.out.println("this + "+this);
+    }
+
+    public User getLoginer() {
+        return loginer;
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -136,17 +150,45 @@ public class SearchFriendsController implements Initializable {
             super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
 
             if (item != null && !empty) {
+                HBox hboxButton = new HBox();
                 HBox pictureRegion = new HBox();
                 Text text = new Text(item.getEmail());
                 File file = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\CustomList\\src\\customlist\\personal-website-design.png");
+                Button btnAdd = new Button("add");
+                btnAdd.setOnAction(new EventHandler<ActionEvent>()
+                {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        int rowAffected;
+                            System.out.println(item.getEmail());
+                            System.out.println("loginer is "+loginer.getEmail());
+                        try {
+                            rowAffected = server.addFriend(loginer.getEmail(), item.getEmail());
+                            System.out.println("rowAffected "+rowAffected);
+                            if(rowAffected>=1)
+                            {
+                                btnAdd.setDisable(true);
+                            }
+                        }catch (RemoteException ex) {
+                            Logger.getLogger(SearchFriendsController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                           
+                    }
+                });
+                
+                hboxButton.getChildren().add(btnAdd);
+                hboxButton.setAlignment(Pos.CENTER_RIGHT);
+                pictureRegion.setHgrow(hboxButton, Priority.ALWAYS);
                 Image image = new Image(file.toURI().toString());
                 ImageView imageView = new ImageView(image);
                 imageView.setFitHeight(30);
                 imageView.setFitWidth(30);
                 pictureRegion.getChildren().add(imageView);
                 pictureRegion.getChildren().add(text);
+                pictureRegion.getChildren().add(hboxButton);
+                pictureRegion.setPadding(new Insets(2));
                 setGraphic(pictureRegion);
-            } else {
+            }else {
                 setGraphic(null);
             }
 

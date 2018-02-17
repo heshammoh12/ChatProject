@@ -26,6 +26,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -52,9 +53,14 @@ public class ChatBoxController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    Circle smallImageCircle;
+    Circle smallImageCircle1;
+    Circle smallImageCircle2;
+    
     Image imageSmallCirlce;
+    Image imageSmallCirlce2;
     boolean isSender;
+    
+    Color color;
     @FXML
     private Button ChatBox_Button_AddFirendToChat;
     @FXML
@@ -71,6 +77,8 @@ public class ChatBoxController implements Initializable {
     private ComboBox ChatBox_ComboBox_FontType;
     @FXML
     private ComboBox ChatBox_ComboBox_FontSize;
+    @FXML
+    private ColorPicker ChatBox_ComboBox_ColorPicker;
 
     //
     private ClientInter mainClient = null;
@@ -81,34 +89,50 @@ public class ChatBoxController implements Initializable {
     //
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         //make scroll pan scrollable
         ChatBoxScrollPane.vvalueProperty().bind(ChatBox_AreaMessages.heightProperty());
-        setCircleMsg();
+        //setCircleMsg();
+        smallImageCircle1 = new Circle(10, 10, 5);
+        smallImageCircle1.setStroke(Color.SEAGREEN);
+        
+        smallImageCircle2 = new Circle(10, 10, 5);
+        smallImageCircle2.setStroke(Color.SEAGREEN);
+        
         initializeCompoBoxFontsType();
         initializeCompoBoxFontsSize();
         buttonImages();
         // TODO
-
+        //listner color picker
+        ChatBox_ComboBox_ColorPicker.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("color picker value is "+ChatBox_ComboBox_ColorPicker.getValue());
+                color = ChatBox_ComboBox_ColorPicker.getValue();
+            }
+        });
+        
         //listner on text field on enter button
         ChatBox_TextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
 
                 if (event.getCode() == KeyCode.ENTER) {
-                    ///////// these code is for testing purpose reblace it with yours
+                    ///////// these code is for testing purpose reblace it with yours                  
                     System.out.println("tmaaaaaaaaaaaaaaaaam");
                     Text data = new Text(getDate());
                     data.setFont(Font.font("", 10.0));
                     data.setFill(Color.DIMGREY);
 
                     Text t = new Text(ChatBox_TextField.getText());
-
+                    //t.setFill(color);
                     TextFlow textFlow = new TextFlow(t, data);
+                    //textFlow.setStyle("-fx-background-color: #2196F3; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
                     textFlow.setStyle("-fx-background-color: #2196F3; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
 
-                    imageSmallCirlce = new Image("/images/personal.png");
-                    smallImageCircle.setFill(new ImagePattern(imageSmallCirlce));
-                    HBox h = new HBox(textFlow, smallImageCircle);
+                    //imageSmallCirlce = new Image("/images/personal.png");
+                    //smallImageCircle1.setFill(new ImagePattern(imageSmallCirlce));
+                    HBox h = new HBox(textFlow);
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -167,11 +191,11 @@ public class ChatBoxController implements Initializable {
             Text t = new Text(user.getMessage().getContent());
 
             TextFlow textFlow = new TextFlow(t, data);
-            textFlow.setStyle("-fx-background-color: #2196F3; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
-            imageSmallCirlce = new Image("/images/personal-website-design.png");
-            smallImageCircle.setFill(new ImagePattern(imageSmallCirlce));
+            //textFlow.setStyle("-fx-background-color: #2196F3; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
+            //imageSmallCirlce = new Image("/images/personal-website-design.png");
+            //smallImageCircle.setFill(new ImagePattern(imageSmallCirlce));
 
-            HBox h = new HBox(textFlow, smallImageCircle);
+            HBox h = new HBox(textFlow);
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
@@ -187,13 +211,14 @@ public class ChatBoxController implements Initializable {
             data.setFill(Color.DIMGREY);
 
             Text t = new Text(user.getMessage().getContent());
-
+            //t.setFill(color);
             TextFlow textFlow = new TextFlow(t, data);
-            textFlow.setStyle("-fx-background-color: #2196F3; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
-            imageSmallCirlce = new Image("/images/personal.png");
-            smallImageCircle.setFill(new ImagePattern(imageSmallCirlce));
+             textFlow.setStyle("-fx-background-color: #FF8F00; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
 
-            HBox h = new HBox(smallImageCircle, textFlow);
+            //imageSmallCirlce2 = new Image("/images/personal.png");
+            //smallImageCircle2.setFill(new ImagePattern(imageSmallCirlce2));
+
+            HBox h = new HBox(textFlow);
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
@@ -241,8 +266,7 @@ public class ChatBoxController implements Initializable {
 
     public void setCircleMsg() {
         //initialize the node circle
-        smallImageCircle = new Circle(10, 10, 5);
-        smallImageCircle.setStroke(Color.SEAGREEN);
+        
         //
 
         //code added by nagib

@@ -34,7 +34,9 @@ import javafx.stage.Stage;
 public class FXMLController extends UnicastRemoteObject implements Initializable {
 
     private FXMLLoader loader;
+    private FXMLLoader loader2;
     private Parent root;
+    private Parent root2;
     private double xOffset = 0;
     private double yOffset = 0;
     private Stage stage;
@@ -189,14 +191,20 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
     private void startChat(User user) {
         try {
             loader = new FXMLLoader();
+            loader2 = new FXMLLoader();
             System.out.println("Loged in");
             root = loader.load(getClass().getResource("/fxml/ChatPage.fxml").openStream());
+            root2 = loader2.load(getClass().getResource("/fxml/searchFriends.fxml").openStream());
+            
+            
+            
             ChatPageController chatController = (ChatPageController) loader.getController();
             chatController.setLoginer(user);
             chatController.buildChatPageList(user.getEmail());
             ClientImpl clientImpl = new ClientImpl(user);
             clientImpl.setChatPageController(chatController);
             chatController.setClient(clientImpl);
+            chatController.addNewSearchPane(clientImpl);
             server.registerClint(clientImpl);
             Stage stage = (Stage) Anchor.getScene().getWindow();
             root.setOnMousePressed(new EventHandler<MouseEvent>() {
