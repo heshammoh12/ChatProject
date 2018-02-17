@@ -27,7 +27,7 @@ public interface ServerInter extends Remote {
     
     //
     public void sendNotification(String content)throws RemoteException;
-    
+
    /*Methods added by Hassna  */
     
     public boolean signOurServer(String email) throws RemoteException;

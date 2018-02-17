@@ -1,7 +1,6 @@
 
-package client.interfaces;
+package iti.chat.common;
 
-import client.models.ClientImpl;
 import java.io.File;
 
 /**
@@ -10,7 +9,7 @@ import java.io.File;
  */
 public interface FileTransferInt {
     
-    public void sendFile(ClientImpl receiver , File f );
+    public void sendFile(ClientInter receiver , File f );
     public void recieveFile(String filename,boolean append, byte[] data, int dataLength);
-    public boolean askForAcceptance();
+    public boolean askForAcceptance(ClientInter reciever);
 }

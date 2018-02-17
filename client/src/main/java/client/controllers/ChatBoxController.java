@@ -25,6 +25,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
@@ -42,6 +43,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -350,6 +353,25 @@ public class ChatBoxController implements Initializable {
     
      /*Methods added by Dina  */
     //
+    @FXML
+    public void attachFile(ActionEvent event){
+        Stage st =(Stage) ((Node)event.getSource()).getScene().getWindow();
+        FileChooser fileChooser = new FileChooser();
+        File f = fileChooser.showOpenDialog(st);
+        if (f == null) {return;}
+           Thread transfer = new Thread(()->{
+                try {
+                        if(this.recievers.get(0).getTransferFile().askForAcceptance(this.recievers.get(0)))
+                        {
+                            this.mainClient.getTransferFile().sendFile(this.recievers.get(0), f);
+                        } 
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }); 
+           transfer.start();
+
+    }
     /*Methods added by Hassna  */
     //
     /*Methods added by Hesham  */
