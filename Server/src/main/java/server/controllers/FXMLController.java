@@ -140,6 +140,7 @@ public class FXMLController implements Initializable {
                         System.out.println(m.getKey()+" "+m.getValue());  
                         series1.getData().add(new XYChart.Data(m.getKey(),m.getValue()));
                 }
+                    countriesStatistic.getData().clear();
                     countriesStatistic.getData().addAll(series1);
 //                }
 //            }.start();

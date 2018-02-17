@@ -10,6 +10,7 @@ import iti.chat.common.Message;
 import iti.chat.common.ServerInter;
 import iti.chat.common.User;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
@@ -26,6 +27,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
@@ -43,6 +45,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import savechat.Creatxmlfile;
 
 /**
  * FXML Controller class
@@ -77,6 +82,9 @@ public class ChatBoxController implements Initializable {
     /*variables added by Fatma  */
     //
     //
+   private ArrayList<Message> messags = null;
+    @FXML
+    private Button ChatBox_Button_SaveChat;
 
     @FXML
     private Button ChatBox_Button_AddFirendToChat;
@@ -178,6 +186,27 @@ public class ChatBoxController implements Initializable {
 
         recievers = new ArrayList<>();
         //
+          messags = new ArrayList<>(); 
+            ChatBox_Button_SaveChat.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent arg0) {
+
+                try {
+                    FileChooser fileChooser = new FileChooser();
+                    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("xml files (*.xml)", "xml");
+                    fileChooser.getExtensionFilters().add(extFilter);
+                    File file = fileChooser.showSaveDialog(ChatBoxScrollPane.getScene().getWindow());
+                    System.out.println(file);
+                    
+                   
+                   Creatxmlfile.createFile(file,messags,mainClient.getUser());
+                    
+                } catch (IOException ex) {
+                    Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+          
     }
 
     public void buttonImages() {
@@ -250,7 +279,7 @@ public class ChatBoxController implements Initializable {
         //code added by nagib
         //
     }
-
+        
     public void sendMessage(User user) {
         isSender = true;
         Render(user);
@@ -258,6 +287,7 @@ public class ChatBoxController implements Initializable {
 
         //code added by nagib
         //
+               messags.add(user.getMessage());
     }
 
     public void recieveMessage(User user) {
@@ -267,6 +297,7 @@ public class ChatBoxController implements Initializable {
 
         //code added by nagib
         //
+        messags.add(user.getMessage());
     }
 
     public String getDate() {
@@ -359,11 +390,30 @@ public class ChatBoxController implements Initializable {
     
      /*Methods added by Dina  */
     //
+    @FXML
+    public void attachFile(ActionEvent event){
+        Stage st =(Stage) ((Node)event.getSource()).getScene().getWindow();
+        FileChooser fileChooser = new FileChooser();
+        File f = fileChooser.showOpenDialog(st);
+        if (f == null) {return;}
+           Thread transfer = new Thread(()->{
+                try {
+                        if(this.recievers.get(0).getTransferFile().askForAcceptance(this.recievers.get(0)))
+                        {
+                            this.mainClient.getTransferFile().sendFile(this.recievers.get(0), f);
+                        } 
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }); 
+           transfer.start();
+
+    }
     /*Methods added by Hassna  */
     //
     /*Methods added by Hesham  */
     //
     /*Methods added by Fatma  */
     //
-    
+      
 }
