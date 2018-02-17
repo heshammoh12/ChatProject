@@ -34,9 +34,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -47,6 +50,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -55,14 +59,18 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class ChatPageController implements Initializable {
-
+    private FXMLLoader loader2;
+    private Parent root2;
     @FXML
     private ListView ChatPage_List_OnlineUsers;
     @FXML
     private TabPane ChatPage_TabPane_Users;
     @FXML
     private Tab tabAllUsers;
+    @FXML
+    private ComboBox ChatBox_ComboBox_Mode;
     
+    Circle cir;
     private ObservableList<User> onlineUsers;
     private HashMap<String, ChatBoxController> openedTabs;
     private ServerInter server = null;
@@ -103,7 +111,8 @@ public class ChatPageController implements Initializable {
         ChatPage_List_OnlineUsers.setItems(onlineUsers);
         setFrindesListFactory();
         //hesham
-        addNewSearchPane();
+        //addNewSearchPane();
+        initializeModeCompoBox();
         
         
         //nagib
@@ -117,13 +126,25 @@ public class ChatPageController implements Initializable {
             super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
 
             if (item != null && !empty) {
+                HBox statuse = new HBox();
                 HBox pictureRegion = new HBox();
                 Text text = new Text(item.getEmail());
-                File file = new File("/images/personal.png");
+                File file = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\CustomList\\src\\customlist\\personal-website-design.png");
                 Image image = new Image(file.toURI().toString());
                 ImageView imageView = new ImageView(image);
                 imageView.setFitHeight(30);
                 imageView.setFitWidth(30);
+                //circle for online and offline users
+                cir = new Circle(10,10,5);
+                if(item.getStatus() == 1)
+                {
+                    cir.setFill(Color.LAWNGREEN);
+                }else if(item.getStatus() == 2)
+                {
+                    cir.setFill(Color.RED);
+                }
+                
+                
                 pictureRegion.setOnMousePressed(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
@@ -166,8 +187,13 @@ public class ChatPageController implements Initializable {
 
                     }
                 });
+                statuse.getChildren().add(cir);
+                statuse.setAlignment(Pos.CENTER_RIGHT);
+                pictureRegion.setHgrow(statuse, Priority.ALWAYS);
                 pictureRegion.getChildren().add(imageView);
                 pictureRegion.getChildren().add(text);
+                pictureRegion.getChildren().add(statuse);
+                pictureRegion.setPadding(new Insets(2));
                 setGraphic(pictureRegion);
             } else {
                 setGraphic(null);
@@ -343,15 +369,44 @@ public class ChatPageController implements Initializable {
     //
     /*Methods added by Hesham  */
     //
-    public void addNewSearchPane()
+    public void addNewSearchPane(ClientInter clientInter)
     {
         try {
-            Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/fxml/searchFriends.fxml"));
+
+            
+            loader2 = new FXMLLoader();
+
+            Pane newLoadedPane = loader2.load(getClass().getResource("/fxml/searchFriends.fxml").openStream());
+            SearchFriendsController searchController = (SearchFriendsController) loader2.getController();
+            searchController.setLoginer(clientInter.getUser());
+            
             tabAllUsers.setContent(newLoadedPane);
         } catch (IOException ex) {
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void initializeModeCompoBox() 
+    {
+        ChatBox_ComboBox_Mode.getItems().removeAll(ChatBox_ComboBox_Mode.getItems());
+        ChatBox_ComboBox_Mode.getItems().addAll("Online", "Busy", "Away");
+        ChatBox_ComboBox_Mode.getSelectionModel().select("Online");
+    }
+    @FXML
+    private void comboAction(ActionEvent event) 
+    {
+        System.out.println(ChatBox_ComboBox_Mode.getValue());
+        System.out.println("mail is "+getLoginer().getEmail());
+        int checkRowAffected;
+        try {
+            checkRowAffected=server.updateMode(ChatBox_ComboBox_Mode.getValue().toString(),getLoginer().getEmail());
+            System.out.println("afftected rows "+checkRowAffected);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
     //
     /*Methods added by Fatma  */
     //

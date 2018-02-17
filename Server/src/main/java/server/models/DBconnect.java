@@ -521,4 +521,39 @@ public class DBconnect {
             }
         return offline;
     }
+    public int updateUserMode(int mode, String email)
+    {
+        System.out.println("dbconnect  "+mode+"  "+email);
+        Connection c=null;               
+        PreparedStatement ps=null; 
+        int counterRowAffected = 0;
+            try {  
+            try {
+                c= getConnection();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                ps=c.prepareStatement("update USERLOGIN set USERMODE=? where EMAIL=?");
+                ps.setInt(1, mode);
+                ps.setString(2, email);
+                counterRowAffected=ps.executeUpdate();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{  
+                    if (ps!=null){  
+                        try {  
+                            ps.close();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                  }if(c!=null){  
+                        try {  
+                            c.close();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                  }   
+              }
+          return counterRowAffected;
+    }
 }

@@ -18,7 +18,7 @@
    <children>
       <ScrollPane fx:id="ChatBoxScrollPane" layoutX="6.0" layoutY="7.0" prefHeight="207.0" prefWidth="380.0">
          <content>
-            <VBox fx:id="ChatBox_AreaMessages" prefHeight="194.0" prefWidth="367.0" />
+            <VBox fx:id="ChatBox_AreaMessages" prefHeight="191.0" prefWidth="356.0" />
          </content></ScrollPane>
       <HBox layoutX="6.0" layoutY="248.0" prefHeight="42.0" prefWidth="380.0">
          <children>
@@ -39,9 +39,9 @@
          <children>
             <ComboBox fx:id="ChatBox_ComboBox_FontType" prefHeight="34.0" prefWidth="150.0" />
             <ComboBox fx:id="ChatBox_ComboBox_FontSize" prefHeight="34.0" prefWidth="67.0" />
-            <ColorPicker fx:id="ChatBox_ComboBox_Color" prefHeight="35.0" prefWidth="47.0" />
+            <ColorPicker fx:id="ChatBox_ComboBox_ColorPicker" prefHeight="35.0" prefWidth="47.0" />
             <ToggleButton fx:id="ChatBox_ToggleButton_Bold" mnemonicParsing="false" prefHeight="35.0" prefWidth="57.0" text="B" />
-            <Button fx:id="ChatBox_Button_AddFirendToChat" mnemonicParsing="false" prefHeight="35.0" prefWidth="63.0" />
+            <Button fx:id="ChatBox_Button_AddFirendToChat" mnemonicParsing="false" prefHeight="35.0" prefWidth="63.0" style="-fx-background-color: transparent;" />
          </children>
       </HBox>
    </children>

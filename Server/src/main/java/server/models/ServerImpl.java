@@ -9,6 +9,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.geometry.Pos;
 import oracle.jdbc.OracleDriver;
 import server.controllers.FXMLController;
 
@@ -54,9 +56,13 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
     @Override
     public void registerClint(ClientInter client) throws RemoteException {
         clientsArrayList.add(client);
-        serverController.displayUsersLists();
-    }
-
+        Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                             serverController.displayUsersLists();
+                        }
+                    });
+       }
     @Override
     public void unregisterClint(ClientInter client) throws RemoteException {
         clientsArrayList.remove(client);
@@ -93,7 +99,15 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
     
     @Override
     public void updateStatistics() throws RemoteException{
-        serverController.showStatistics();
+        
+         Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                                System.out.println("updateStatistics()");
+                                serverController.showStatistics();
+                            
+                        }
+                    });
     }
     @Override
     public void clearClientsList() throws RemoteException {
@@ -144,6 +158,44 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         } 
         return names;
+    }
+    
+        @Override
+    public int updateMode(String mode , String email) throws RemoteException 
+    {
+        DBconnect conn;
+        conn = DBconnect.getInstance();
+        int rowAffected=0;
+        System.out.println("server imp "+mode+"  "+email);
+        switch(mode)
+        {
+            case "Online":
+                rowAffected=conn.updateUserMode(1,email);
+                break;
+            case "Busy":
+                rowAffected=conn.updateUserMode(2,email);
+                break;
+            case "Away":
+                rowAffected=conn.updateUserMode(3,email);
+                break;
+            default:
+                rowAffected=conn.updateUserMode(1,email);
+        }
+        return rowAffected;
+    }
+    
+        @Override
+    public int addFriend(String sender, String reciever) throws RemoteException {
+        DBconnect conn;
+        conn = DBconnect.getInstance();
+        int rowAffected=0;
+        
+        try {
+            rowAffected=conn.addFriendRequest(sender, reciever);
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rowAffected;
     }
     //
     /*Methods added by Fatma  */

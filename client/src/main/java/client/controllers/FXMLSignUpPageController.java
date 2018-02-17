@@ -82,6 +82,11 @@ public class FXMLSignUpPageController implements Initializable {
     private double yOffset = 0;
     private FXMLLoader loader;
     private Parent root;
+    
+    private boolean isValidPass = false;
+    private boolean isValidFullName = false;
+    private boolean isValidUserName = false;
+    private boolean isValidMail = false;
 
     private Stage stage;
 
@@ -180,8 +185,10 @@ public class FXMLSignUpPageController implements Initializable {
                 } else {
                     if (!signUpImpl.emailValid(SignUpPage_TextField_Email.getText())) {
                         SignUpPage_TextField_Email.setStyle("-fx-text-fill: red;");
+                        isValidMail=false;
                     } else {
                         SignUpPage_TextField_Email.setStyle("-fx-text-fill: green;");
+                        isValidMail=true;
                     }
                 }
             }
@@ -196,8 +203,10 @@ public class FXMLSignUpPageController implements Initializable {
                 } else {
                     if (!signUpImpl.fullNameValid(SignUpPage_TextField_FullName.getText())) {
                         SignUpPage_TextField_FullName.setStyle("-fx-text-fill: red;");
+                        isValidFullName=false;
                     } else {
                         SignUpPage_TextField_FullName.setStyle("-fx-text-fill: green;");
+                        isValidFullName=true;
                     }
                 }
             }
@@ -212,8 +221,10 @@ public class FXMLSignUpPageController implements Initializable {
                 } else {
                     if (!signUpImpl.userNameValid(SignUpPage_TextField_UserName.getText())) {
                         SignUpPage_TextField_UserName.setStyle("-fx-text-fill: red;");
+                        isValidUserName=false;
                     } else {
                         SignUpPage_TextField_UserName.setStyle("-fx-text-fill: green;");
+                        isValidUserName=true;
                     }
                 }
             }
@@ -228,8 +239,10 @@ public class FXMLSignUpPageController implements Initializable {
                 } else {
                     if (!signUpImpl.passValid(SignUpPage_TextField_Password.getText())) {
                         SignUpPage_TextField_Password.setStyle("-fx-text-fill: red;");
+                        isValidPass=false;
                     } else {
                         SignUpPage_TextField_Password.setStyle("-fx-text-fill: green;");
+                        isValidPass=true;
                     }
                 }
             }
@@ -276,6 +289,9 @@ public class FXMLSignUpPageController implements Initializable {
 
             }
 
+        }
+        else{
+             showAlert("Please correct all your data !!!");
         }
     }
 
@@ -330,8 +346,19 @@ public class FXMLSignUpPageController implements Initializable {
             gender = "m";
         }
         System.out.println("fullName : " + fullName + " " + fullName.isEmpty() + " || userName : " + userName + " " + userName.isEmpty() + " || email : " + email.isEmpty() + " || password : " + password.isEmpty() + " || country : " + country.isEmpty());
-        return !fullName.isEmpty() || !userName.isEmpty() || !email.isEmpty() || !password.isEmpty() || !country.isEmpty();
-
+        if (SignUpPage_CompoBox_Country.getValue().toString().equals("Other")) {
+            showAlert("Please select Country !!!");
+            return false;
+        } else {
+            if( !fullName.isEmpty() && !userName.isEmpty() && !email.isEmpty() && !password.isEmpty() && !country.isEmpty()){
+                System.out.println("that is correct data");
+                System.out.println(" isValidMail "+ isValidMail +" isValidUserName "+ isValidUserName +" isValidFullName "+ isValidFullName +"isValidPass"+ isValidPass);
+                return isValidMail && isValidUserName && isValidFullName && isValidPass;
+            }else{
+                showAlert("Please fill all data !!!");
+                return false;
+            }
+        }
     }
 
     private void startChat(User user) {
