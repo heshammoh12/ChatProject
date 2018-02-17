@@ -155,11 +155,14 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
                 if (registry == null || server == null || logInVerificationInter == null) {
                     seviceLookUp();
                 }
-                user = logInVerificationInter.login(email, password);
-                if (user != null) {
-                    startChat(user);
-                } else {
-                    showAlert("Incorrect Username or Password !!!!");
+                if (logInVerificationInter != null) {
+                    user = logInVerificationInter.login(email, password); 
+                
+                    if (user != null) {
+                        startChat(user);
+                    } else {
+                        showAlert("Incorrect Username or Password !!!!");
+                    }
                 }
             }
         } catch (IOException ex) {
@@ -182,6 +185,7 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
             setLogInVerificationInter((LogInVerificationInter) registry.lookup("LogInVary"));
 
         } catch (NotBoundException | RemoteException ex) {
+            showAlert("Sorry currently the server is under maintenance");
             Logger.getLogger(FXMLSignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

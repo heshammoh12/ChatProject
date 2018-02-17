@@ -102,10 +102,7 @@ public class DBconnect {
                       ps.setInt(5, mode);
                       recordCounter=ps.executeUpdate();  
                       
-                      //update status to online
-                      ps2=c.prepareStatement(" update USERLOGIN set USERSTATUS=1 where USERSTATUS=?");  
-                      ps2.setString(1, email);  
-                      recordCounter2=ps2.executeUpdate();
+                     
                       
                         
               } catch (Exception e) { e.printStackTrace(); } finally{  

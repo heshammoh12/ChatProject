@@ -193,6 +193,7 @@ public class ChatPageController implements Initializable {
             setRegistry(LocateRegistry.getRegistry(2000));
             setServer((ServerInter) registry.lookup("ChatService"));
         } catch (NotBoundException | RemoteException ex) {
+            showAlert("Sorry the server currently is under maintenance");
             Logger.getLogger(FXMLSignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -206,6 +207,7 @@ public class ChatPageController implements Initializable {
 //            ArrayList<User> test = server.getFrinds("ahmed");
 
         } catch (RemoteException ex) {
+            showAlert("Sorry the server currently is under maintenance");
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -237,6 +239,7 @@ public class ChatPageController implements Initializable {
 
         } catch (RemoteException ex) {
             System.out.println("Error in getFrindClint method");
+            showAlert("Sorry the server currently is under maintenance");
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return friend;
@@ -321,6 +324,7 @@ public class ChatPageController implements Initializable {
                     System.out.println("found tab with the same user");
                     return true;
                 } catch (RemoteException ex) {
+                    showAlert("Sorry the server currently is under maintenance");
                     Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {

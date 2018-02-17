@@ -19,7 +19,8 @@ import server.controllers.FXMLController;
  * @author Dina PC
  */
 public class ServerImpl extends UnicastRemoteObject implements ServerInter {
-    FXMLController serverController=null;
+
+    FXMLController serverController = null;
 
     static ArrayList<ClientInter> clientsArrayList = new ArrayList<ClientInter>();
 
@@ -57,12 +58,13 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
     public void registerClint(ClientInter client) throws RemoteException {
         clientsArrayList.add(client);
         Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                             serverController.displayUsersLists();
-                        }
-                    });
-       }
+            @Override
+            public void run() {
+                serverController.displayUsersLists();
+            }
+        });
+    }
+
     @Override
     public void unregisterClint(ClientInter client) throws RemoteException {
         clientsArrayList.remove(client);
@@ -76,94 +78,93 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 
 //
     /*Methods added by Nagib  */
-    
-   @Override
+    @Override
     public ClientInter getFriendClient(String mail) throws RemoteException {
-        ClientInter friendClient= null;
+        ClientInter friendClient = null;
         for (ClientInter clientInter : clientsArrayList) {
-            if(clientInter.getUser().getEmail().equals(mail))
+            if (clientInter.getUser().getEmail().equals(mail)) {
                 friendClient = clientInter;
+            }
         }
         return friendClient;
-        
+
     }
-        @Override
+
+    @Override
     public Object getServerController() throws RemoteException {
-        return this.serverController;  
+        return this.serverController;
     }
 
     @Override
     public void setServerController(Object serverController) throws RemoteException {
-          this.serverController=(FXMLController)serverController;
+        this.serverController = (FXMLController) serverController;
     }
-    
+
     @Override
-    public void updateStatistics() throws RemoteException{
-        
-         Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                                System.out.println("updateStatistics()");
-                                serverController.showStatistics();
-                            
-                        }
-                    });
+    public void updateStatistics() throws RemoteException {
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("updateStatistics()");
+                serverController.showStatistics();
+
+            }
+        });
     }
+
     @Override
     public void clearClientsList() throws RemoteException {
         clientsArrayList.clear();
     }
 
-    
     //
     //
     /*Methods added by Dina  */
     //
-        @Override
+    @Override
     public void sendNotification(String content) {
-            System.out.println("annoncment content is "+content);
-                try {  
-                    clientsArrayList.forEach((client)->{
-                        try {
-                            client.getNotification(content);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    });
-                } catch (Exception ex) {
+        System.out.println("annoncment content is " + content);
+        try {
+            clientsArrayList.forEach((client) -> {
+                try {
+                    client.getNotification(content);
+                } catch (RemoteException ex) {
                     Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            
+            });
+        } catch (Exception ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
+
     //
     /*Methods added by Hassna  */
     //
     //
     /*Methods added by Hesham  */
     //
-        @Override
-    public ArrayList<User> search(String name) throws RemoteException 
-    {
+    @Override
+    public ArrayList<User> search(String name) throws RemoteException {
         ArrayList<User> names = null;
         DBconnect conn;
         try {
             conn = DBconnect.getInstance();
             names = conn.getUsersByName(name);
-            
+
             for (User frindEmail : names) {
-                System.out.println("foreach"+frindEmail.getEmail());
+                System.out.println("foreach" + frindEmail.getEmail());
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
         return names;
     }
     //
     /*Methods added by Fatma  */
     //
     //
-
-
 
 }

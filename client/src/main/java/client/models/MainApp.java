@@ -47,7 +47,7 @@ public class MainApp extends Application {
         scene.getStylesheets().add(getClass().getResource("/styles/Styles.css").toString());
         primaryStage.setScene(scene);
         primaryStage.show();
-        PauseTransition splashScreenDelay = new PauseTransition(Duration.seconds(3));
+        PauseTransition splashScreenDelay = new PauseTransition(Duration.seconds(0.5));
         splashScreenDelay.setOnFinished(f -> {
             primaryStage.hide();
             System.out.println("working");

@@ -25,6 +25,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
@@ -140,6 +141,7 @@ public class ChatBoxController implements Initializable {
                         mainClient.getUser().setMessage(new Message(ChatBox_TextField.getText(), mainClient.getUser().getFullname(), usedTabID,usedTabID));
                         server.sendMessage(mainClient, recievers.get(0));
                     } catch (RemoteException ex) {
+                        showAlert("Sorry the server currently is under maintenance");
                         Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     //   
@@ -320,6 +322,13 @@ public class ChatBoxController implements Initializable {
 
         System.out.println("sending");
         ChatBox_TextField.setText("");
+    }
+     private void showAlert(String s) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Error");
+        alert.setContentText(s);
+        alert.showAndWait();
     }
 
     //
