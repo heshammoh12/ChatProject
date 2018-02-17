@@ -34,6 +34,10 @@ public interface ServerInter extends Remote {
     
    /*Methods added by Hesham  */
     public ArrayList<User> search(String name) throws RemoteException;
+    
+    public int updateMode(String mode , String email)throws RemoteException;
+    
+    public int addFriend(String sender,String reciever)throws RemoteException;
     //
     
    /*Methods added by Fatma  */

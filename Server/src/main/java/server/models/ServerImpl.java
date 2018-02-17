@@ -162,6 +162,44 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
         }
         return names;
     }
+    
+        @Override
+    public int updateMode(String mode , String email) throws RemoteException 
+    {
+        DBconnect conn;
+        conn = DBconnect.getInstance();
+        int rowAffected=0;
+        System.out.println("server imp "+mode+"  "+email);
+        switch(mode)
+        {
+            case "Online":
+                rowAffected=conn.updateUserMode(1,email);
+                break;
+            case "Busy":
+                rowAffected=conn.updateUserMode(2,email);
+                break;
+            case "Away":
+                rowAffected=conn.updateUserMode(3,email);
+                break;
+            default:
+                rowAffected=conn.updateUserMode(1,email);
+        }
+        return rowAffected;
+    }
+    
+        @Override
+    public int addFriend(String sender, String reciever) throws RemoteException {
+        DBconnect conn;
+        conn = DBconnect.getInstance();
+        int rowAffected=0;
+        
+        try {
+            rowAffected=conn.addFriendRequest(sender, reciever);
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rowAffected;
+    }
     //
     /*Methods added by Fatma  */
     //
