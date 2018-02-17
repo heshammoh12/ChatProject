@@ -184,7 +184,7 @@ public class FXMLSignUpPageController implements Initializable {
             stage.show();
 
         } catch (IOException ex) {
-//            Logger.getLogger(FXMLFirstPageController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FXMLSignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -366,7 +366,28 @@ public class DBconnect {
               int recordCounter=0;  
               try {  
                       c=this.getConnection();  
-                      ps=c.prepareStatement(" update USERLOGIN set USERSTATUS=0 where USERSTATUS=?");  
+                      ps=c.prepareStatement(" update USERLOGIN set USERSTATUS=0 where email=?");  
+                      ps.setString(1, email);  
+                      recordCounter=ps.executeUpdate();  
+              } catch (Exception e) {  e.printStackTrace(); } finally{  
+                      
+                  if (ps!=null){  
+                      ps.close();  
+                  }if(c!=null){  
+                      c.close();  
+                  }   
+               }  
+             return recordCounter;  
+          }  
+         
+         public int signIndb(String email) throws SQLException  {  
+              Connection c=null;  
+              PreparedStatement ps=null;  
+                
+              int recordCounter=0;  
+              try {  
+                      c=this.getConnection();  
+                      ps=c.prepareStatement(" update USERLOGIN set USERSTATUS=1 where email=?");  
                       ps.setString(1, email);  
                       recordCounter=ps.executeUpdate();  
               } catch (Exception e) {  e.printStackTrace(); } finally{  

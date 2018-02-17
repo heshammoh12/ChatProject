@@ -37,6 +37,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -59,6 +60,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class ChatPageController implements Initializable {
+
     private FXMLLoader loader2;
     private Parent root2;
     @FXML
@@ -69,7 +71,7 @@ public class ChatPageController implements Initializable {
     private Tab tabAllUsers;
     @FXML
     private ComboBox ChatBox_ComboBox_Mode;
-    
+
     Circle cir;
     private ObservableList<User> onlineUsers;
     private HashMap<String, ChatBoxController> openedTabs;
@@ -77,6 +79,15 @@ public class ChatPageController implements Initializable {
     private Registry registry = null;
     private User loginer = null;
     private ClientInter client = null;
+    private Stage stage;
+    private double xOffset = 0;
+    private double yOffset = 0;
+    @FXML
+    private Button exitButton;
+    @FXML
+    private Button logOutButton;
+    @FXML
+    private ListView<?> ChatPage_List_AllUsers;
 
     public ServerInter getServer() {
         return server;
@@ -113,8 +124,7 @@ public class ChatPageController implements Initializable {
         //hesham
         //addNewSearchPane();
         initializeModeCompoBox();
-        
-        
+
         //nagib
         openedTabs = new HashMap<>();
     }
@@ -135,16 +145,13 @@ public class ChatPageController implements Initializable {
                 imageView.setFitHeight(30);
                 imageView.setFitWidth(30);
                 //circle for online and offline users
-                cir = new Circle(10,10,5);
-                if(item.getStatus() == 1)
-                {
+                cir = new Circle(10, 10, 5);
+                if (item.getStatus() == 1) {
                     cir.setFill(Color.LAWNGREEN);
-                }else if(item.getStatus() == 2)
-                {
+                } else if (item.getStatus() == 2) {
                     cir.setFill(Color.RED);
                 }
-                
-                
+
                 pictureRegion.setOnMousePressed(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
@@ -205,6 +212,14 @@ public class ChatPageController implements Initializable {
     /*Methods added by Nagib  */
     @FXML
     private void close(ActionEvent event) {
+        try {
+            boolean isSompleted = server.signOurServer(client.getUser().getEmail());
+            if (isSompleted) {
+                server.unregisterClint(client);
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         Platform.exit();
         System.exit(0);
@@ -363,6 +378,50 @@ public class ChatPageController implements Initializable {
 
     }
 
+    @FXML
+    private void logOut(ActionEvent event) {
+        try {
+
+            server.unregisterClint(client);
+
+        } catch (RemoteException ex) {
+            showAlert("Sorry currently the server is under maintenance");
+            Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        FXMLLoader loader;
+        Parent root;
+        try {
+            loader = new FXMLLoader();
+            root = loader.load(getClass().getResource("/fxml/Scene.fxml").openStream());
+            FXMLController controller = (FXMLController) loader.getController();
+            controller.setRegistry(registry);
+            stage = (Stage) logOutButton.getScene().getWindow();
+            // to make it draggable
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    stage.setX(event.getScreenX() - xOffset);
+                    stage.setY(event.getScreenY() - yOffset);
+                }
+            });
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/Styles.css").toString());
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLSignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
     //
     //
     /*Methods added by Dina  */
@@ -373,38 +432,35 @@ public class ChatPageController implements Initializable {
     //
     /*Methods added by Hesham  */
     //
-    public void addNewSearchPane(ClientInter clientInter)
-    {
+    public void addNewSearchPane(ClientInter clientInter) {
         try {
 
-            
             loader2 = new FXMLLoader();
 
             Pane newLoadedPane = loader2.load(getClass().getResource("/fxml/searchFriends.fxml").openStream());
             SearchFriendsController searchController = (SearchFriendsController) loader2.getController();
             searchController.setLoginer(clientInter.getUser());
-            
+
             tabAllUsers.setContent(newLoadedPane);
         } catch (IOException ex) {
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void initializeModeCompoBox() 
-    {
+
+    public void initializeModeCompoBox() {
         ChatBox_ComboBox_Mode.getItems().removeAll(ChatBox_ComboBox_Mode.getItems());
         ChatBox_ComboBox_Mode.getItems().addAll("Online", "Busy", "Away");
         ChatBox_ComboBox_Mode.getSelectionModel().select("Online");
     }
+
     @FXML
-    private void comboAction(ActionEvent event) 
-    {
+    private void comboAction(ActionEvent event) {
         System.out.println(ChatBox_ComboBox_Mode.getValue());
-        System.out.println("mail is "+getLoginer().getEmail());
+        System.out.println("mail is " + getLoginer().getEmail());
         int checkRowAffected;
         try {
-            checkRowAffected=server.updateMode(ChatBox_ComboBox_Mode.getValue().toString(),getLoginer().getEmail());
-            System.out.println("afftected rows "+checkRowAffected);
+            checkRowAffected = server.updateMode(ChatBox_ComboBox_Mode.getValue().toString(), getLoginer().getEmail());
+            System.out.println("afftected rows " + checkRowAffected);
         } catch (RemoteException ex) {
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
         }

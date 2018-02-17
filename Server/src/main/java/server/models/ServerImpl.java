@@ -56,24 +56,45 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 
     @Override
     public void registerClint(ClientInter client) throws RemoteException {
-        clientsArrayList.add(client);
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                serverController.displayUsersLists();
-            }
-        });
+        boolean isSompleted = signInServer(client.getUser().getEmail());
+        if (isSompleted) {
+            clientsArrayList.add(client);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    serverController.displayUsersLists();
+                }
+            });
+        }
+
     }
 
     @Override
     public void unregisterClint(ClientInter client) throws RemoteException {
+        boolean isSompleted = signOurServer(client.getUser().getEmail());
         clientsArrayList.remove(client);
-        serverController.displayUsersLists();
+        if (isSompleted) {
+            clientsArrayList.remove(client);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    serverController.displayUsersLists();
+                }
+            });
+        }
     }
 
     @Override
     public boolean signOurServer(String email) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        DBconnect conn;
+        conn = DBconnect.getInstance();
+        try {
+            int updatedRows = conn.signOutdb(email);
+            System.out.println("updatedRows ->" + updatedRows);
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
     }
 
 //
@@ -116,6 +137,19 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
     @Override
     public void clearClientsList() throws RemoteException {
         clientsArrayList.clear();
+    }
+
+    @Override
+    public boolean signInServer(String email) throws RemoteException {
+        DBconnect conn;
+        conn = DBconnect.getInstance();
+        try {
+            int updatedRows = conn.signIndb(email);
+            System.out.println("updatedRows ->" + updatedRows);
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
     }
 
     //
@@ -162,39 +196,37 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
         }
         return names;
     }
-    
-        @Override
-    public int updateMode(String mode , String email) throws RemoteException 
-    {
+
+    @Override
+    public int updateMode(String mode, String email) throws RemoteException {
         DBconnect conn;
         conn = DBconnect.getInstance();
-        int rowAffected=0;
-        System.out.println("server imp "+mode+"  "+email);
-        switch(mode)
-        {
+        int rowAffected = 0;
+        System.out.println("server imp " + mode + "  " + email);
+        switch (mode) {
             case "Online":
-                rowAffected=conn.updateUserMode(1,email);
+                rowAffected = conn.updateUserMode(1, email);
                 break;
             case "Busy":
-                rowAffected=conn.updateUserMode(2,email);
+                rowAffected = conn.updateUserMode(2, email);
                 break;
             case "Away":
-                rowAffected=conn.updateUserMode(3,email);
+                rowAffected = conn.updateUserMode(3, email);
                 break;
             default:
-                rowAffected=conn.updateUserMode(1,email);
+                rowAffected = conn.updateUserMode(1, email);
         }
         return rowAffected;
     }
-    
-        @Override
+
+    @Override
     public int addFriend(String sender, String reciever) throws RemoteException {
         DBconnect conn;
         conn = DBconnect.getInstance();
-        int rowAffected=0;
-        
+        int rowAffected = 0;
+
         try {
-            rowAffected=conn.addFriendRequest(sender, reciever);
+            rowAffected = conn.addFriendRequest(sender, reciever);
         } catch (SQLException ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
