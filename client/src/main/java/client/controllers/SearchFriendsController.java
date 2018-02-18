@@ -138,8 +138,15 @@ public class SearchFriendsController implements Initializable {
         {
             try {
                 if(!searchesEmail.equals(this.loginer.getEmail()))
-                {
+                {   
                     allUser = server.search(searchesEmail);
+                    for(User myFriend : server.getFrinds(this.loginer.getEmail()))
+                    {
+                        if(myFriend.getEmail().equals(searchesEmail))
+                        {
+                            allUser.clear();
+                        }
+                    }
                 }
             } catch (RemoteException ex) {
                 Logger.getLogger(SearchFriendsController.class.getName()).log(Level.SEVERE, null, ex);
@@ -160,8 +167,9 @@ public class SearchFriendsController implements Initializable {
                 HBox hboxButton = new HBox();
                 HBox pictureRegion = new HBox();
                 Text text = new Text(item.getEmail());
-                File file = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\CustomList\\src\\customlist\\personal-website-design.png");
+                File file = new File("..\\images\\personal.png");
                 Button btnAdd = new Button("add");
+                
                 btnAdd.setOnAction(new EventHandler<ActionEvent>()
                 {
                     @Override
