@@ -426,6 +426,7 @@ public class ChatPageController implements Initializable {
     //
     /*Methods added by Dina  */
     //
+    
     //
     /*Methods added by Hassna  */
     //

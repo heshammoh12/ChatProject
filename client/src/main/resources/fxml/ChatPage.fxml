@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -16,7 +21,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.ChatPageController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.ChatPageController">
    <children>
       <Pane layoutY="-5.0" prefHeight="72.0" prefWidth="600.0">
          <children>
@@ -60,7 +65,7 @@
                <children>
                   <TabPane layoutX="1.0" prefHeight="328.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                      <Tab text="OnlineUsers">
+                      <Tab text="MyFriends">
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
@@ -69,7 +74,7 @@
                               </AnchorPane>
                         </content>
                       </Tab>
-                      <Tab fx:id="tabAllUsers" text="AllUsers">
+                      <Tab fx:id="tabAllUsers" text="Search">
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
@@ -78,6 +83,11 @@
                               </AnchorPane>
                         </content>
                       </Tab>
+                        <Tab text="FriendReq">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                          </content>
+                        </Tab>
                     </tabs>
                   </TabPane>
                </children>
@@ -86,14 +96,16 @@
                <children>
                   <TabPane fx:id="ChatPage_TabPane_Users" prefHeight="328.0" prefWidth="514.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                      <Tab text="Friend1">
+                      <Tab text="Home">
                            <content>
-                              <AnchorPane prefHeight="200.0" prefWidth="180.0" />
-                           </content>
-                      </Tab>
-                      <Tab text="Friend 2">
-                           <content>
-                              <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                              <AnchorPane prefHeight="200.0" prefWidth="180.0">
+                                 <children>
+                                    <Label layoutX="92.0" layoutY="14.0" prefHeight="27.0" prefWidth="201.0" text="Welcome In Life Etshat :D ">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children></AnchorPane>
                            </content>
                       </Tab>
                     </tabs>
