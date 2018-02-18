@@ -105,7 +105,10 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInter {
     public void setTransferFile(FileTransferInt transferFile) {
         this.transferFile = transferFile;
     }
-
+    @Override
+    public void getAnnoncment(String Content){
+        
+    }
     //    
     /*Methods added by Hassna  */
     public boolean signOut() {

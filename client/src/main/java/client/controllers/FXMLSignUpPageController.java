@@ -315,7 +315,7 @@ public class FXMLSignUpPageController implements Initializable {
 
     private void seviceLookUp() {
         try {
-            setRegistry(LocateRegistry.getRegistry(2000));
+            setRegistry(LocateRegistry.getRegistry("10.118.49.2",2000));
             setServer((ServerInter) registry.lookup("ChatService"));
             setSignUpVerificationInter((SignUpVerificationInter) registry.lookup("SignUpVary"));
 

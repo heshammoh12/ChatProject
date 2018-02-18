@@ -25,6 +25,7 @@ public interface ClientInter extends Remote {
     public User getUser() throws RemoteException;
     public FileTransferInt getTransferFile() throws RemoteException;
     public void setTransferFile(FileTransferInt transferFile) throws RemoteException;
+    public void getAnnoncment(String Content)throws RemoteException;
 
     /*Methods added by Hassna  */
     public void getNotification(String content) throws RemoteException;

@@ -247,7 +247,7 @@ public class ChatPageController implements Initializable {
 
     private void seviceLookUp() {
         try {
-            setRegistry(LocateRegistry.getRegistry(2000));
+            setRegistry(LocateRegistry.getRegistry("10.118.49.2",2000));
             setServer((ServerInter) registry.lookup("ChatService"));
         } catch (NotBoundException | RemoteException ex) {
             showAlert("Sorry the server currently is under maintenance");
