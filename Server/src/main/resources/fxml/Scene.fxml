@@ -69,7 +69,7 @@
                         </AnchorPane>
                     </content>
                   </Tab>
-                <Tab styleClass="tabs" text="Online Users">
+                <Tab onSelectionChanged="#displayUsersLists" styleClass="tabs" text="Online Users">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="tabPane">
                            <children>
@@ -105,7 +105,7 @@
                            </children></AnchorPane>
                   </content>
                 </Tab>
-                <Tab styleClass="tabs" text="Statistics">
+                <Tab onSelectionChanged="#showStatistics" styleClass="tabs" text="Statistics">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="tabPane">
                            <children>

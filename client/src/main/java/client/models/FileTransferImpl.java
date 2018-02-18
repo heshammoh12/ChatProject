@@ -65,7 +65,6 @@ public class FileTransferImpl implements FileTransferInt ,Serializable{
     }
     @Override
     public boolean askForAcceptance(ClientInter reciever) {
-        
         return true;
     }
 

@@ -134,23 +134,17 @@ public class SearchFriendsController implements Initializable {
     {
         searchesEmail = TextField_SearchFriend.getText();
         allUser = new ArrayList<User>();
-        try {
-            allUser=server.search(searchesEmail);
-            Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                server.updateStatistics();
-                                server.registerClint(client);
-                            } catch (RemoteException ex) {
-                                Logger.getLogger(SearchFriendsController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            
-                        }
-                    });
+        if(!searchesEmail.isEmpty())
+        {
+            try {
+                if(!searchesEmail.equals(this.loginer.getEmail()))
+                {
+                    allUser = server.search(searchesEmail);
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(SearchFriendsController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
-        } catch (RemoteException ex) {
-            Logger.getLogger(SearchFriendsController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return allUser;
     }
