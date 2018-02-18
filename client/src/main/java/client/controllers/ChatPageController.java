@@ -62,6 +62,7 @@ import javafx.util.Callback;
 public class ChatPageController implements Initializable {
 
     private FXMLLoader loader2;
+    private FXMLLoader requestsLoader;
     private Parent root2;
     @FXML
     private ListView ChatPage_List_OnlineUsers;
@@ -426,7 +427,17 @@ public class ChatPageController implements Initializable {
     //
     /*Methods added by Dina  */
     //
-    
+    public void addFriendRequestPane(ClientInter clientInter){
+        
+        try {
+            requestsLoader = new FXMLLoader();
+            Pane newPane = requestsLoader.load(getClass().getResource("/fxml/friendRequests.fxml").openStream());
+            FriendRequestsController requestController = (FriendRequestsController) requestsLoader.getController();
+            requestController.setLoginer(clientInter.getUser());
+        } catch (IOException ex) {
+            Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     //
     /*Methods added by Hassna  */
     //

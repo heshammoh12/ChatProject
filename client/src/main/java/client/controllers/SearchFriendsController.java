@@ -167,7 +167,7 @@ public class SearchFriendsController implements Initializable {
                 HBox hboxButton = new HBox();
                 HBox pictureRegion = new HBox();
                 Text text = new Text(item.getEmail());
-                File file = new File("..\\images\\personal.png");
+                File file = new File("\\resources\\images\\personal.png");
                 Button btnAdd = new Button("add");
                 
                 btnAdd.setOnAction(new EventHandler<ActionEvent>()
