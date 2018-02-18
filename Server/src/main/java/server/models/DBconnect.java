@@ -276,29 +276,24 @@ public class DBconnect {
                       
                         con=this.getConnection();  
                         System.out.println("after conn");
-                        ps=con.prepareStatement("select EMAIL, FULLNAME, GENDER, COUNTRY from USERINFO WHERE FULLNAME LIKE '%"+name+"%'");
+                        ps=con.prepareStatement("select a.EMAIL, a.FULLNAME, a.GENDER, a.COUNTRY,"
+                                + "b.USERNAME,b.PASSWORD,b.USERSTATUS,b.USERMODE "
+                                + "from USERINFO a ,USERLOGIN b  WHERE a.EMAIL = b.EMAIL and a.EMAIL ='"+name+"'");
 //                        ps.setString(0, name); 
                         System.out.println("before excute");
                         
                         rs=ps.executeQuery();
                         System.out.println("after excute");
-                        while(rs.next()){
-                                user.setEmail(rs.getString("EMAIL"));
-                                user.setCountry(rs.getString("COUNTRY"));
-                                user.setFullname(rs.getString("FULLNAME"));
-                                user.setGender(rs.getString("GENDER"));
-                                System.out.println("first rs"+user.getEmail());
-                                
-                                ps2=con.prepareStatement("Select USERNAME , PASSWORD,USERSTATUS, USERMODE from USERLOGIN WHERE EMAIL =?");
-                                ps2.setString(1, user.getEmail());
-                                rs2=ps2.executeQuery();
-                                if(rs2.next()){
-                                    user.setMode(rs2.getInt("USERMODE"));
-                                    user.setPassword(rs2.getString("PASSWORD"));
-                                    user.setUsername(rs2.getString("USERNAME"));
-                                    user.setStatus(rs2.getInt("USERSTATUS"));
-                                }  
-                                System.out.println(user.getEmail());
+                        while(rs.next())
+                        {
+                                user.setEmail(rs.getString(1));
+                                user.setFullname(rs.getString(2));
+                                user.setGender(rs.getString(3));
+                                user.setCountry(rs.getString(4));
+                                user.setUsername(rs.getString(5));
+                                user.setPassword(rs.getString(6));
+                                user.setStatus(rs.getInt(7));
+                                user.setMode(rs.getInt(8));
                                 users.add(user);
 			}
                 

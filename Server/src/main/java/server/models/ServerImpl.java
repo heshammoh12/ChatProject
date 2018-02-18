@@ -215,22 +215,24 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
     /*Methods added by Dina  */
     //
     @Override
-    public void sendNotification(String content) {
+    public void sendAnnoncment(String content) {
         System.out.println("annoncment content is " + content);
         try {
             clientsArrayList.forEach((client) -> {
-                try {
+                /*try {
                     client.getNotification(content);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }*/
             });
         } catch (Exception ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-
+    public void notifyFriendRequest(ClientInter reciever){
+    
+    }
     //
     /*Methods added by Hassna  */
     //

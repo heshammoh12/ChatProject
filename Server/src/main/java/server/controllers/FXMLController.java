@@ -172,7 +172,7 @@ public class FXMLController implements Initializable {
         ServerImpl impl;
         try {
             impl = new ServerImpl();
-            impl.sendNotification(text);
+            impl.sendAnnoncment(text);
         } catch (RemoteException ex) {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }    
