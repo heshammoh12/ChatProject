@@ -28,7 +28,7 @@ public interface ServerInter extends Remote {
     
     //
     public void sendAnnoncment(String content)throws RemoteException;
-    public void notifyFriendRequest(ClientInter reciever);
+    public void notifyFriendRequest(ClientInter reciever)throws RemoteException;
    /*Methods added by Hassna  */
     
     public boolean signOurServer(String email) throws RemoteException;
