@@ -17,6 +17,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,7 +29,9 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.Node;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
@@ -61,11 +64,11 @@ public class ChatBoxController implements Initializable {
      */
     Circle smallImageCircle1;
     Circle smallImageCircle2;
-    
+
     Image imageSmallCirlce;
     Image imageSmallCirlce2;
     boolean isSender;
-    
+
     /*variables added by Dina  */
     //
     //
@@ -75,14 +78,14 @@ public class ChatBoxController implements Initializable {
     //
 
     /*variables added by Hesham  */
-        Color color;
+    Color color;
 
     //
 
     /*variables added by Fatma  */
     //
     //
-   private ArrayList<Message> messags = null;
+    private ArrayList<Message> messags = null;
     @FXML
     private Button ChatBox_Button_SaveChat;
 
@@ -110,20 +113,21 @@ public class ChatBoxController implements Initializable {
     private ArrayList<ClientInter> recievers = null;
     private String usedTabID = null;
     private ServerInter server = null;
+    private File f = null;
 
     //
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         //make scroll pan scrollable
         ChatBoxScrollPane.vvalueProperty().bind(ChatBox_AreaMessages.heightProperty());
         //setCircleMsg();
         smallImageCircle1 = new Circle(10, 10, 5);
         smallImageCircle1.setStroke(Color.SEAGREEN);
-        
+
         smallImageCircle2 = new Circle(10, 10, 5);
         smallImageCircle2.setStroke(Color.SEAGREEN);
-        
+
         initializeCompoBoxFontsType();
         initializeCompoBoxFontsSize();
         buttonImages();
@@ -132,11 +136,11 @@ public class ChatBoxController implements Initializable {
         ChatBox_ComboBox_ColorPicker.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("color picker value is "+ChatBox_ComboBox_ColorPicker.getValue());
+                System.out.println("color picker value is " + ChatBox_ComboBox_ColorPicker.getValue());
                 color = ChatBox_ComboBox_ColorPicker.getValue();
             }
         });
-        
+
         //listner on text field on enter button
         ChatBox_TextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -170,7 +174,7 @@ public class ChatBoxController implements Initializable {
                     //
 
                     try {
-                        mainClient.getUser().setMessage(new Message(ChatBox_TextField.getText(), mainClient.getUser().getFullname(), usedTabID,usedTabID));
+                        mainClient.getUser().setMessage(new Message(ChatBox_TextField.getText(), mainClient.getUser().getFullname(), usedTabID, usedTabID));
                         server.sendMessage(mainClient, recievers.get(0));
                     } catch (RemoteException ex) {
                         showAlert("Sorry the server currently is under maintenance");
@@ -186,8 +190,8 @@ public class ChatBoxController implements Initializable {
 
         recievers = new ArrayList<>();
         //
-          messags = new ArrayList<>(); 
-            ChatBox_Button_SaveChat.setOnAction(new EventHandler<ActionEvent>() {
+        messags = new ArrayList<>();
+        ChatBox_Button_SaveChat.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent arg0) {
 
@@ -197,16 +201,15 @@ public class ChatBoxController implements Initializable {
                     fileChooser.getExtensionFilters().add(extFilter);
                     File file = fileChooser.showSaveDialog(ChatBoxScrollPane.getScene().getWindow());
                     System.out.println(file);
-                    
-                   
-                   Creatxmlfile.createFile(file,messags,mainClient.getUser());
-                    
+
+                    Creatxmlfile.createFile(file, messags, mainClient.getUser());
+
                 } catch (IOException ex) {
                     Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-          
+
     }
 
     public void buttonImages() {
@@ -260,11 +263,10 @@ public class ChatBoxController implements Initializable {
             Text t = new Text(user.getMessage().getContent());
             //t.setFill(color);
             TextFlow textFlow = new TextFlow(t, data);
-             textFlow.setStyle("-fx-background-color: #FF8F00; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
+            textFlow.setStyle("-fx-background-color: #FF8F00; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
 
             //imageSmallCirlce2 = new Image("/images/personal.png");
             //smallImageCircle2.setFill(new ImagePattern(imageSmallCirlce2));
-
             HBox h = new HBox(textFlow);
             Platform.runLater(new Runnable() {
                 @Override
@@ -279,7 +281,7 @@ public class ChatBoxController implements Initializable {
         //code added by nagib
         //
     }
-        
+
     public void sendMessage(User user) {
         isSender = true;
         Render(user);
@@ -287,7 +289,7 @@ public class ChatBoxController implements Initializable {
 
         //code added by nagib
         //
-               messags.add(user.getMessage());
+        messags.add(user.getMessage());
     }
 
     public void recieveMessage(User user) {
@@ -315,9 +317,8 @@ public class ChatBoxController implements Initializable {
 
     public void setCircleMsg() {
         //initialize the node circle
-        
-        //
 
+        //
         //code added by nagib
         //
     }
@@ -342,7 +343,39 @@ public class ChatBoxController implements Initializable {
         //
     }
 
-    //
+    public void requestRecieveFile(ClientInter sender) {
+        System.out.println("requestRecieveFile");
+        try {
+            System.out.println("the main clint is + " + mainClient.getUser().getFullname());
+        } catch (RemoteException ex) {
+            Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Platform.runLater(() -> {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Do you want to download file ?");
+            alert.setContentText(" ");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                System.out.println("ok");
+                try {
+                    sender.startSendingFile(usedTabID);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } else {
+                System.out.println("cancel");
+            }
+
+        });
+    }
+    public void startSendingFile(){
+        System.out.println("ChatBoxController startSendingFile()");
+    //                            this.mainClient.getTransferFile().sendFile(this.recievers.get(0), f);
+
+    }
+
     public void setMainClient(ClientInter mainClient) {
         this.mainClient = mainClient;
     }
@@ -369,8 +402,6 @@ public class ChatBoxController implements Initializable {
     public ArrayList<ClientInter> getRecievers() {
         return recievers;
     }
-    
-    
 
     @FXML
     private void send(ActionEvent event) {
@@ -378,7 +409,8 @@ public class ChatBoxController implements Initializable {
         System.out.println("sending");
         ChatBox_TextField.setText("");
     }
-     private void showAlert(String s) {
+
+    private void showAlert(String s) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning Dialog");
         alert.setHeaderText("Error");
@@ -387,27 +419,27 @@ public class ChatBoxController implements Initializable {
     }
 
     //
-    
-     /*Methods added by Dina  */
+    /*Methods added by Dina  */
     //
     @FXML
-    public void attachFile(ActionEvent event){
-        Stage st =(Stage) ((Node)event.getSource()).getScene().getWindow();
+    public void attachFile(ActionEvent event) {
+        f = null;
+        Stage st = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FileChooser fileChooser = new FileChooser();
-        File f = fileChooser.showOpenDialog(st);
-        if (f == null) {return;}
-           Thread transfer = new Thread(()->{
+        f = fileChooser.showOpenDialog(st);
+        if (f != null) {
+            Thread transfer = new Thread(() -> {
                 try {
-                        if(this.recievers.get(0).getTransferFile().askForAcceptance(this.recievers.get(0)))
-                        {
-                            this.mainClient.getTransferFile().sendFile(this.recievers.get(0), f);
-                        } 
+                    System.out.println("the sender of the file is : " + this.mainClient.getUser().getFullname());
+                    System.out.println("the reciever of the file is : " + this.recievers.get(0).getUser().getFullname());
+                    this.recievers.get(0).acceptRecieveingFile(mainClient, usedTabID);
+                    System.out.println("accept file ");
                 } catch (RemoteException ex) {
                     Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }); 
-           transfer.start();
-
+            });
+            transfer.start();
+        }
     }
     /*Methods added by Hassna  */
     //
@@ -415,5 +447,5 @@ public class ChatBoxController implements Initializable {
     //
     /*Methods added by Fatma  */
     //
-      
+
 }

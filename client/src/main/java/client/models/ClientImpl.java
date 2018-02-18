@@ -63,7 +63,31 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInter {
 
     @Override
     public void setChatPageController(Object chatPageController) throws RemoteException {
-        this.chatPageController=(ChatPageController)chatPageController;
+        this.chatPageController = (ChatPageController) chatPageController;
+    }
+
+    @Override
+    public void acceptRecieveingFile(ClientInter sender, String tabid) throws RemoteException {
+        System.out.println("clint acceptRecieveingFile user name " + this.getUser().getFullname());
+        System.out.println(user.getUsername() + "this clint will chooce to recieve file or not ");
+        chatPageController.recievefile(sender, tabid);
+    }
+
+    @Override
+    public void startSendingFile(String tabid) throws RemoteException {
+
+    }
+
+    @Override
+    public void friendChangeState(ClientInter client,int state) throws RemoteException {
+        System.out.println("friendBecameonline ClintImp");
+        chatPageController.friendChangeState(client , state);
+    }
+
+    @Override
+    public void friendChangeMode(ClientInter client,int mode) throws RemoteException {
+        System.out.println("friendBecameonline ClintImp");
+        chatPageController.friendChangeMode(client , mode);
     }
 
     //
@@ -81,7 +105,7 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInter {
     public void setTransferFile(FileTransferInt transferFile) {
         this.transferFile = transferFile;
     }
-       
+
     //    
     /*Methods added by Hassna  */
     public boolean signOut() {

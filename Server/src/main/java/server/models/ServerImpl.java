@@ -66,6 +66,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
                 }
             });
         }
+        notifyOnlineFriendsStatus(client, client.getUser().getEmail(), 1);
 
     }
 
@@ -82,6 +83,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
                 }
             });
         }
+        notifyOnlineFriendsStatus(client, client.getUser().getEmail(), 2);
     }
 
     @Override
@@ -152,6 +154,62 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
         return true;
     }
 
+    public void notifyOnlineFriendsStatus(ClientInter client, String mail, int state) {
+        ArrayList<String> mails = null;
+        ArrayList<ClientInter> onlineClients = new ArrayList<>();
+        DBconnect conn;
+        try {
+            conn = DBconnect.getInstance();
+            mails = conn.getOnlineFriends(mail);
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            for (String mail1 : mails) {
+                ClientInter c_i = getFriendClient(mail1);
+                if (c_i != null) {
+                    onlineClients.add(c_i);
+                }
+            }
+
+            for (ClientInter onlineClient : onlineClients) {
+                onlineClient.friendChangeState(client, state);
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("finish notfiing");
+
+    }
+
+    public void notifyOnlineFriendsMode(ClientInter client, String mail, int mode) {
+        ArrayList<String> mails = null;
+        ArrayList<ClientInter> onlineClients = new ArrayList<>();
+        DBconnect conn;
+        try {
+            conn = DBconnect.getInstance();
+            mails = conn.getOnlineFriends(mail);
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            for (String mail1 : mails) {
+                ClientInter c_i = getFriendClient(mail1);
+                if (c_i != null) {
+                    onlineClients.add(c_i);
+                }
+            }
+
+            for (ClientInter onlineClient : onlineClients) {
+                onlineClient.friendChangeMode(client, mode);
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("finish notfiing");
+
+    }
+
     //
     //
     /*Methods added by Dina  */
@@ -198,24 +256,27 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
     }
 
     @Override
-    public int updateMode(String mode, String email) throws RemoteException {
+    public int updateMode(ClientInter client,int mode , String email) throws RemoteException {
         DBconnect conn;
         conn = DBconnect.getInstance();
         int rowAffected = 0;
         System.out.println("server imp " + mode + "  " + email);
         switch (mode) {
-            case "Online":
+            case 1:
                 rowAffected = conn.updateUserMode(1, email);
+                notifyOnlineFriendsMode(client, email, 1);
                 break;
-            case "Busy":
+            case 2:
                 rowAffected = conn.updateUserMode(2, email);
+                notifyOnlineFriendsMode(client, email, 2);
                 break;
-            case "Away":
+            case 3:
                 rowAffected = conn.updateUserMode(3, email);
+                notifyOnlineFriendsMode(client, email, 3);
                 break;
-            default:
-                rowAffected = conn.updateUserMode(1, email);
+            
         }
+
         return rowAffected;
     }
 
