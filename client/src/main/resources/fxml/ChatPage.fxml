@@ -65,7 +65,8 @@
                <children>
                   <TabPane layoutX="1.0" prefHeight="328.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                      <Tab text="MyFriends">
+                      <Tab text="Friends">
+
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
@@ -96,7 +97,7 @@
                <children>
                   <TabPane fx:id="ChatPage_TabPane_Users" prefHeight="328.0" prefWidth="514.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                      <Tab text="Home">
+                      <Tab closable="false" text="Home">
                            <content>
                               <AnchorPane prefHeight="200.0" prefWidth="180.0">
                                  <children>

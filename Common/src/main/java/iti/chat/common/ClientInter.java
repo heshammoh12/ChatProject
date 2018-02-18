@@ -13,8 +13,12 @@ public interface ClientInter extends Remote {
 
     /*Methods added by Nagib  */
     public Object getChatPageController() throws RemoteException;
+    public void acceptRecieveingFile(ClientInter sender,String tabid) throws RemoteException ;
+    public void startSendingFile(String tabid) throws RemoteException ;
 
     public void setChatPageController(Object chatPageController) throws RemoteException;
+    public void friendChangeState(ClientInter client,int state) throws RemoteException;
+    public void friendChangeMode(ClientInter client,int mode) throws RemoteException;
 
     //
     /*Methods added by Dina  */

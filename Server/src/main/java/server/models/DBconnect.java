@@ -396,6 +396,35 @@ public class DBconnect {
              return recordCounter;  
           }  
          
+//
+//methods by nagib
+public ArrayList<String> getOnlineFriends(String mail) throws SQLException{  
+              Connection c=null;  
+              PreparedStatement ps=null;
+              ResultSet rs = null;
+              ArrayList<String> friedsMails = new ArrayList<>();
+              
+              try {  
+                      c=this.getConnection();  
+                      ps=c.prepareStatement(" SELECT userlogin.email from userlogin where email in( SELECT userfriends.friendemail FROM userfriends where userfriends.EMAIL ='"+mail+"') AND userlogin.userstatus =1");  
+                      rs = ps.executeQuery();  
+                       while(rs.next()){
+                           friedsMails.add(rs.getString("EMAIL"));
+                       }
+              } catch (Exception e) { e.printStackTrace(); }   
+              finally{  
+              if (ps!=null){  
+                      ps.close();  
+             }if(c!=null){  
+                      c.close();  
+              }   
+           }  
+             return friedsMails;  
+          } 
+
+
+//
+         
 //Dina's methods
     public ArrayList<String> getUserFriends(String email) throws SQLException, ClassNotFoundException {
         Connection con = this.getConnection();
@@ -432,6 +461,10 @@ public class DBconnect {
             String fCountry = rs.getString(4);
             int fStatus = rs.getInt(5);
             int fMode = rs.getInt(6);
+            System.out.println("---------build user---------");
+            System.out.println("fEmail "+fEmail);
+            System.out.println("fStatus "+fStatus);
+            System.out.println("fMode "+fMode);
             friend = new User(fEmail, fName, fgender, fCountry, fStatus, fMode);
         }
         query.close();
