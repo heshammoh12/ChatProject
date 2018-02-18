@@ -20,14 +20,15 @@ public interface ServerInter extends Remote {
     public void setServerController(Object serverController) throws RemoteException;
     public void updateStatistics() throws RemoteException;
     public void clearClientsList()throws RemoteException;
+    public boolean signInServer(String email) throws RemoteException;
 
     //
     
    /*Methods added by Dina  */
     
     //
-    public void sendNotification(String content)throws RemoteException;
-    
+    public void sendAnnoncment(String content)throws RemoteException;
+    public void notifyFriendRequest(ClientInter reciever)throws RemoteException;
    /*Methods added by Hassna  */
     
     public boolean signOurServer(String email) throws RemoteException;
@@ -35,7 +36,7 @@ public interface ServerInter extends Remote {
    /*Methods added by Hesham  */
     public ArrayList<User> search(String name) throws RemoteException;
     
-    public int updateMode(String mode , String email)throws RemoteException;
+    public int updateMode(ClientInter client,int mode , String email)throws RemoteException;
     
     public int addFriend(String sender,String reciever)throws RemoteException;
     //

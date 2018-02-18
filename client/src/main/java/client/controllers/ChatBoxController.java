@@ -10,6 +10,7 @@ import iti.chat.common.Message;
 import iti.chat.common.ServerInter;
 import iti.chat.common.User;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
@@ -21,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +32,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.Node;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
@@ -50,6 +56,9 @@ import javafx.scene.text.TextFlow;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import savechat.Creatxmlfile;
 
 /**
  * FXML Controller class
@@ -63,13 +72,13 @@ public class ChatBoxController implements Initializable {
      */
     Circle smallImageCircle1;
     Circle smallImageCircle2;
-    
+
     Image imageSmallCirlce;
     Image imageSmallCirlce2;
     boolean isSender;
-    
+
     /*variables added by Dina  */
-    //
+    boolean acceptFile=false;
     //
 
     /*variables added by Hassna  */
@@ -93,6 +102,9 @@ public class ChatBoxController implements Initializable {
     /*variables added by Fatma  */
     //
     //
+    private ArrayList<Message> messags = null;
+    @FXML
+    private Button ChatBox_Button_SaveChat;
 
     @FXML
     private Button ChatBox_Button_AddFirendToChat;
@@ -118,6 +130,7 @@ public class ChatBoxController implements Initializable {
     private ArrayList<ClientInter> recievers = null;
     private String usedTabID = null;
     private ServerInter server = null;
+    private File f = null;
 
     //
     @Override
@@ -129,10 +142,10 @@ public class ChatBoxController implements Initializable {
         //setCircleMsg();
         smallImageCircle1 = new Circle(10, 10, 5);
         smallImageCircle1.setStroke(Color.SEAGREEN);
-        
+
         smallImageCircle2 = new Circle(10, 10, 5);
         smallImageCircle2.setStroke(Color.SEAGREEN);
-        
+
         initializeCompoBoxFontsType();
         initializeCompoBoxFontsSize();
         buttonImages();
@@ -141,14 +154,14 @@ public class ChatBoxController implements Initializable {
         ChatBox_ComboBox_ColorPicker.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("color picker value is "+ChatBox_ComboBox_ColorPicker.getValue());
+                System.out.println("color picker value is " + ChatBox_ComboBox_ColorPicker.getValue());
                 color = ChatBox_ComboBox_ColorPicker.getValue();
                 colorString ="#" + Integer.toHexString(color.hashCode()); 
                 ChatBox_TextField.setStyle("-fx-text-inner-color:" + colorString + ";");
                 
             }
         });
-        
+
         //listner on text field on enter button
         ChatBox_TextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -202,6 +215,7 @@ public class ChatBoxController implements Initializable {
                         server.sendMessage(mainClient, recievers.get(0));
                         sendMessage(mainClient.getUser());
                     } catch (RemoteException ex) {
+                        showAlert("Sorry the server currently is under maintenance");
                         Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (ParseException ex) {
                         Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
@@ -218,6 +232,26 @@ public class ChatBoxController implements Initializable {
 
         recievers = new ArrayList<>();
         //
+        messags = new ArrayList<>();
+        ChatBox_Button_SaveChat.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent arg0) {
+
+                try {
+                    FileChooser fileChooser = new FileChooser();
+                    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("xml files (*.xml)", "xml");
+                    fileChooser.getExtensionFilters().add(extFilter);
+                    File file = fileChooser.showSaveDialog(ChatBoxScrollPane.getScene().getWindow());
+                    System.out.println(file);
+
+                    Creatxmlfile.createFile(file, messags, mainClient.getUser());
+
+                } catch (IOException ex) {
+                    Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+
     }
     @FXML
     private void comboActionFontType(ActionEvent event) {
@@ -352,11 +386,10 @@ public class ChatBoxController implements Initializable {
             
             //t.setFill(color);
             TextFlow textFlow = new TextFlow(t, data);
-             textFlow.setStyle("-fx-background-color: #FF8F00; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
+            textFlow.setStyle("-fx-background-color: #FF8F00; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
 
             //imageSmallCirlce2 = new Image("/images/personal.png");
             //smallImageCircle2.setFill(new ImagePattern(imageSmallCirlce2));
-
             HBox h = new HBox(textFlow);
             Platform.runLater(new Runnable() {
                 @Override
@@ -380,6 +413,7 @@ public class ChatBoxController implements Initializable {
 
         //code added by nagib
         //
+        messags.add(user.getMessage());
     }
 
     public void recieveMessage(User user) {
@@ -390,6 +424,7 @@ public class ChatBoxController implements Initializable {
 
         //code added by nagib
         //
+        messags.add(user.getMessage());
     }
 
     public String getDate() {
@@ -425,9 +460,8 @@ public class ChatBoxController implements Initializable {
 */
     public void setCircleMsg() {
         //initialize the node circle
-        
-        //
 
+        //
         //code added by nagib
         //
     }
@@ -452,7 +486,48 @@ public class ChatBoxController implements Initializable {
         //
     }
 
-    //
+    public void requestRecieveFile(ClientInter sender) {
+        System.out.println("requestRecieveFile");
+        try {
+            System.out.println("the main clint is + " + mainClient.getUser().getFullname());
+        } catch (RemoteException ex) {
+            Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Platform.runLater(() -> {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Do you want to download file ?");
+            alert.setContentText(" ");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                System.out.println("ok");
+                acceptFile = true;
+                try {
+                    sender.startSendingFile(usedTabID);
+                    
+                        //this.mainClient.getTransferFile().sendFile(this.recievers.get(0), f);
+                    
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } else {
+                System.out.println("cancel");
+                acceptFile = false;
+            }
+
+        });
+    }
+    public void startSendingFile(){
+        System.out.println("ChatBoxController startSendingFile()");
+        try {
+            this.mainClient.getTransferFile().sendFile(this.recievers.get(0), f);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
     public void setMainClient(ClientInter mainClient) {
         this.mainClient = mainClient;
     }
@@ -479,8 +554,6 @@ public class ChatBoxController implements Initializable {
     public ArrayList<ClientInter> getRecievers() {
         return recievers;
     }
-    
-    
 
     @FXML
     private void send(ActionEvent event) {
@@ -489,15 +562,43 @@ public class ChatBoxController implements Initializable {
         ChatBox_TextField.setText("");
     }
 
+    private void showAlert(String s) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Error");
+        alert.setContentText(s);
+        alert.showAndWait();
+    }
+
     //
-    
-     /*Methods added by Dina  */
+    /*Methods added by Dina  */
     //
+    @FXML
+    public void attachFile(ActionEvent event) {
+        f = null;
+        Stage st = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        FileChooser fileChooser = new FileChooser();
+        f = fileChooser.showOpenDialog(st);
+        if (f != null) {
+            Thread transfer = new Thread(() -> {
+                try {
+                    System.out.println("the sender of the file is : " + this.mainClient.getUser().getFullname());
+                    System.out.println("the reciever of the file is : " + this.recievers.get(0).getUser().getFullname());
+                    this.recievers.get(0).acceptRecieveingFile(mainClient,usedTabID);
+                    System.out.println("accept file is " +acceptFile );
+                    
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+            transfer.start();
+        }
+    }
     /*Methods added by Hassna  */
     //
     /*Methods added by Hesham  */
     //
     /*Methods added by Fatma  */
     //
-    
+
 }

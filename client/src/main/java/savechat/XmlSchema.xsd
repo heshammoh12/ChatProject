@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<xs:schema  version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"  
+                elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:element name="chathistory" type="chathistoryType"/>
+    <xs:complexType name="chathistoryType">
+        <xs:sequence>
+            <xs:element type="MsgType" name="Msg" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="holder" type="xs:string" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="MsgType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="from"/>
+            <xs:element type="xs:string" name="to" maxOccurs="unbounded"/>
+            <xs:element type="xs:date" name="date"/>
+            <xs:element type="xs:string" name="fontFamily"/>
+            <xs:element type="xs:string" name="fontColor"/>
+            <xs:element type="xs:integer" name="fontSize"/>
+            <xs:element type="xs:string" name="body"/>
+        
+        </xs:sequence>
+    </xs:complexType>
+  
+    
+  
+</xs:schema>

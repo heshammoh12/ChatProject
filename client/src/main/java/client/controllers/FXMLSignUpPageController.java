@@ -38,9 +38,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -82,13 +85,21 @@ public class FXMLSignUpPageController implements Initializable {
     private double yOffset = 0;
     private FXMLLoader loader;
     private Parent root;
-    
+
     private boolean isValidPass = false;
     private boolean isValidFullName = false;
     private boolean isValidUserName = false;
     private boolean isValidMail = false;
 
     private Stage stage;
+    @FXML
+    private Button SignUP_BtnClose;
+    @FXML
+    private Button SignUp_BtnMin;
+    @FXML
+    private ToggleGroup GenderGroup;
+    @FXML
+    private Button backButton;
 
     public void setRegistry(Registry registry) {
         this.registry = registry;
@@ -173,7 +184,7 @@ public class FXMLSignUpPageController implements Initializable {
             stage.show();
 
         } catch (IOException ex) {
-//            Logger.getLogger(FXMLFirstPageController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FXMLSignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -185,10 +196,10 @@ public class FXMLSignUpPageController implements Initializable {
                 } else {
                     if (!signUpImpl.emailValid(SignUpPage_TextField_Email.getText())) {
                         SignUpPage_TextField_Email.setStyle("-fx-text-fill: red;");
-                        isValidMail=false;
+                        isValidMail = false;
                     } else {
                         SignUpPage_TextField_Email.setStyle("-fx-text-fill: green;");
-                        isValidMail=true;
+                        isValidMail = true;
                     }
                 }
             }
@@ -203,10 +214,10 @@ public class FXMLSignUpPageController implements Initializable {
                 } else {
                     if (!signUpImpl.fullNameValid(SignUpPage_TextField_FullName.getText())) {
                         SignUpPage_TextField_FullName.setStyle("-fx-text-fill: red;");
-                        isValidFullName=false;
+                        isValidFullName = false;
                     } else {
                         SignUpPage_TextField_FullName.setStyle("-fx-text-fill: green;");
-                        isValidFullName=true;
+                        isValidFullName = true;
                     }
                 }
             }
@@ -221,10 +232,10 @@ public class FXMLSignUpPageController implements Initializable {
                 } else {
                     if (!signUpImpl.userNameValid(SignUpPage_TextField_UserName.getText())) {
                         SignUpPage_TextField_UserName.setStyle("-fx-text-fill: red;");
-                        isValidUserName=false;
+                        isValidUserName = false;
                     } else {
                         SignUpPage_TextField_UserName.setStyle("-fx-text-fill: green;");
-                        isValidUserName=true;
+                        isValidUserName = true;
                     }
                 }
             }
@@ -239,10 +250,10 @@ public class FXMLSignUpPageController implements Initializable {
                 } else {
                     if (!signUpImpl.passValid(SignUpPage_TextField_Password.getText())) {
                         SignUpPage_TextField_Password.setStyle("-fx-text-fill: red;");
-                        isValidPass=false;
+                        isValidPass = false;
                     } else {
                         SignUpPage_TextField_Password.setStyle("-fx-text-fill: green;");
-                        isValidPass=true;
+                        isValidPass = true;
                     }
                 }
             }
@@ -268,30 +279,37 @@ public class FXMLSignUpPageController implements Initializable {
     @FXML
     private void getSignUpData(ActionEvent event) {
         if (validData()) {
-            if (registry == null || server == null && logInVerificationInter == null) {
-                seviceLookUp();
-            }
-            try {
-                User user = buildUser();
-                boolean exist = signUpVerificationInter.emailExists(user.getEmail());
-                if (!exist) {
-                    boolean inserted = signUpVerificationInter.insertUser(user);
-                    if (inserted) {
-                        startChat(user);
-                    } else {
-                        showAlert("Error in Insertion");
-                    }
-                } else {
-                    showAlert("UserName Already Exist !!!!");
+            if (isValidMail && isValidUserName && isValidFullName && isValidPass) {
+
+                if (registry == null || server == null && logInVerificationInter == null) {
+                    seviceLookUp();
                 }
-            } catch (Exception ex) {
-                Logger.getLogger(FXMLSignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
+                try {
+                    if(signUpVerificationInter!=null){
+                    User user = buildUser();
+                    boolean exist = signUpVerificationInter.emailExists(user.getEmail());
+                    if (!exist) {
+                        boolean inserted = signUpVerificationInter.insertUser(user);
+                        if (inserted) {
+                            startChat(user);
+                        } else {
+                            showAlert("Error in Insertion");
+                        }
+                    } else {
+                        showAlert("UserName Already Exist !!!!");
+                    }
+                    }
+                } catch (Exception ex) {
+                    showAlert("Sorry currently the server is under maintenance");
+                    Logger.getLogger(FXMLSignUpPageController.class.getName()).log(Level.FINEST, null, ex);
+
+                }
 
             }
-
-        }
-        else{
-             showAlert("Please correct all your data !!!");
+        
+            else {
+                showAlert("Please correct all your data !!!");
+            }
         }
     }
 
@@ -302,7 +320,8 @@ public class FXMLSignUpPageController implements Initializable {
             setSignUpVerificationInter((SignUpVerificationInter) registry.lookup("SignUpVary"));
 
         } catch (NotBoundException | RemoteException ex) {
-            Logger.getLogger(FXMLSignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
+            showAlert("Sorry currently the server is under maintenance");
+            Logger.getLogger(FXMLSignUpPageController.class.getName()).log(Level.OFF, null, ex);
         }
     }
 
@@ -327,8 +346,8 @@ public class FXMLSignUpPageController implements Initializable {
         user.setGender(gender);
         user.setCountry(country);
         user.setPassword(password);
-        user.setMode(0);
-        user.setStatus(0);
+        user.setMode(1);
+        user.setStatus(1);
         return user;
     }
 
@@ -347,18 +366,19 @@ public class FXMLSignUpPageController implements Initializable {
         }
         System.out.println("fullName : " + fullName + " " + fullName.isEmpty() + " || userName : " + userName + " " + userName.isEmpty() + " || email : " + email.isEmpty() + " || password : " + password.isEmpty() + " || country : " + country.isEmpty());
         if (SignUpPage_CompoBox_Country.getValue().toString().equals("Other")) {
-            showAlert("Please select Country !!!");
+            showAlert("Please fill all data !!!");
             return false;
         } else {
-            if( !fullName.isEmpty() && !userName.isEmpty() && !email.isEmpty() && !password.isEmpty() && !country.isEmpty()){
-                System.out.println("that is correct data");
-                System.out.println(" isValidMail "+ isValidMail +" isValidUserName "+ isValidUserName +" isValidFullName "+ isValidFullName +"isValidPass"+ isValidPass);
-                return isValidMail && isValidUserName && isValidFullName && isValidPass;
-            }else{
+            if (!fullName.isEmpty() && !userName.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
+                System.out.println(" isValidMail " + isValidMail + " isValidUserName " + isValidUserName + " isValidFullName " + isValidFullName + "isValidPass" + isValidPass);
+                return true;
+            } else {
                 showAlert("Please fill all data !!!");
                 return false;
             }
+
         }
+
     }
 
     private void startChat(User user) {

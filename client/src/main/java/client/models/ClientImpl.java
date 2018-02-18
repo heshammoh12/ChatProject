@@ -6,7 +6,7 @@
 package client.models;
 
 import client.controllers.ChatPageController;
-import client.interfaces.FileTransferInt;
+import iti.chat.common.FileTransferInt;
 import iti.chat.common.ClientInter;
 import iti.chat.common.Message;
 import iti.chat.common.User;
@@ -63,23 +63,52 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInter {
 
     @Override
     public void setChatPageController(Object chatPageController) throws RemoteException {
-        this.chatPageController=(ChatPageController)chatPageController;
+        this.chatPageController = (ChatPageController) chatPageController;
+    }
+
+    @Override
+    public void acceptRecieveingFile(ClientInter sender, String tabid) throws RemoteException {
+        System.out.println("clint acceptRecieveingFile user name " + this.getUser().getFullname());
+        System.out.println(user.getUsername() + "this clint will chooce to recieve file or not ");
+        chatPageController.recievefile(sender, tabid);
+    }
+
+    @Override
+    public void startSendingFile(String tabid) throws RemoteException {
+        chatPageController.startSendingFile(tabid);
+    }
+
+    @Override
+    public void friendChangeState(ClientInter client,int state) throws RemoteException {
+        System.out.println("friendBecameonline ClintImp");
+        chatPageController.friendChangeState(client , state);
+    }
+
+    @Override
+    public void friendChangeMode(ClientInter client,int mode) throws RemoteException {
+        System.out.println("friendBecameonline ClintImp");
+        chatPageController.friendChangeMode(client , mode);
     }
 
     //
     /*Methods added by Dina  */
     //
     //
-    private FileTransferInt transferFile;
+    private FileTransferInt transferFile = new FileTransferImpl();
 
+    @Override
     public FileTransferInt getTransferFile() {
         return transferFile;
     }
 
+    @Override
     public void setTransferFile(FileTransferInt transferFile) {
         this.transferFile = transferFile;
     }
-       
+    @Override
+    public void getAnnoncment(String Content){
+        
+    }
     //    
     /*Methods added by Hassna  */
     public boolean signOut() {

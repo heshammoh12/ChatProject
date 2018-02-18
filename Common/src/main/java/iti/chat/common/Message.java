@@ -1,9 +1,15 @@
+
 package iti.chat.common;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import javafx.scene.paint.Color;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.Serializable;
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -17,6 +23,9 @@ public class Message implements Serializable {
     private LocalDate time;
     private String fullName;
     private String fontSize;
+    private List<String> listoftos;
+    private String from;
+    
 
     public String getFontSize() {
         return fontSize;
@@ -48,9 +57,6 @@ public class Message implements Serializable {
         this.time = LocalDate.now();
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
 
     public void setColor(String color) {
         this.color = color;
@@ -111,6 +117,22 @@ public class Message implements Serializable {
         this.fontSize = fontSize;
         this.tabId = tabId;
     }
+           public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+    
+     public List<String> getListoftos() {
+        return listoftos;
+    }
+
+    public void setListoftos(ArrayList<String> listoftos) {
+        this.listoftos = listoftos;
+    }
+    
     //
     /*Methods added by Fatma  */
     //

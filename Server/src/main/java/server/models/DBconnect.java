@@ -102,10 +102,7 @@ public class DBconnect {
                       ps.setInt(5, mode);
                       recordCounter=ps.executeUpdate();  
                       
-                      //update status to online
-                      ps2=c.prepareStatement(" update USERLOGIN set USERSTATUS=1 where USERSTATUS=?");  
-                      ps2.setString(1, email);  
-                      recordCounter2=ps2.executeUpdate();
+                     
                       
                         
               } catch (Exception e) { e.printStackTrace(); } finally{  
@@ -279,29 +276,24 @@ public class DBconnect {
                       
                         con=this.getConnection();  
                         System.out.println("after conn");
-                        ps=con.prepareStatement("select EMAIL, FULLNAME, GENDER, COUNTRY from USERINFO WHERE FULLNAME LIKE '%"+name+"%'");
+                        ps=con.prepareStatement("select a.EMAIL, a.FULLNAME, a.GENDER, a.COUNTRY,"
+                                + "b.USERNAME,b.PASSWORD,b.USERSTATUS,b.USERMODE "
+                                + "from USERINFO a ,USERLOGIN b  WHERE a.EMAIL = b.EMAIL and a.EMAIL ='"+name+"'");
 //                        ps.setString(0, name); 
                         System.out.println("before excute");
                         
                         rs=ps.executeQuery();
                         System.out.println("after excute");
-                        while(rs.next()){
-                                user.setEmail(rs.getString("EMAIL"));
-                                user.setCountry(rs.getString("COUNTRY"));
-                                user.setFullname(rs.getString("FULLNAME"));
-                                user.setGender(rs.getString("GENDER"));
-                                System.out.println("first rs"+user.getEmail());
-                                
-                                ps2=con.prepareStatement("Select USERNAME , PASSWORD,USERSTATUS, USERMODE from USERLOGIN WHERE EMAIL =?");
-                                ps2.setString(1, user.getEmail());
-                                rs2=ps2.executeQuery();
-                                if(rs2.next()){
-                                    user.setMode(rs2.getInt("USERMODE"));
-                                    user.setPassword(rs2.getString("PASSWORD"));
-                                    user.setUsername(rs2.getString("USERNAME"));
-                                    user.setStatus(rs2.getInt("USERSTATUS"));
-                                }  
-                                System.out.println(user.getEmail());
+                        while(rs.next())
+                        {
+                                user.setEmail(rs.getString(1));
+                                user.setFullname(rs.getString(2));
+                                user.setGender(rs.getString(3));
+                                user.setCountry(rs.getString(4));
+                                user.setUsername(rs.getString(5));
+                                user.setPassword(rs.getString(6));
+                                user.setStatus(rs.getInt(7));
+                                user.setMode(rs.getInt(8));
                                 users.add(user);
 			}
                 
@@ -369,7 +361,7 @@ public class DBconnect {
               int recordCounter=0;  
               try {  
                       c=this.getConnection();  
-                      ps=c.prepareStatement(" update USERLOGIN set USERSTATUS=0 where USERSTATUS=?");  
+                      ps=c.prepareStatement(" update USERLOGIN set USERSTATUS=0 where email=?");  
                       ps.setString(1, email);  
                       recordCounter=ps.executeUpdate();  
               } catch (Exception e) {  e.printStackTrace(); } finally{  
@@ -382,6 +374,56 @@ public class DBconnect {
                }  
              return recordCounter;  
           }  
+         
+         public int signIndb(String email) throws SQLException  {  
+              Connection c=null;  
+              PreparedStatement ps=null;  
+                
+              int recordCounter=0;  
+              try {  
+                      c=this.getConnection();  
+                      ps=c.prepareStatement(" update USERLOGIN set USERSTATUS=1 where email=?");  
+                      ps.setString(1, email);  
+                      recordCounter=ps.executeUpdate();  
+              } catch (Exception e) {  e.printStackTrace(); } finally{  
+                      
+                  if (ps!=null){  
+                      ps.close();  
+                  }if(c!=null){  
+                      c.close();  
+                  }   
+               }  
+             return recordCounter;  
+          }  
+         
+//
+//methods by nagib
+public ArrayList<String> getOnlineFriends(String mail) throws SQLException{  
+              Connection c=null;  
+              PreparedStatement ps=null;
+              ResultSet rs = null;
+              ArrayList<String> friedsMails = new ArrayList<>();
+              
+              try {  
+                      c=this.getConnection();  
+                      ps=c.prepareStatement(" SELECT userlogin.email from userlogin where email in( SELECT userfriends.friendemail FROM userfriends where userfriends.EMAIL ='"+mail+"') AND userlogin.userstatus =1");  
+                      rs = ps.executeQuery();  
+                       while(rs.next()){
+                           friedsMails.add(rs.getString("EMAIL"));
+                       }
+              } catch (Exception e) { e.printStackTrace(); }   
+              finally{  
+              if (ps!=null){  
+                      ps.close();  
+             }if(c!=null){  
+                      c.close();  
+              }   
+           }  
+             return friedsMails;  
+          } 
+
+
+//
          
 //Dina's methods
     public ArrayList<String> getUserFriends(String email) throws SQLException, ClassNotFoundException {
@@ -419,6 +461,10 @@ public class DBconnect {
             String fCountry = rs.getString(4);
             int fStatus = rs.getInt(5);
             int fMode = rs.getInt(6);
+            System.out.println("---------build user---------");
+            System.out.println("fEmail "+fEmail);
+            System.out.println("fStatus "+fStatus);
+            System.out.println("fMode "+fMode);
             friend = new User(fEmail, fName, fgender, fCountry, fStatus, fMode);
         }
         query.close();
