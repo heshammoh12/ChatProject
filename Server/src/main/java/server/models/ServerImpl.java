@@ -63,6 +63,11 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
                 @Override
                 public void run() {
                     serverController.displayUsersLists();
+                    try {
+                        updateStatistics();
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
         }
@@ -80,6 +85,11 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
                 @Override
                 public void run() {
                     serverController.displayUsersLists();
+                    try {
+                        updateStatistics() ;
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
         }
