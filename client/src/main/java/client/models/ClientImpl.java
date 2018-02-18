@@ -75,7 +75,7 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInter {
 
     @Override
     public void startSendingFile(String tabid) throws RemoteException {
-
+        chatPageController.startSendingFile(tabid);
     }
 
     @Override

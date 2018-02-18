@@ -35,6 +35,7 @@ public class FileTransferImpl implements FileTransferInt ,Serializable{
                byte[] data = new byte[1024 * 1024];
                int dataLength = in.read(data);
                boolean append = false;
+               System.out.println("in recieve file function --dina method");
                 while (dataLength > 0) {
                     receiver.getTransferFile().recieveFile(f.getName(), append, data, dataLength);
                     dataLength = in.read(data);
@@ -63,10 +64,5 @@ public class FileTransferImpl implements FileTransferInt ,Serializable{
         }
         
     }
-    @Override
-    public boolean askForAcceptance(ClientInter reciever) {
-        return true;
-    }
-
     
 }

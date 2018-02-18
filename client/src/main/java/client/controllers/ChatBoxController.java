@@ -70,7 +70,7 @@ public class ChatBoxController implements Initializable {
     boolean isSender;
 
     /*variables added by Dina  */
-    //
+    boolean acceptFile=false;
     //
 
     /*variables added by Hassna  */
@@ -358,21 +358,30 @@ public class ChatBoxController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 System.out.println("ok");
+                acceptFile = true;
                 try {
                     sender.startSendingFile(usedTabID);
+                    
+                        //this.mainClient.getTransferFile().sendFile(this.recievers.get(0), f);
+                    
                 } catch (RemoteException ex) {
                     Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             } else {
                 System.out.println("cancel");
+                acceptFile = false;
             }
 
         });
     }
     public void startSendingFile(){
         System.out.println("ChatBoxController startSendingFile()");
-    //                            this.mainClient.getTransferFile().sendFile(this.recievers.get(0), f);
+        try {
+            this.mainClient.getTransferFile().sendFile(this.recievers.get(0), f);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -432,8 +441,9 @@ public class ChatBoxController implements Initializable {
                 try {
                     System.out.println("the sender of the file is : " + this.mainClient.getUser().getFullname());
                     System.out.println("the reciever of the file is : " + this.recievers.get(0).getUser().getFullname());
-                    this.recievers.get(0).acceptRecieveingFile(mainClient, usedTabID);
-                    System.out.println("accept file ");
+                    this.recievers.get(0).acceptRecieveingFile(mainClient,usedTabID);
+                    System.out.println("accept file is " +acceptFile );
+                    
                 } catch (RemoteException ex) {
                     Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
                 }

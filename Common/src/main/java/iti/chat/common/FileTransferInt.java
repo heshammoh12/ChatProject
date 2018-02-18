@@ -11,5 +11,4 @@ public interface FileTransferInt {
     
     public void sendFile(ClientInter receiver , File f );
     public void recieveFile(String filename,boolean append, byte[] data, int dataLength);
-    public boolean askForAcceptance(ClientInter reciever);
 }
