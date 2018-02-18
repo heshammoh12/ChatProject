@@ -13,9 +13,14 @@ import java.io.File;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +47,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * FXML Controller class
@@ -69,7 +77,16 @@ public class ChatBoxController implements Initializable {
     //
 
     /*variables added by Hesham  */
-        Color color;
+        Color color=Color.BLACK;
+        String colorString = "#000000";
+        String userLabel;
+        String userLabel2;
+        String fontType="Arial";
+        String fontSize="8"; 
+        LocalDate loc;
+        
+        //LocalDate localDate_1;
+        //DateTimeFormatter formatter_1;
 
     //
 
@@ -96,7 +113,7 @@ public class ChatBoxController implements Initializable {
     @FXML
     private ColorPicker ChatBox_ComboBox_ColorPicker;
 
-    //
+    //    
     private ClientInter mainClient = null;
     private ArrayList<ClientInter> recievers = null;
     private String usedTabID = null;
@@ -105,8 +122,9 @@ public class ChatBoxController implements Initializable {
     //
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        //formatter_1=DateTimeFormatter.ofPattern("dd-MMM-yyyy");
         //make scroll pan scrollable
+        
         ChatBoxScrollPane.vvalueProperty().bind(ChatBox_AreaMessages.heightProperty());
         //setCircleMsg();
         smallImageCircle1 = new Circle(10, 10, 5);
@@ -119,12 +137,15 @@ public class ChatBoxController implements Initializable {
         initializeCompoBoxFontsSize();
         buttonImages();
         // TODO
-        //listner color picker
+        //listner color picker 
         ChatBox_ComboBox_ColorPicker.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("color picker value is "+ChatBox_ComboBox_ColorPicker.getValue());
                 color = ChatBox_ComboBox_ColorPicker.getValue();
+                colorString ="#" + Integer.toHexString(color.hashCode()); 
+                ChatBox_TextField.setStyle("-fx-text-inner-color:" + colorString + ";");
+                
             }
         });
         
@@ -134,7 +155,8 @@ public class ChatBoxController implements Initializable {
             public void handle(KeyEvent event) {
 
                 if (event.getCode() == KeyCode.ENTER) {
-                    ///////// these code is for testing purpose reblace it with yours                  
+                    ///////// these code is for testing purpose reblace it with yours  
+                    /*
                     System.out.println("tmaaaaaaaaaaaaaaaaam");
                     Text data = new Text(getDate());
                     data.setFont(Font.font("", 10.0));
@@ -159,11 +181,31 @@ public class ChatBoxController implements Initializable {
                         }
                     });
                     //
-
+                     */   
+                    fontType = ChatBox_ComboBox_FontType.getValue().toString();
+                    fontSize = ChatBox_ComboBox_FontSize.getValue().toString();
+                    
                     try {
-                        mainClient.getUser().setMessage(new Message(ChatBox_TextField.getText(), mainClient.getUser().getFullname(), usedTabID,usedTabID));
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                        Date date = formatter.parse("2018-02-10");
+                        GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
+                        cal.setTime(date);
+                        XMLGregorianCalendar result = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+                        loc = result.toGregorianCalendar().toZonedDateTime().toLocalDate();
+                        System.out.println("locaaal date is "+loc);
+                        
+                        
+                        
+                        mainClient.getUser().setMessage(new Message(ChatBox_TextField.getText(), mainClient.getUser().getFullname(), usedTabID,colorString,fontType,loc,fontSize));
+                        //mainClient.getUser().setMessage(new Message(ChatBox_TextField.getText(), mainClient.getUser().getFullname(), usedTabID,usedTabID));
+                        System.out.println("main client issssssss "+mainClient.getUser().getFullname());
                         server.sendMessage(mainClient, recievers.get(0));
+                        sendMessage(mainClient.getUser());
                     } catch (RemoteException ex) {
+                        Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (DatatypeConfigurationException ex) {
                         Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     //   
@@ -177,7 +219,11 @@ public class ChatBoxController implements Initializable {
         recievers = new ArrayList<>();
         //
     }
-
+    @FXML
+    private void comboActionFontType(ActionEvent event) {
+    System.out.println(ChatBox_ComboBox_FontType.getValue());
+    ChatBox_TextField.setFont(Font.font(ChatBox_ComboBox_FontType.getValue().toString()));
+    }
     public void buttonImages() {
         File file = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\ChatProject\\client\\src\\main\\resources\\images\\003-group-.png");
         Image image = new Image(file.toURI().toString());
@@ -199,18 +245,57 @@ public class ChatBoxController implements Initializable {
     }
 
     public void Render(User user) {
-        if (isSender) {
+        
+        if (isSender) 
+        {
+            
+            try {
+                System.out.println("sender name issssssssssss  "+mainClient.getUser().getFullname());
+                //userLabel = mainClient.getUser().getFullname();
+                userLabel2= mainClient.getUser().getFullname();
+                /*
+                Text t = new Text(userLabel);
+                t.setFill(Color.DARKGRAY);
+                HBox v = new HBox(t);
+                v.setAlignment(Pos.BASELINE_RIGHT);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        ChatBox_AreaMessages.getChildren().add(v);
+                    }
+                });
+                
+                */
+            } catch (RemoteException ex) {
+                Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             Text data = new Text(getDate());
             data.setFont(Font.font("", 10.0));
             data.setFill(Color.DIMGREY);
 
             Text t = new Text(user.getMessage().getContent());
-
+            t.setStyle("-fx-fill: "+user.getMessage().getColor()+";");
+            //t.setFill(user.getMessage().getColor());
+            System.out.println("color is here in string before style "+user.getMessage().getColor());
+           // t.setStyle("-fx-text-fill:" + user.getMessage().getColor() + ";");    
+           //t.setFill(color.AQUAMARINE);
+            try {
+                NumberFormat nf = NumberFormat.getInstance();
+                double number = nf.parse(user.getMessage().getFontSize()).doubleValue();
+                t.setFont(Font.font (user.getMessage().getFont(), number));
+            } catch (ParseException ex) {
+                Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            //Double size = Double.parseDouble(user.getMessage().getFontSize());
+            
             TextFlow textFlow = new TextFlow(t, data);
+            
             //textFlow.setStyle("-fx-background-color: #2196F3; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
-            //imageSmallCirlce = new Image("/images/personal-website-design.png");
-            //smallImageCircle.setFill(new ImagePattern(imageSmallCirlce));
+            textFlow.setStyle("-fx-background-color: #2196F3; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
 
+            //imageSmallCirlce = new Image("/images/personal.png");
+            //smallImageCircle1.setFill(new ImagePattern(imageSmallCirlce));
             HBox h = new HBox(textFlow);
             Platform.runLater(new Runnable() {
                 @Override
@@ -218,15 +303,53 @@ public class ChatBoxController implements Initializable {
                     ChatBox_AreaMessages.setSpacing(5);
                     h.setAlignment(Pos.BASELINE_RIGHT);
                     ChatBox_AreaMessages.getChildren().add(h);
+   //                 ChatBox_TextField.setText("");
                 }
             });
 
-        } else if (!isSender) {
+        }else if (!isSender) {
+             
+            try {
+                if(!user.getFullname().equals(userLabel2)&& !user.getFullname().equals(mainClient.getUser().getFullname()))   
+                {
+                    System.out.println("sender name issssssssssss  "+user.getFullname());
+                    userLabel2 = user.getFullname();
+                    Text t2 = new Text(userLabel2);
+                    t2.setFill(Color.DARKGRAY);
+                    HBox v2 = new HBox(t2); 
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                             ChatBox_AreaMessages.getChildren().add(v2);
+                        }
+                    });
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+                
+            
+            System.out.println("reciever name issssssssss  "+user.getFullname());
             Text data = new Text(getDate());
             data.setFont(Font.font("", 10.0));
             data.setFill(Color.DIMGREY);
 
             Text t = new Text(user.getMessage().getContent());
+            //t.setFill(user.getMessage().getColor());
+            t.setStyle("-fx-fill: "+user.getMessage().getColor()+";");
+            System.out.println("color is here in string before style222222 "+user.getMessage().getColor());
+            
+            ///t.setStyle("-fx-text-fill:" + user.getMessage().getColor() + ";");
+            try{
+                NumberFormat nf = NumberFormat.getInstance();
+                double number2 = nf.parse(user.getMessage().getFontSize()).doubleValue();
+                t.setFont(Font.font (user.getMessage().getFont(), number2));
+                
+            }catch (ParseException ex) {
+                Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             //t.setFill(color);
             TextFlow textFlow = new TextFlow(t, data);
              textFlow.setStyle("-fx-background-color: #FF8F00; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
@@ -252,6 +375,7 @@ public class ChatBoxController implements Initializable {
     public void sendMessage(User user) {
         isSender = true;
         Render(user);
+        System.out.println("send message");
         //
 
         //code added by nagib
@@ -259,6 +383,7 @@ public class ChatBoxController implements Initializable {
     }
 
     public void recieveMessage(User user) {
+        System.out.println("reciev messgggggg");
         isSender = false;
         Render(user);
         //
@@ -279,7 +404,25 @@ public class ChatBoxController implements Initializable {
         //code added by nagib
         //
     }
-
+    /*
+    public LocalDate getLocalDate()
+    {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = formatter.parse("2018-02-10");
+            GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
+            cal.setTime(date);
+            XMLGregorianCalendar result = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+            System.out.println("locaaal date is "+result);
+            
+        } catch (ParseException ex) {
+            Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DatatypeConfigurationException ex) {
+            Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+*/
     public void setCircleMsg() {
         //initialize the node circle
         
@@ -291,7 +434,7 @@ public class ChatBoxController implements Initializable {
 
     public void initializeCompoBoxFontsType() {
         ChatBox_ComboBox_FontType.getItems().removeAll(ChatBox_ComboBox_FontType.getItems());
-        ChatBox_ComboBox_FontType.getItems().addAll("normal", "Verdana", "Serif Bold", "Arial");
+        ChatBox_ComboBox_FontType.getItems().addAll("normal", "Verdana", "Serif Bold", "Arial" ,"Algerian","Chiller");
         ChatBox_ComboBox_FontType.getSelectionModel().select("font type");
         //
 
@@ -302,7 +445,7 @@ public class ChatBoxController implements Initializable {
     public void initializeCompoBoxFontsSize() {
         ChatBox_ComboBox_FontSize.getItems().removeAll(ChatBox_ComboBox_FontSize.getItems());
         ChatBox_ComboBox_FontSize.getItems().addAll("8", "14", "18", "22");
-        ChatBox_ComboBox_FontSize.getSelectionModel().select("size");
+        ChatBox_ComboBox_FontSize.getSelectionModel().select("14");
         //
 
         //code added by nagib

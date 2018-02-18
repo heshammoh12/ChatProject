@@ -2,6 +2,8 @@ package iti.chat.common;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import javafx.scene.paint.Color;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  *
@@ -13,7 +15,16 @@ public class Message implements Serializable {
     private String color;
     private String font;
     private LocalDate time;
+    private String fullName;
+    private String fontSize;
 
+    public String getFontSize() {
+        return fontSize;
+    }
+
+    public void setFontSize(String fontSize) {
+        this.fontSize = fontSize;
+    }
     /*variables added by Nagib  */
     private String tabId;
             
@@ -90,6 +101,16 @@ public class Message implements Serializable {
     /*Methods added by Hassna  */
     //
     /*Methods added by Hesham  */
+
+    public Message(String content, String fullName, String tabId, String color, String font, LocalDate time, String fontSize) {
+        this.content = content;
+        this.color = color;
+        this.font = font;
+        this.time = time;
+        this.fullName = fullName;
+        this.fontSize = fontSize;
+        this.tabId = tabId;
+    }
     //
     /*Methods added by Fatma  */
     //

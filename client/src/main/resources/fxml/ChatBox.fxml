@@ -29,7 +29,7 @@
       </HBox>
       <HBox layoutX="6.0" layoutY="213.0" prefHeight="35.0" prefWidth="380.0">
          <children>
-            <ComboBox fx:id="ChatBox_ComboBox_FontType" prefHeight="34.0" prefWidth="150.0" />
+            <ComboBox fx:id="ChatBox_ComboBox_FontType" onAction="#comboActionFontType" prefHeight="34.0" prefWidth="150.0" />
             <ComboBox fx:id="ChatBox_ComboBox_FontSize" prefHeight="34.0" prefWidth="67.0" />
             <ColorPicker fx:id="ChatBox_ComboBox_ColorPicker" prefHeight="35.0" prefWidth="47.0" />
             <ToggleButton fx:id="ChatBox_ToggleButton_Bold" mnemonicParsing="false" prefHeight="35.0" prefWidth="57.0" text="B" />
