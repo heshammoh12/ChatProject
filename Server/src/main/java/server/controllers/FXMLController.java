@@ -181,6 +181,7 @@ public class FXMLController implements Initializable {
     public void closeButton(ActionEvent event) {
         DBconnect db = DBconnect.getInstance();
         db.updateToOffline();
+        
         Platform.exit();
         System.exit(0);
     }
