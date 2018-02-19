@@ -112,6 +112,21 @@ public class SearchFriendsController implements Initializable {
                 });
             }
         });
+        TextField_SearchFriend.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("button pressed");
+                System.out.println(getUserData());
+                usersSearch = FXCollections.observableArrayList(getUserData());
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        ListView_SearchFriend.setItems(usersSearch);
+                    }
+
+                });
+            }
+        });
         ImageView searchIcon=null;
         try {
             searchIcon = new ImageView( new Image(this.getClass().getResource("/images/search.png").toURI().toString())); // for example

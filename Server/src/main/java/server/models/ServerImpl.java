@@ -112,14 +112,52 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 //
     /*Methods added by Nagib  */
     @Override
+    public void acceptFriendRequest(String email1, String email2) throws RemoteException {
+        DBconnect conn;
+        int updatedRows = 0;
+        try {
+            conn = DBconnect.getInstance();
+            updatedRows = conn.acceptFriendRequest(email1, email2);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (updatedRows > 0) {
+            for (ClientInter clientInter : clientsArrayList) {
+                if (clientInter.getUser().getEmail().equals(email2)) {
+                    System.out.println("Clint will be notified");
+                }
+
+            }
+        }
+    }
+
+    @Override
+    public void rejectFriendRequest(String email1, String email2) throws RemoteException {
+        System.out.println("server rejectFriendRequest"); 
+        DBconnect conn;
+        int updatedRows = 0;
+        try {
+            conn = DBconnect.getInstance();
+            updatedRows = conn.rejectFriendRequest(email1, email2);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }   
+    }
+
+    @Override
     public ArrayList<User> getfriendRequests(String email) throws RemoteException {
         ArrayList<User> requesters = new ArrayList<>();
         DBconnect conn;
+        System.out.println("gserver getfriendRequests");
         try {
             conn = DBconnect.getInstance();
             ArrayList<String> frindEmails = conn.getRequests(email);
+            
 
             for (String frindEmail : frindEmails) {
+                System.out.println(frindEmail);
                 User friend = conn.getUserFriendsData(frindEmail);
                 requesters.add(friend);
             }

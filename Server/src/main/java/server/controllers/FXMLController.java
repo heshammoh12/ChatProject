@@ -54,17 +54,6 @@ public class FXMLController implements Initializable {
         label.setText("Please..Start the server");
         showStatistics();
         displayUsersLists();
-        /*Timeline time = new Timeline();
-        
-        time.getKeyFrames().add(new KeyFrame(Duration.millis(3000),
-                new EventHandler<ActionEvent>(){
-                    @Override
-                    public void handle(ActionEvent event) {
-                        displayUsersLists();  
-                    }
-            }));
-        time.setCycleCount(Animation.INDEFINITE);
-        time.play();*/    
     }
     
     @FXML
@@ -86,6 +75,7 @@ public class FXMLController implements Initializable {
                 stopButton.setDisable(false);
                 button.setDisable(true);
         } catch (RemoteException ex) {
+            showAlert("the port is already used");
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -184,5 +174,13 @@ public class FXMLController implements Initializable {
         
         Platform.exit();
         System.exit(0);
+    }
+    
+        private void showAlert(String s) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Error");
+        alert.setContentText(s);
+        alert.showAndWait();
     }
 }

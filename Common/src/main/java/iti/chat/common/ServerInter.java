@@ -20,6 +20,8 @@ public interface ServerInter extends Remote {
     public void setServerController(Object serverController) throws RemoteException;
     public void updateStatistics() throws RemoteException;
     public void clearClientsList()throws RemoteException;
+    public void acceptFriendRequest(String email1,String email2) throws RemoteException;
+    public void rejectFriendRequest(String email1,String email2) throws RemoteException;
     public boolean signInServer(String email) throws RemoteException;
     public ArrayList<User> getfriendRequests(String email) throws RemoteException;
 
