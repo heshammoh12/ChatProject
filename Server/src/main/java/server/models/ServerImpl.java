@@ -63,6 +63,11 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
                 @Override
                 public void run() {
                     serverController.displayUsersLists();
+                    try {
+                        updateStatistics();
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
         }
@@ -80,6 +85,11 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
                 @Override
                 public void run() {
                     serverController.displayUsersLists();
+                    try {
+                        updateStatistics();
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
         }
@@ -101,6 +111,27 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 
 //
     /*Methods added by Nagib  */
+    @Override
+    public ArrayList<User> getfriendRequests(String email) throws RemoteException {
+        ArrayList<User> requesters = new ArrayList<>();
+        DBconnect conn;
+        try {
+            conn = DBconnect.getInstance();
+            ArrayList<String> frindEmails = conn.getRequests(email);
+
+            for (String frindEmail : frindEmails) {
+                User friend = conn.getUserFriendsData(frindEmail);
+                requesters.add(friend);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return requesters;
+    }
+
     @Override
     public ClientInter getFriendClient(String mail) throws RemoteException {
         ClientInter friendClient = null;
@@ -219,20 +250,22 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
         System.out.println("annoncment content is " + content);
         try {
             clientsArrayList.forEach((client) -> {
-                /*try {
-                    client.getNotification(content);
+                try {
+                    client.getAnnoncment(content);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                }
             });
         } catch (Exception ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-    public void notifyFriendRequest(ClientInter reciever){
-    
+
+    public void notifyFriendRequest(ClientInter reciever) {
+
     }
+
     //
     /*Methods added by Hassna  */
     //
@@ -240,15 +273,19 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
     /*Methods added by Hesham  */
     //
     @Override
-    public ArrayList<User> search(String name) throws RemoteException {
-        ArrayList<User> names = null;
+    public ArrayList<User> search(String email1, String email2) throws RemoteException {
+        ArrayList<User> names = new ArrayList<>();
+
         DBconnect conn;
         try {
             conn = DBconnect.getInstance();
-            names = conn.getUsersByName(name);
+            boolean isrequestExist = conn.requestExist(email1, email2);
+            if (!isrequestExist) {
+                names = conn.getUsersByName(email2);
 
-            for (User frindEmail : names) {
-                System.out.println("foreach" + frindEmail.getEmail());
+                for (User frindEmail : names) {
+                    System.out.println("foreach" + frindEmail.getEmail());
+                }
             }
 
         } catch (SQLException ex) {
@@ -258,7 +295,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
     }
 
     @Override
-    public int updateMode(ClientInter client,int mode , String email) throws RemoteException {
+    public int updateMode(ClientInter client, int mode, String email) throws RemoteException {
         DBconnect conn;
         conn = DBconnect.getInstance();
         int rowAffected = 0;
@@ -276,7 +313,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
                 rowAffected = conn.updateUserMode(3, email);
                 notifyOnlineFriendsMode(client, email, 3);
                 break;
-            
+
         }
 
         return rowAffected;

@@ -23,8 +23,10 @@ import javafx.application.Platform;
  * @author Hasnaa Mohammed
  */
 public class SignUpVerificationImpl extends UnicastRemoteObject implements SignUpVerificationInter {
+
     ServerInter server = null;
     Registry registry = null;
+
     public SignUpVerificationImpl() throws RemoteException {
         System.out.println("SignUpVerificationImpl");
     }
@@ -53,26 +55,28 @@ public class SignUpVerificationImpl extends UnicastRemoteObject implements SignU
         } catch (SQLException ex) {
             Logger.getLogger(SignUpVerificationImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        boolean isInserted =(inserted1 > 0) && (inserted2 > 0);
-        if(isInserted){}
+        boolean isInserted = (inserted1 > 0) && (inserted2 > 0);
+        if (isInserted) {
+            seviceLookUp();
+        }
         return isInserted;
     }
-    
+
     private void seviceLookUp() {
         try {
-            registry= LocateRegistry.getRegistry(2000);
-            server=(ServerInter) registry.lookup("ChatService");
-            
+            registry = LocateRegistry.getRegistry(2000);
+            server = (ServerInter) registry.lookup("ChatService");
+
             Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                server.updateStatistics();
-                            } catch (RemoteException ex) {
-                                Logger.getLogger(SignUpVerificationImpl.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                    });
+                @Override
+                public void run() {
+                    try {
+                        server.updateStatistics();
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(SignUpVerificationImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
         } catch (NotBoundException | RemoteException ex) {
             Logger.getLogger(SignUpVerificationImpl.class.getName()).log(Level.SEVERE, null, ex);
         }

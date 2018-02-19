@@ -21,6 +21,7 @@ public interface ServerInter extends Remote {
     public void updateStatistics() throws RemoteException;
     public void clearClientsList()throws RemoteException;
     public boolean signInServer(String email) throws RemoteException;
+    public ArrayList<User> getfriendRequests(String email) throws RemoteException;
 
     //
     
@@ -34,8 +35,8 @@ public interface ServerInter extends Remote {
     public boolean signOurServer(String email) throws RemoteException;
     
    /*Methods added by Hesham  */
-    public ArrayList<User> search(String name) throws RemoteException;
-    
+    public ArrayList<User> search(String email1, String email2) throws RemoteException;
+
     public int updateMode(ClientInter client,int mode , String email)throws RemoteException;
     
     public int addFriend(String sender,String reciever)throws RemoteException;

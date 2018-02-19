@@ -11,6 +11,7 @@ import iti.chat.common.ServerInter;
 import iti.chat.common.User;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
@@ -85,13 +86,6 @@ public class SearchFriendsController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO        
         //this commented area for just testing purpose
-        /*
-        ObservableList<Employee> ob = FXCollections.observableArrayList();
-        ob.add(new Employee("hesha", "mohamed","152"));
-        ob.add(new Employee("kadry", "mohamed","158"));
-        ob.add(new Employee("zein", "mohamed","178"));
-        ob.add(new Employee("koly", "mohamed","200"));
-        */
         Registry registry;
         try {
             registry = LocateRegistry.getRegistry(2000);
@@ -118,6 +112,14 @@ public class SearchFriendsController implements Initializable {
                 });
             }
         });
+        ImageView searchIcon=null;
+        try {
+            searchIcon = new ImageView( new Image(this.getClass().getResource("/images/search.png").toURI().toString())); // for example
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(SearchFriendsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        searchIcon.setFitWidth(20); searchIcon.setFitHeight(20); // your preference            
+        Button_SearchFriend.setGraphic(searchIcon);
         //customize list
         ListView_SearchFriend.setCellFactory(new Callback<ListView<User>, ListCell<User>>()
         {
@@ -134,20 +136,23 @@ public class SearchFriendsController implements Initializable {
     {
         searchesEmail = TextField_SearchFriend.getText();
         allUser = new ArrayList<User>();
-        if(!searchesEmail.isEmpty())
+        if(searchesEmail !=null &&!searchesEmail.isEmpty())
         {
-            try {
+            try {if(this.loginer!= null && server!=null){
                 if(!searchesEmail.equals(this.loginer.getEmail()))
                 {   
-                    allUser = server.search(searchesEmail);
+                    allUser = server.search(this.loginer.getEmail(),searchesEmail);
                     for(User myFriend : server.getFrinds(this.loginer.getEmail()))
                     {
                         if(myFriend.getEmail().equals(searchesEmail))
                         {
-                            allUser.clear();
+                            if(allUser !=null){
+                                allUser.clear();
+                            }
                         }
                     }
                 }
+            }
             } catch (RemoteException ex) {
                 Logger.getLogger(SearchFriendsController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -194,8 +199,12 @@ public class SearchFriendsController implements Initializable {
                 hboxButton.getChildren().add(btnAdd);
                 hboxButton.setAlignment(Pos.CENTER_RIGHT);
                 pictureRegion.setHgrow(hboxButton, Priority.ALWAYS);
-                Image image = new Image(file.toURI().toString());
-                ImageView imageView = new ImageView(image);
+                ImageView imageView=null;
+                try {
+                    imageView = new ImageView(this.getClass().getResource("/images/personal.png").toURI().toString());
+                } catch (URISyntaxException ex) {
+                    Logger.getLogger(SearchFriendsController.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 imageView.setFitHeight(30);
                 imageView.setFitWidth(30);
                 pictureRegion.getChildren().add(imageView);

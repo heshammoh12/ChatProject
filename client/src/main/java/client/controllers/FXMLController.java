@@ -35,8 +35,10 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
 
     private FXMLLoader loader;
     private FXMLLoader loader2;
+    private FXMLLoader loader3;
     private Parent root;
     private Parent root2;
+    private Parent root3;
     private double xOffset = 0;
     private double yOffset = 0;
     private Stage stage;
@@ -183,6 +185,7 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
     private void seviceLookUp() {
         try {
             setRegistry(LocateRegistry.getRegistry(2000));
+            //setRegistry(LocateRegistry.getRegistry("10.118.49.2",2000));
             setServer((ServerInter) registry.lookup("ChatService"));
             setLogInVerificationInter((LogInVerificationInter) registry.lookup("LogInVary"));
 
@@ -196,9 +199,11 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
         try {
             loader = new FXMLLoader();
             loader2 = new FXMLLoader();
+//            loader3 = new FXMLLoader();
             System.out.println("Loged in");
             root = loader.load(getClass().getResource("/fxml/ChatPage.fxml").openStream());
-            root2 = loader2.load(getClass().getResource("/fxml/searchFriends.fxml").openStream());
+            root2 = loader2.load(getClass().getResource("/fxml/searchFriends.fxml").openStream());            
+//            root3 = loader3.load(getClass().getResource("/fxml/f.fxml").openStream());
             
             
             
@@ -209,7 +214,7 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
             clientImpl.setChatPageController(chatController);
             chatController.setClient(clientImpl);
             chatController.addNewSearchPane(clientImpl);
-            //chatController.addFriendRequestPane(clientImpl);
+            chatController.addFriendRequestPane(clientImpl,server,registry);
             server.registerClint(clientImpl);
             Stage stage = (Stage) Anchor.getScene().getWindow();
             root.setOnMousePressed(new EventHandler<MouseEvent>() {

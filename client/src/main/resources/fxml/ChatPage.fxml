@@ -93,7 +93,7 @@
                               </AnchorPane>
                         </content>
                       </Tab>
-                        <Tab styleClass="tabs" text="FriendReq">
+                        <Tab styleClass="tabs" fx:id="friendRequestTab">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                           </content>
@@ -106,15 +106,21 @@
                <children>
                   <TabPane fx:id="ChatPage_TabPane_Users" prefHeight="328.0" prefWidth="514.0" styleClass="tdbPane" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                      <Tab closable="false" styleClass="tabs" text="Home">
+                      <Tab fx:id="homeTab" styleClass="tabs" closable="false" text="Home">
                            <content>
-                              <AnchorPane prefHeight="200.0" prefWidth="180.0">
+                              <AnchorPane prefHeight="130.0" prefWidth="389.0">
                                  <children>
-                                    <Label layoutX="92.0" layoutY="14.0" prefHeight="27.0" prefWidth="201.0" text="Welcome In Life Etshat :D ">
+                                    <Label layoutX="89.0" layoutY="14.0" prefHeight="27.0" prefWidth="268.0" text="Welcome In Life Etshat :D ">
                                        <font>
-                                          <Font name="System Bold" size="14.0" />
+                                          <Font name="System Bold" size="18.0" />
                                        </font>
                                     </Label>
+                                    <Label layoutX="14.0" layoutY="58.0" prefHeight="27.0" prefWidth="192.0" text="Server Annoncments:">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="annoncmentsField" editable="false" layoutX="14.0" layoutY="85.0" prefHeight="80.0" prefWidth="360.0" />
                                  </children></AnchorPane>
                            </content>
                       </Tab>

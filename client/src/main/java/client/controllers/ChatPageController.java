@@ -5,23 +5,18 @@
  */
 package client.controllers;
 
-import client.models.ClientImpl;
 import iti.chat.common.ClientInter;
-import iti.chat.common.LogInVerificationInter;
 import iti.chat.common.ServerInter;
-import iti.chat.common.SignUpVerificationInter;
 import iti.chat.common.User;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -44,11 +39,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -56,14 +51,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 public class ChatPageController implements Initializable {
-
+    
     private FXMLLoader loader2;
     private FXMLLoader requestsLoader;
     private Parent root2;
@@ -74,8 +70,12 @@ public class ChatPageController implements Initializable {
     @FXML
     private Tab tabAllUsers;
     @FXML
+    private Tab friendRequestTab;
+    @FXML
     private ComboBox ChatBox_ComboBox_Mode;
 
+    @FXML private TextField annoncmentsField;
+    
     Circle cir;
     private ObservableList<User> onlineUsers;
     private HashMap<String, ChatBoxController> openedTabs;
@@ -86,55 +86,95 @@ public class ChatPageController implements Initializable {
     private Stage stage;
     private double xOffset = 0;
     private double yOffset = 0;
+    private FriendRequestsController requestController;
     @FXML
     private Button exitButton;
     @FXML
     private Button logOutButton;
     @FXML
     private ListView<?> ChatPage_List_AllUsers;
-
+    
     public ServerInter getServer() {
         return server;
     }
-
+    
     public void setServer(ServerInter server) {
         this.server = server;
     }
-
+    
     public void setLoginer(User loginer) {
         this.loginer = loginer;
     }
-
+    
     public User getLoginer() {
         return loginer;
     }
-
+    
     public ClientInter getClient() {
         return client;
     }
-
+    
     public void setClient(ClientInter client) {
         this.client = client;
+        setComboBox_Mode();
     }
-
+    
+    public void setComboBox_Mode() {
+        
+        try {
+            if (this.client != null && this.client.getUser() != null) {
+                int mode = this.client.getUser().getMode();
+                if (mode == 1) {
+                    ChatBox_ComboBox_Mode.getSelectionModel().select("Online");
+                } else if (mode == 2) {
+                    ChatBox_ComboBox_Mode.getSelectionModel().select("Busy");
+                } else {
+                    ChatBox_ComboBox_Mode.getSelectionModel().select("Away");
+                }
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        seviceLookUp();
-        onlineUsers = FXCollections.observableArrayList();
-        ChatPage_TabPane_Users.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
-        ChatPage_List_OnlineUsers.setItems(onlineUsers);
-        setFrindesListFactory();
-        //hesham
-        //addNewSearchPane();
-        initializeModeCompoBox();
+        try {
+            // TODO
+            seviceLookUp();
+            onlineUsers = FXCollections.observableArrayList();
+            ChatPage_TabPane_Users.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+            ImageView searchIcon = new ImageView(new Image(this.getClass().getResource("/images/search.png").toURI().toString())); // for example
+            searchIcon.setFitWidth(20);
+            searchIcon.setFitHeight(20);            
+            tabAllUsers.setGraphic(searchIcon);
+            ChatPage_List_OnlineUsers.setItems(onlineUsers);
+            ImageView friendRequestTabImage = new ImageView(new Image(this.getClass().getResource("/images/req.png").toURI().toString())); // for example
+            friendRequestTabImage.setFitWidth(20);
+            friendRequestTabImage.setFitHeight(20);            
+            friendRequestTab.setGraphic(friendRequestTabImage);
+//            friendRequestTab.setOnSelectionChanged(new EventHandler<Event>() {
+//                @Override
+//                public void handle(Event event) {
+//                    System.out.println("req is selected");
+//                    System.out.println( ChatPage_TabPane_Users.getSelectionModel().getSelectedIndex());
+//
+//                }
+//            });
+            setFrindesListFactory();
+            //hesham
+            //addNewSearchPane();
+            initializeModeCompoBox();
 
-        //nagib
-        openedTabs = new HashMap<>();
+            //nagib
+            openedTabs = new HashMap<>();
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-
+    
     public class ListFormat extends ListCell<User> {
-
+        
         @Override
         protected void updateItem(User item, boolean empty) {
             super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
@@ -142,7 +182,7 @@ public class ChatPageController implements Initializable {
             if (item != null && !empty) {
                 HBox statuse = new HBox();
                 HBox pictureRegion = new HBox();
-                Text text = new Text(item.getEmail());
+                Text text = new Text(item.getFullname());
                 File file = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\CustomList\\src\\customlist\\personal-website-design.png");
                 Image image = new Image(file.toURI().toString());
                 ImageView imageView = new ImageView(image);
@@ -151,26 +191,24 @@ public class ChatPageController implements Initializable {
                 //circle for online and offline users
                 cir = new Circle(10, 10, 5);
                 if (item.getStatus() == 1) {
-                    if(item.getMode() == 1){
-                    cir.setFill(Color.LAWNGREEN);
-                    }
-                    else if(item.getMode() == 2){
-                    cir.setFill(Color.ORANGE);
-                    }
-                    else{
-                    cir.setFill(Color.RED);
+                    if (item.getMode() == 1) {
+                        cir.setFill(Color.LAWNGREEN);
+                    } else if (item.getMode() == 2) {
+                        cir.setFill(Color.ORANGE);
+                    } else {
+                        cir.setFill(Color.RED);
                     }
                 } else {
                     cir.setFill(Color.GREY);
                 }
-
+                
                 pictureRegion.setOnMousePressed(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
                         System.out.println("presseeeeed");
                         System.out.println(item.getFullname());
                         if (ChatPage_TabPane_Users.getTabs().size() <= 50) {
-
+                            
                             ClientInter frindClint = getFrindClint(item.getEmail());
                             if (frindClint != null) {
                                 Platform.runLater(new Runnable() {
@@ -204,13 +242,13 @@ public class ChatPageController implements Initializable {
                                     }
                                 });
                             } else {
-                                showAlert("Sorry your friend is not online");
+                                showAlert("Sorry " + item.getFullname() + " is not online");
                             }
-
+                            
                         } else {
                             System.out.println("that is enough");
                         }
-
+                        
                     }
                 });
                 statuse.getChildren().add(cir);
@@ -224,7 +262,7 @@ public class ChatPageController implements Initializable {
             } else {
                 setGraphic(null);
             }
-
+            
         }
     }
 
@@ -239,17 +277,21 @@ public class ChatPageController implements Initializable {
         } catch (RemoteException ex) {
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         Platform.exit();
         System.exit(0);
     }
-
+    
     public void setRegistry(Registry registry) {
         this.registry = registry;
     }
-
+    
     private void seviceLookUp() {
         try {
+<<<<<<< HEAD
+=======
+            //setRegistry(LocateRegistry.getRegistry("10.118.49.2",2000));
+>>>>>>> f89960c09e61eceab46079c1522357d5324a1e37
             setRegistry(LocateRegistry.getRegistry(2000));
             setServer((ServerInter) registry.lookup("ChatService"));
         } catch (NotBoundException | RemoteException ex) {
@@ -257,7 +299,7 @@ public class ChatPageController implements Initializable {
             Logger.getLogger(FXMLSignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void buildChatPageList(String mail) {
         try {
             server.getFrinds(mail).forEach((t) -> {
@@ -270,9 +312,9 @@ public class ChatPageController implements Initializable {
             showAlert("Sorry the server currently is under maintenance");
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
-
+    
     private void setFrindesListFactory() {
         ChatPage_List_OnlineUsers.setCellFactory(new Callback<ListView<User>, ListCell<User>>() {
             @Override
@@ -280,7 +322,7 @@ public class ChatPageController implements Initializable {
                 return new ListFormat();
             }
         });
-
+        
     }
 
     //
@@ -296,16 +338,16 @@ public class ChatPageController implements Initializable {
             } else {
                 System.out.println("friend is null-> " + friend);
             }
-
+            
         } catch (RemoteException ex) {
             System.out.println("Error in getFrindClint method");
             showAlert("Sorry the server currently is under maintenance");
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return friend;
-
+        
     }
-
+    
     public void recievefile(ClientInter sender, String tabId) {
 
 //        System.out.println("recievefile ChatPageController ");
@@ -314,7 +356,7 @@ public class ChatPageController implements Initializable {
             openedTabs = new HashMap<>();
             System.out.println("openedTabs is null");
         }
-
+        
         if (openedTabs.containsKey(tabId)) {
             System.out.println("found tabid in the list");
             openedTabs.get(tabId).requestRecieveFile(sender);
@@ -347,23 +389,23 @@ public class ChatPageController implements Initializable {
                         } catch (IOException ex) {
                             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
                         }
-
+                        
                     }
                 });
             }
         }
-
+        
     }
-
+    
     public void startSendingFile(String tabId) {
         if (openedTabs.containsKey(tabId)) {
             System.out.println("ChatPageController startSendingFile()");
             openedTabs.get(tabId).startSendingFile();
         }
     }
-
+    
     public void recieveMessage(ClientInter sender) {
-
+        
         System.out.println("recieveMessage ChatPageController ");
         try {
             System.out.println("the tab id is ->" + sender.getUser().getMessage().getTabId());
@@ -408,7 +450,7 @@ public class ChatPageController implements Initializable {
                             } catch (IOException ex) {
                                 Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
                             }
-
+                            
                         }
                     });
                 }
@@ -416,9 +458,9 @@ public class ChatPageController implements Initializable {
         } catch (RemoteException ex) {
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
-
+    
     private void showAlert(String s) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning Dialog");
@@ -426,7 +468,7 @@ public class ChatPageController implements Initializable {
         alert.setContentText(s);
         alert.showAndWait();
     }
-
+    
     private boolean tabIsOpened(ClientInter sender) {
         for (Map.Entry<String, ChatBoxController> entry : openedTabs.entrySet()) {
             String t = entry.getKey();
@@ -450,9 +492,9 @@ public class ChatPageController implements Initializable {
             }
         }
         return false;
-
+        
     }
-
+    
     private boolean tabIsOpened(ClientInter sender, String tabId) {
         for (Map.Entry<String, ChatBoxController> entry : openedTabs.entrySet()) {
             String t = entry.getKey();
@@ -476,15 +518,15 @@ public class ChatPageController implements Initializable {
             }
         }
         return false;
-
+        
     }
-
+    
     @FXML
     private void logOut(ActionEvent event) {
         try {
-
+            
             server.unregisterClint(client);
-
+            
         } catch (RemoteException ex) {
             showAlert("Sorry currently the server is under maintenance");
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
@@ -516,27 +558,27 @@ public class ChatPageController implements Initializable {
             scene.getStylesheets().add(getClass().getResource("/styles/Styles.css").toString());
             stage.setScene(scene);
             stage.show();
-
+            
         } catch (IOException ex) {
             Logger.getLogger(FXMLSignUpPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
-
+    
     public static <T> void triggerUpdate(ListView<T> listView, T newValue, int i) {
         System.out.println("triggerUpdate");
-
+        
         EventType<? extends ListView.EditEvent<T>> type = ListView.editCommitEvent();
         Event event = new ListView.EditEvent<>(listView, type, newValue, i);
         listView.fireEvent(event);
     }
-
-    public void friendChangeState(ClientInter newOnlineclient , int state) {
+    
+    public void friendChangeState(ClientInter newOnlineclient, int state) {
         Platform.runLater(() -> {
             // Where the magic happens.
-            
+
             onlineUsers.forEach((t) -> {
-               
+                
                 try {
                     if (t.getEmail().equals(newOnlineclient.getUser().getEmail())) {
                         System.out.println("dina is found");
@@ -548,20 +590,21 @@ public class ChatPageController implements Initializable {
                     Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
-
+            
         });
-
+        
     }
-    public void friendChangeMode(ClientInter newOnlineclient , int mode) {
+    
+    public void friendChangeMode(ClientInter newOnlineclient, int mode) {
         Platform.runLater(() -> {
             // Where the magic happens.
-            
+
             onlineUsers.forEach((t) -> {
-               
+                
                 try {
                     if (t.getEmail().equals(newOnlineclient.getUser().getEmail())) {
                         System.out.println("dina is found in friendChangeMode");
-                        System.out.println("mode is ---->"+mode );
+                        System.out.println("mode is ---->" + mode);
                         t.setMode(mode);
                         System.out.println("friendChangeMode ChatPage");
                         triggerUpdate(ChatPage_List_OnlineUsers, t, onlineUsers.indexOf(t));
@@ -570,27 +613,46 @@ public class ChatPageController implements Initializable {
                     Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
-
+            
         });
-
+        
     }
 
     //
     //
     /*Methods added by Dina  */
     //
-    public void addFriendRequestPane(ClientInter clientInter){
+    public void addFriendRequestPane(ClientInter clientInter , ServerInter serverInter, Registry r) {
         
         try {
             requestsLoader = new FXMLLoader();
             Pane newPane = requestsLoader.load(getClass().getResource("/fxml/friendRequests.fxml").openStream());
-            FriendRequestsController requestController = (FriendRequestsController) requestsLoader.getController();
+            requestController = (FriendRequestsController) requestsLoader.getController();
+            requestController.setClient(clientInter);
+            requestController.setRegistry(r);
+            requestController.setServer(serverInter);
             requestController.setLoginer(clientInter.getUser());
+            requestController.getRequests();
+            friendRequestTab.setContent(newPane);
         } catch (IOException ex) {
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     //
+    public void getAnnoncment(String Content){
+        System.out.println("client side annoncment is "+Content);
+        annoncmentsField.setText(Content);
+        this.getNotification(Content,1);
+    }
+    public void getNotification(String content,int type){
+    
+        Platform.runLater(() -> {
+         TrayNotification tray;        
+            tray = new TrayNotification("Notification","Annoncment from server", NotificationType.NOTICE);
+         tray.showAndWait();
+        });
+    }
     /*Methods added by Hassna  */
     //
     //
@@ -598,46 +660,44 @@ public class ChatPageController implements Initializable {
     //
     public void addNewSearchPane(ClientInter clientInter) {
         try {
-
+            
             loader2 = new FXMLLoader();
-
+            
             Pane newLoadedPane = loader2.load(getClass().getResource("/fxml/searchFriends.fxml").openStream());
             SearchFriendsController searchController = (SearchFriendsController) loader2.getController();
             searchController.setLoginer(clientInter.getUser());
-
+            
             tabAllUsers.setContent(newLoadedPane);
         } catch (IOException ex) {
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void initializeModeCompoBox() {
         ChatBox_ComboBox_Mode.getItems().removeAll(ChatBox_ComboBox_Mode.getItems());
         ChatBox_ComboBox_Mode.getItems().addAll("Online", "Busy", "Away");
         ChatBox_ComboBox_Mode.getSelectionModel().select("Online");
     }
-
+    
     @FXML
     private void comboAction(ActionEvent event) {
         System.out.println(ChatBox_ComboBox_Mode.getValue());
         System.out.println("mail is " + getLoginer().getEmail());
         int checkRowAffected;
         try {
-            if(ChatBox_ComboBox_Mode.getValue().toString().equals("Online")){
-                checkRowAffected = server.updateMode(client,1, getLoginer().getEmail());
-            System.out.println("afftected rows " + checkRowAffected);
-            }
-            else if(ChatBox_ComboBox_Mode.getValue().toString().equals("Busy")){
-            checkRowAffected = server.updateMode(client,2, getLoginer().getEmail());
-            }
-            else{
-            checkRowAffected = server.updateMode(client,3, getLoginer().getEmail());
+            if (ChatBox_ComboBox_Mode.getValue().toString().equals("Online")) {
+                checkRowAffected = server.updateMode(client, 1, getLoginer().getEmail());
+                System.out.println("afftected rows " + checkRowAffected);
+            } else if (ChatBox_ComboBox_Mode.getValue().toString().equals("Busy")) {
+                checkRowAffected = server.updateMode(client, 2, getLoginer().getEmail());
+            } else {
+                checkRowAffected = server.updateMode(client, 3, getLoginer().getEmail());
             }
             
         } catch (RemoteException ex) {
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
 
     //

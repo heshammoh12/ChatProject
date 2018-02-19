@@ -7,12 +7,12 @@
 <?import javafx.scene.layout.*?>
 
 
-<AnchorPane id="AnchorPane" prefHeight="343.0" prefWidth="244.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
-   <children>
-      <Pane prefHeight="343.0" prefWidth="244.0">
-         <children>
-            <ListView prefHeight="343.0" prefWidth="244.0" />
-         </children>
-      </Pane>
-   </children>
+<AnchorPane id="AnchorPane" prefHeight="343.0" prefWidth="244.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="client.controllers.FriendRequestsController">
+    <children>
+        <Pane prefHeight="343.0" prefWidth="244.0">
+            <children>
+                <ListView fx:id="ListView_AcceptFriend" layoutY="52.0" prefHeight="243.0" prefWidth="200.0" />
+            </children>
+        </Pane>
+    </children>
 </AnchorPane>
