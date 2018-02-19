@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -115,22 +116,49 @@ public class ChatPageController implements Initializable {
 
     public void setClient(ClientInter client) {
         this.client = client;
+        setComboBox_Mode();
+    }
+
+    public void setComboBox_Mode() {
+
+        try {
+            if (this.client != null && this.client.getUser() != null) {
+                int mode = this.client.getUser().getMode();
+                if (mode == 1) {
+                    ChatBox_ComboBox_Mode.getSelectionModel().select("Online");
+                } else if (mode == 2) {
+                    ChatBox_ComboBox_Mode.getSelectionModel().select("Busy");
+                } else {
+                    ChatBox_ComboBox_Mode.getSelectionModel().select("Away");
+                }
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        seviceLookUp();
-        onlineUsers = FXCollections.observableArrayList();
-        ChatPage_TabPane_Users.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
-        ChatPage_List_OnlineUsers.setItems(onlineUsers);
-        setFrindesListFactory();
-        //hesham
-        //addNewSearchPane();
-        initializeModeCompoBox();
-
-        //nagib
-        openedTabs = new HashMap<>();
+        try {
+            // TODO
+            seviceLookUp();
+            onlineUsers = FXCollections.observableArrayList();
+            ChatPage_TabPane_Users.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+            File searchFile = new File("/fxml/search.png");
+            ImageView searchIcon = new ImageView( new Image(this.getClass().getResource("/images/search.png").toURI().toString())); // for example
+            searchIcon.setFitWidth(20); searchIcon.setFitHeight(20); // your preference
+            tabAllUsers.setGraphic(searchIcon);
+            ChatPage_List_OnlineUsers.setItems(onlineUsers);
+            setFrindesListFactory();
+            //hesham
+            //addNewSearchPane();
+            initializeModeCompoBox();
+            
+            //nagib
+            openedTabs = new HashMap<>();
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public class ListFormat extends ListCell<User> {
@@ -142,7 +170,7 @@ public class ChatPageController implements Initializable {
             if (item != null && !empty) {
                 HBox statuse = new HBox();
                 HBox pictureRegion = new HBox();
-                Text text = new Text(item.getEmail());
+                Text text = new Text(item.getFullname());
                 File file = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\CustomList\\src\\customlist\\personal-website-design.png");
                 Image image = new Image(file.toURI().toString());
                 ImageView imageView = new ImageView(image);
@@ -151,14 +179,12 @@ public class ChatPageController implements Initializable {
                 //circle for online and offline users
                 cir = new Circle(10, 10, 5);
                 if (item.getStatus() == 1) {
-                    if(item.getMode() == 1){
-                    cir.setFill(Color.LAWNGREEN);
-                    }
-                    else if(item.getMode() == 2){
-                    cir.setFill(Color.ORANGE);
-                    }
-                    else{
-                    cir.setFill(Color.RED);
+                    if (item.getMode() == 1) {
+                        cir.setFill(Color.LAWNGREEN);
+                    } else if (item.getMode() == 2) {
+                        cir.setFill(Color.ORANGE);
+                    } else {
+                        cir.setFill(Color.RED);
                     }
                 } else {
                     cir.setFill(Color.GREY);
@@ -201,7 +227,7 @@ public class ChatPageController implements Initializable {
                                     }
                                 });
                             } else {
-                                showAlert("Sorry your friend is not online");
+                                showAlert("Sorry "+item.getFullname() +" is not online");
                             }
 
                         } else {
@@ -526,12 +552,12 @@ public class ChatPageController implements Initializable {
         listView.fireEvent(event);
     }
 
-    public void friendChangeState(ClientInter newOnlineclient , int state) {
+    public void friendChangeState(ClientInter newOnlineclient, int state) {
         Platform.runLater(() -> {
             // Where the magic happens.
-            
+
             onlineUsers.forEach((t) -> {
-               
+
                 try {
                     if (t.getEmail().equals(newOnlineclient.getUser().getEmail())) {
                         System.out.println("dina is found");
@@ -547,16 +573,17 @@ public class ChatPageController implements Initializable {
         });
 
     }
-    public void friendChangeMode(ClientInter newOnlineclient , int mode) {
+
+    public void friendChangeMode(ClientInter newOnlineclient, int mode) {
         Platform.runLater(() -> {
             // Where the magic happens.
-            
+
             onlineUsers.forEach((t) -> {
-               
+
                 try {
                     if (t.getEmail().equals(newOnlineclient.getUser().getEmail())) {
                         System.out.println("dina is found in friendChangeMode");
-                        System.out.println("mode is ---->"+mode );
+                        System.out.println("mode is ---->" + mode);
                         t.setMode(mode);
                         System.out.println("friendChangeMode ChatPage");
                         triggerUpdate(ChatPage_List_OnlineUsers, t, onlineUsers.indexOf(t));
@@ -574,8 +601,8 @@ public class ChatPageController implements Initializable {
     //
     /*Methods added by Dina  */
     //
-    public void addFriendRequestPane(ClientInter clientInter){
-        
+    public void addFriendRequestPane(ClientInter clientInter) {
+
         try {
             requestsLoader = new FXMLLoader();
             Pane newPane = requestsLoader.load(getClass().getResource("/fxml/friendRequests.fxml").openStream());
@@ -585,6 +612,7 @@ public class ChatPageController implements Initializable {
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     //
     /*Methods added by Hassna  */
     //
@@ -618,17 +646,15 @@ public class ChatPageController implements Initializable {
         System.out.println("mail is " + getLoginer().getEmail());
         int checkRowAffected;
         try {
-            if(ChatBox_ComboBox_Mode.getValue().toString().equals("Online")){
-                checkRowAffected = server.updateMode(client,1, getLoginer().getEmail());
-            System.out.println("afftected rows " + checkRowAffected);
+            if (ChatBox_ComboBox_Mode.getValue().toString().equals("Online")) {
+                checkRowAffected = server.updateMode(client, 1, getLoginer().getEmail());
+                System.out.println("afftected rows " + checkRowAffected);
+            } else if (ChatBox_ComboBox_Mode.getValue().toString().equals("Busy")) {
+                checkRowAffected = server.updateMode(client, 2, getLoginer().getEmail());
+            } else {
+                checkRowAffected = server.updateMode(client, 3, getLoginer().getEmail());
             }
-            else if(ChatBox_ComboBox_Mode.getValue().toString().equals("Busy")){
-            checkRowAffected = server.updateMode(client,2, getLoginer().getEmail());
-            }
-            else{
-            checkRowAffected = server.updateMode(client,3, getLoginer().getEmail());
-            }
-            
+
         } catch (RemoteException ex) {
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
