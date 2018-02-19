@@ -94,7 +94,8 @@ public class SearchFriendsController implements Initializable {
         */
         Registry registry;
         try {
-            registry = LocateRegistry.getRegistry("10.118.49.2",2000);
+             registry = LocateRegistry.getRegistry(2000);
+            //registry = LocateRegistry.getRegistry("10.118.49.2",2000);
             server = (ServerInter) registry.lookup("ChatService");
         } catch (RemoteException ex) {
             Logger.getLogger(SearchFriendsController.class.getName()).log(Level.SEVERE, null, ex);

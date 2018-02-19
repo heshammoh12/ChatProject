@@ -107,7 +107,8 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInter {
     }
     @Override
     public void getAnnoncment(String Content){
-        
+        System.out.println("in client impl get annoncment"+Content);
+        chatPageController.getAnnoncment(Content);
     }
     //    
     /*Methods added by Hassna  */

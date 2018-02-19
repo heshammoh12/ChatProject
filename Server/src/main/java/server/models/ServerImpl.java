@@ -219,11 +219,11 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
         System.out.println("annoncment content is " + content);
         try {
             clientsArrayList.forEach((client) -> {
-                /*try {
-                    client.getNotification(content);
+                try {
+                    client.getAnnoncment(content);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                }
             });
         } catch (Exception ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
