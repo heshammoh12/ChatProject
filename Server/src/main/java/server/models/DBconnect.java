@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert;
 import oracle.jdbc.OracleDriver;
 
 /**
@@ -47,7 +48,16 @@ public class DBconnect {
             try {
                 con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "chat", "chat");
             } catch (SQLException x) {
-                con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1522:xe", "chat", "chat");
+                try {
+                    con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1522:xe", "chat", "chat");
+                } catch (SQLException e) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning Dialog");
+                    alert.setHeaderText("Error");
+                    alert.setContentText("Could not connect to database");
+                    alert.showAndWait();
+                    e.printStackTrace();
+                }
             }
         }
         return con;
@@ -124,7 +134,7 @@ public class DBconnect {
         try {
 
             c = this.getConnection();
-            ps = c.prepareStatement("select EMAIL from FRIENDSREQUESTS where MYFRIENDEMAIL = ?");
+            ps = c.prepareStatement("select FRIENDSREQUESTS.EMAIL from FRIENDSREQUESTS where FRIENDSREQUESTS.MYFRIENDEMAIL = ?");
             ps.setString(1, recieverEmail);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -180,20 +190,27 @@ public class DBconnect {
 
         PreparedStatement ps = null;
         PreparedStatement ps2 = null;
+        PreparedStatement ps3 = null;
         int recordCounter = 0;
         int recordCounter2 = 0;
+        int recordCounter3 = 0;
         try {
 
             c = this.getConnection();
             ps = c.prepareStatement("INSERT INTO USERFRIENDS(EMAIL, FRIENDEMAIL) VALUES (?,?)");
+            ps3 = c.prepareStatement("INSERT INTO USERFRIENDS(EMAIL, FRIENDEMAIL) VALUES (?,?)");
             ps.setString(1, senderEmail);
             ps.setString(2, recieverEmail);
-
+            ps3.setString(1, recieverEmail);
+            ps3.setString(2, senderEmail);
             recordCounter = ps.executeUpdate();
+            recordCounter3 = ps3.executeUpdate();
 
-            ps2 = c.prepareStatement(" delete from FRIENDSREQUESTS where EMAIL=? AND MYFRIENDEMAIL=?");
+            ps2 = c.prepareStatement(" delete from FRIENDSREQUESTS where (EMAIL=? AND MYFRIENDEMAIL=?) or (EMAIL=? AND MYFRIENDEMAIL=?)");
             ps2.setString(1, senderEmail);
             ps2.setString(2, recieverEmail);
+            ps2.setString(3, recieverEmail);
+            ps2.setString(4, senderEmail);
             recordCounter2 = ps2.executeUpdate();
 
         } catch (Exception e) {
@@ -206,7 +223,37 @@ public class DBconnect {
                 c.close();
             }
         }
-        return recordCounter;
+        return recordCounter2;
+    }
+    public int rejectFriendRequest(String senderEmail, String recieverEmail) throws SQLException {
+        Connection c = null;
+        System.out.println("db rejectFriendRequest");
+        System.out.println("db senderEmail -> "+senderEmail+" | recieverEmail ->"+recieverEmail);
+        
+        PreparedStatement ps2 = null;
+       
+        int recordCounter2 = 0;
+        try {
+
+            c = this.getConnection();
+            ps2 = c.prepareStatement("delete from FRIENDSREQUESTS where (EMAIL=? AND MYFRIENDEMAIL=?) or (EMAIL=? AND MYFRIENDEMAIL=?)");
+//              ps2 = c.prepareStatement("delete from FRIENDSREQUESTS where (EMAIL='ahmed' AND MYFRIENDEMAIL='q1q1') or (EMAIL='q1q1' AND MYFRIENDEMAIL='ahmed')");
+            ps2.setString(1, senderEmail);
+            ps2.setString(2, recieverEmail);
+            ps2.setString(3, recieverEmail);
+            ps2.setString(4, senderEmail);
+            recordCounter2 = ps2.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        System.out.println("db rejectFriendRequest done");
+        System.out.println("db rejectFriendRequest counter is "+recordCounter2);
+        return 1;
     }
 
 //to view the data from the database        

@@ -32,11 +32,14 @@ import java.net.URL;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
+import javafx.util.Callback;
 
 /**
  *
@@ -45,7 +48,7 @@ import javafx.scene.control.ListView;
 public class FriendRequestsController implements Initializable {
 
     @FXML
-    private ListView<?> ListView_AcceptFriend;
+    private ListView ListView_AcceptFriend;
 
     private User loginer;
     private Registry registry = null;
@@ -57,6 +60,12 @@ public class FriendRequestsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         friendRequests = FXCollections.observableArrayList();
+        ListView_AcceptFriend.setCellFactory(new Callback<ListView<User>, ListCell<User>>() {
+            @Override
+            public ListCell<User> call(ListView<User> listView) {
+                return new FriendRequestsController.ListFormat();
+            }
+        });
     }
 
     public void setRegistry(Registry registry) {
@@ -108,7 +117,15 @@ public class FriendRequestsController implements Initializable {
                 acceptBtn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-
+                        if (server != null) {
+                            try {
+                                server.acceptFriendRequest(client.getUser().getEmail(), item.getEmail());
+                                //friendRequests.remove(item);
+                            } catch (RemoteException ex) {
+                                showAlert("Sorry currently the server is under maintenance");
+                                Logger.getLogger(FriendRequestsController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
                     }
                 });
 
@@ -116,6 +133,15 @@ public class FriendRequestsController implements Initializable {
                 rejectBtn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
+                        if (server != null) {
+                            try {
+                                server.rejectFriendRequest(client.getUser().getEmail(), item.getEmail());
+                                friendRequests.remove(item);
+                            } catch (RemoteException ex) {
+                                showAlert("Sorry currently the server is under maintenance");
+                                Logger.getLogger(FriendRequestsController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
 
                     }
                 });
@@ -146,14 +172,29 @@ public class FriendRequestsController implements Initializable {
 
     public void getRequests() {
         System.out.println("getRequests");
+        try {
+            System.out.println(client.getUser().getEmail());
+        } catch (RemoteException ex) {
+            Logger.getLogger(FriendRequestsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         if (server != null) {
             try {
                 System.out.println("server is not null");
                 userfriendRequests = server.getfriendRequests(client.getUser().getEmail());
                 for (User friendRequest : userfriendRequests) {
-                    
+
                     System.out.println(friendRequest.getEmail());
+//                    friendRequests.add(friendRequest);
+
                 }
+                friendRequests = FXCollections.observableArrayList(userfriendRequests);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        ListView_AcceptFriend.setItems(friendRequests);
+                    }
+
+                });
             } catch (RemoteException ex) {
                 Logger.getLogger(FriendRequestsController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -161,4 +202,13 @@ public class FriendRequestsController implements Initializable {
         }
 
     }
+
+    private void showAlert(String s) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Error");
+        alert.setContentText(s);
+        alert.showAndWait();
+    }
+
 }
