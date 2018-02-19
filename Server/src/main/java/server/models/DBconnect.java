@@ -602,4 +602,20 @@ public ArrayList<String> getOnlineFriends(String mail) throws SQLException{
               }
           return counterRowAffected;
     }
+    public void updateToOffline(){
+        Connection c=null;               
+        PreparedStatement ps=null; 
+        try {
+                c= getConnection();
+                ps=c.prepareStatement("update USERLOGIN set USERSTATUS=0");
+                ps.executeUpdate();
+                ps.close();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             
+        
+    }
 }

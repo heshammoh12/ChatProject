@@ -75,7 +75,7 @@
                               </AnchorPane>
                         </content>
                       </Tab>
-                      <Tab fx:id="tabAllUsers" text="Search">
+                      <Tab fx:id="tabAllUsers">
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
@@ -84,7 +84,7 @@
                               </AnchorPane>
                         </content>
                       </Tab>
-                        <Tab text="FriendReq">
+                        <Tab>
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                           </content>
@@ -99,7 +99,7 @@
                     <tabs>
                       <Tab fx:id="homeTab" closable="false" text="Home">
                            <content>
-                              <AnchorPane prefHeight="200.0" prefWidth="180.0">
+                              <AnchorPane prefHeight="130.0" prefWidth="389.0">
                                  <children>
                                     <Label layoutX="89.0" layoutY="14.0" prefHeight="27.0" prefWidth="268.0" text="Welcome In Life Etshat :D ">
                                        <font>
