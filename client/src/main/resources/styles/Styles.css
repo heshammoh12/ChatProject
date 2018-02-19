@@ -55,8 +55,104 @@
     -fx-background-color: #e45652;
 }
 #SignUpPage_btn_SignUp:hover {
-    -fx-background-color: #FBE9E7;  
+    -fx-background-color: #007872;  
 }
 #backButton:hover {
 -fx-cursor: hand;
 }
+#exitButton{
+    -fx-background-color: transparent;
+}
+#exitButton:hover{
+    -fx-background-color: #007872; 
+    -fx-cursor: hand;
+}
+#minButton{
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+#minButton:hover{
+    -fx-background-color: #007872; 
+    -fx-cursor: hand;
+}
+#logOutButton{
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+#logOutButton:hover{
+    -fx-background-color: #007872; 
+    -fx-cursor: hand;
+}
+#ChatBox_ComboBox_Mode{
+    -fx-background-color: transparent;
+}
+#ChatBox_ComboBox_Mode:hover{
+    -fx-background-color: #007872; 
+}
+
+#header{
+    -fx-background-color: #C5CAE9;
+}
+
+
+
+.tdbPane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+}
+
+.tdbPane
+{
+    -fx-tab-min-width:90px;
+}
+
+.tabs{
+    -fx-background-insets: 0 1 0 1,0,0;
+}
+.tdbPane .tab
+{
+    -fx-background-color: #e6e6e6;
+
+}
+
+.tdbPane .tab:selected
+{
+    -fx-background-color: #3c3c3c;
+}
+
+.tabs .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #828282;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.tabs:selected .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #96b946;
+}
+
+
+.hbox {
+    -fx-background-color: #C5CAE9;
+    -fx-padding: 2;
+    -fx-spacing: 2;
+}
+
+.coboChatBox{
+    -fx-background-color: transparent;
+}
+.coboChatBox:hover{
+    -fx-background-color: #007872; 
+}
+
+.btnChatBox{
+    -fx-background-color: transparent;
+}
+.btnChatBox:hover{
+    -fx-background-color: #007872; 
+}
+
+.chatBoxEditText{
+    -fx-background-radius:20;
+}
+

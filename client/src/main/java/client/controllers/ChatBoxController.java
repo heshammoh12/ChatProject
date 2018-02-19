@@ -271,7 +271,7 @@ public class ChatBoxController implements Initializable {
         //File email = new File("/images/icon-email-128.png");
         File email = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\ChatProject\\client\\src\\main\\resources\\images\\note.png");
         Image imgEmail = new Image(email.toURI().toString());
-        ChatBox_Button_Email.setGraphic(new ImageView(imgEmail));
+//        ChatBox_Button_Email.setGraphic(new ImageView(imgEmail));
 
         //
         //code added by nagib

@@ -178,6 +178,9 @@ public class ChatPageController implements Initializable {
                                     public void run() {
                                         try {
                                             Tab tab = new Tab(item.getFullname());
+                                            String s = tabAllUsers.getStyle();
+                                            //System.out.println("styleeeeeeeeeeeeee is  "+s);
+                                            tab.getStyleClass().add("tabs");
                                             //Button tabA_button = new Button("Button@Tab A");
                                             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ChatBox.fxml"));
                                             Pane root = (Pane) loader.load();
@@ -247,7 +250,7 @@ public class ChatPageController implements Initializable {
 
     private void seviceLookUp() {
         try {
-            setRegistry(LocateRegistry.getRegistry("10.118.49.2",2000));
+            setRegistry(LocateRegistry.getRegistry(2000));
             setServer((ServerInter) registry.lookup("ChatService"));
         } catch (NotBoundException | RemoteException ex) {
             showAlert("Sorry the server currently is under maintenance");
@@ -323,6 +326,7 @@ public class ChatPageController implements Initializable {
                         try {
                             System.out.println("open new tab");
                             Tab tab = new Tab(sender.getUser().getFullname());
+                            tab.getStyleClass().add("tabs");
                             //Button tabA_button = new Button("Button@Tab A");
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ChatBox.fxml"));
                             Pane root = (Pane) loader.load();
@@ -382,6 +386,7 @@ public class ChatPageController implements Initializable {
                             try {
                                 System.out.println("open new tab");
                                 Tab tab = new Tab(sender.getUser().getFullname());
+                                tab.getStyleClass().add("tabs");
                                 //Button tabA_button = new Button("Button@Tab A");
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ChatBox.fxml"));
                                 Pane root = (Pane) loader.load();
