@@ -199,7 +199,6 @@ public class SearchFriendsController implements Initializable {
                 hboxButton.getChildren().add(btnAdd);
                 hboxButton.setAlignment(Pos.CENTER_RIGHT);
                 pictureRegion.setHgrow(hboxButton, Priority.ALWAYS);
-                Image image = new Image(file.toURI().toString());
                 ImageView imageView=null;
                 try {
                     imageView = new ImageView(this.getClass().getResource("/images/personal.png").toURI().toString());
