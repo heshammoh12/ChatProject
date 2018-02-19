@@ -55,6 +55,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 public class ChatPageController implements Initializable {
     
@@ -214,6 +216,9 @@ public class ChatPageController implements Initializable {
                                     public void run() {
                                         try {
                                             Tab tab = new Tab(item.getFullname());
+                                            String s = tabAllUsers.getStyle();
+                                            //System.out.println("styleeeeeeeeeeeeee is  "+s);
+                                            tab.getStyleClass().add("tabs");
                                             //Button tabA_button = new Button("Button@Tab A");
                                             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ChatBox.fxml"));
                                             Pane root = (Pane) loader.load();
@@ -283,7 +288,10 @@ public class ChatPageController implements Initializable {
     
     private void seviceLookUp() {
         try {
+<<<<<<< HEAD
+=======
             //setRegistry(LocateRegistry.getRegistry("10.118.49.2",2000));
+>>>>>>> f89960c09e61eceab46079c1522357d5324a1e37
             setRegistry(LocateRegistry.getRegistry(2000));
             setServer((ServerInter) registry.lookup("ChatService"));
         } catch (NotBoundException | RemoteException ex) {
@@ -360,6 +368,7 @@ public class ChatPageController implements Initializable {
                         try {
                             System.out.println("open new tab");
                             Tab tab = new Tab(sender.getUser().getFullname());
+                            tab.getStyleClass().add("tabs");
                             //Button tabA_button = new Button("Button@Tab A");
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ChatBox.fxml"));
                             Pane root = (Pane) loader.load();
@@ -419,6 +428,7 @@ public class ChatPageController implements Initializable {
                             try {
                                 System.out.println("open new tab");
                                 Tab tab = new Tab(sender.getUser().getFullname());
+                                tab.getStyleClass().add("tabs");
                                 //Button tabA_button = new Button("Button@Tab A");
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ChatBox.fxml"));
                                 Pane root = (Pane) loader.load();
@@ -633,13 +643,15 @@ public class ChatPageController implements Initializable {
     public void getAnnoncment(String Content){
         System.out.println("client side annoncment is "+Content);
         annoncmentsField.setText(Content);
+        this.getNotification(Content,1);
     }
     public void getNotification(String content,int type){
     
-        /*Platform.runLater(() -> {
-         TrayNotification tray = new TrayNotification("Notification","Annoncment from Server..Please check your home");        
+        Platform.runLater(() -> {
+         TrayNotification tray;        
+            tray = new TrayNotification("Notification","Annoncment from server", NotificationType.NOTICE);
          tray.showAndWait();
-        });*/
+        });
     }
     /*Methods added by Hassna  */
     //

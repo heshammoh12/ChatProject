@@ -16,6 +16,12 @@
    
     <dependencies>
         <dependency>
+            <groupId>com.github.plushaze.traynotification</groupId>
+            <artifactId>TrayNotification</artifactId>
+            <version>4.12</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
             <groupId>iti.chat</groupId>
             <artifactId>Common</artifactId>
             <version>1.0-SNAPSHOT</version>

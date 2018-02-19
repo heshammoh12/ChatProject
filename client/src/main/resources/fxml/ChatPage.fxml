@@ -23,23 +23,23 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.ChatPageController">
    <children>
-      <Pane layoutY="-5.0" prefHeight="72.0" prefWidth="600.0">
+      <Pane fx:id="header" layoutY="-5.0" prefHeight="72.0" prefWidth="600.0">
          <children>
             <ImageView fitHeight="55.0" fitWidth="54.0" layoutX="233.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="file:/C:/Users/Hesham%20Kadry/Desktop/images/chat.png" />
+                  <Image url="file:/C:/Users/Hesham%20Kadry/Desktop/images/live-chat-icon-image-7424-350.png" />
                </image>
             </ImageView>
-            <Text fill="#b20303" layoutX="287.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Life Etshat" wrappingWidth="100.0">
+            <Text fill="#00573c" layoutX="287.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Life Etshat" wrappingWidth="100.0">
                <font>
-                  <Font name="System Bold" size="20.0" />
+                  <Font name="System Bold Italic" size="20.0" />
                </font>
             </Text>
             <HBox layoutX="14.0" layoutY="12.0" prefHeight="54.0" prefWidth="186.0">
                <children>
                   <ImageView fitHeight="54.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="file:/C:/Users/Hesham%20Kadry/Desktop/images/download.png" />
+                        <Image url="file:/C:/Users/Hesham%20Kadry/Desktop/images/profile-icon-28.png" />
                      </image>
                   </ImageView>
                   <VBox prefHeight="200.0" prefWidth="100.0">
@@ -54,37 +54,46 @@
                   </VBox>
                </children>
             </HBox>
-            <Button fx:id="exitButton" layoutX="565.0" layoutY="6.0" mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="28.0" text="X" />
-            <Button layoutX="531.0" layoutY="6.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="28.0" text="-" />
-            <Button fx:id="logOutButton" layoutX="532.0" layoutY="37.0" mnemonicParsing="false" onAction="#logOut" prefHeight="25.0" prefWidth="61.0" text="LogOut" />
+            <Button fx:id="exitButton" layoutX="565.0" layoutY="6.0" mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="28.0" text="X">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
+            <Button fx:id="minButton" layoutX="531.0" layoutY="6.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="28.0" text="-">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
+            <Button fx:id="logOutButton" layoutX="532.0" layoutY="37.0" mnemonicParsing="false" onAction="#logOut" prefHeight="25.0" prefWidth="61.0" text="LogOut">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
          </children>
       </Pane>
-      <SplitPane dividerPositions="0.3411371237458194" layoutY="68.0" prefHeight="330.0" prefWidth="600.0">
+      <SplitPane dividerPositions="0.35618729096989965" layoutY="68.0" prefHeight="330.0" prefWidth="600.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="328.0" prefWidth="203.0">
                <children>
-                  <TabPane layoutX="1.0" prefHeight="328.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+                  <TabPane fx:id="tabPane" layoutX="1.0" prefHeight="328.0" prefWidth="600.0" side="LEFT" styleClass="tdbPane" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                      <Tab text="Friends">
+                      <Tab styleClass="tabs" text="Friends">
 
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <ListView fx:id="ChatPage_List_OnlineUsers" layoutY="-1.0" prefHeight="295.0" prefWidth="200.0" />
+                                    <ListView fx:id="ChatPage_List_OnlineUsers" layoutY="-1.0" prefHeight="328.0" prefWidth="186.0" />
                                  </children>
                               </AnchorPane>
                         </content>
                       </Tab>
-                      <Tab fx:id="tabAllUsers">
+                      <Tab fx:id="tabAllUsers" styleClass="tabs" text="Search">
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <ListView fx:id="ChatPage_List_AllUsers" layoutY="1.0" prefHeight="295.0" prefWidth="200.0" />
+                                    <ListView fx:id="ChatPage_List_AllUsers" layoutY="1.0" prefHeight="328.0" prefWidth="186.0" />
                                  </children>
                               </AnchorPane>
                         </content>
                       </Tab>
-                        <Tab fx:id="friendRequestTab">
+                        <Tab styleClass="tabs" fx:id="friendRequestTab">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                           </content>
@@ -95,9 +104,9 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="174.0" prefWidth="315.0">
                <children>
-                  <TabPane fx:id="ChatPage_TabPane_Users" prefHeight="328.0" prefWidth="514.0" tabClosingPolicy="UNAVAILABLE">
+                  <TabPane fx:id="ChatPage_TabPane_Users" prefHeight="328.0" prefWidth="514.0" styleClass="tdbPane" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                      <Tab fx:id="homeTab" closable="false" text="Home">
+                      <Tab fx:id="homeTab" styleClass="tabs" closable="false" text="Home">
                            <content>
                               <AnchorPane prefHeight="130.0" prefWidth="389.0">
                                  <children>
