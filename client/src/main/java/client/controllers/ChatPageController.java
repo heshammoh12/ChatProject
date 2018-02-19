@@ -43,6 +43,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -70,6 +71,8 @@ public class ChatPageController implements Initializable {
     private Tab friendRequestTab;
     @FXML
     private ComboBox ChatBox_ComboBox_Mode;
+
+    @FXML private TextField annoncmentsField;
     
     Circle cir;
     private ObservableList<User> onlineUsers;
@@ -280,6 +283,7 @@ public class ChatPageController implements Initializable {
     
     private void seviceLookUp() {
         try {
+            //setRegistry(LocateRegistry.getRegistry("10.118.49.2",2000));
             setRegistry(LocateRegistry.getRegistry(2000));
             setServer((ServerInter) registry.lookup("ChatService"));
         } catch (NotBoundException | RemoteException ex) {
@@ -626,6 +630,17 @@ public class ChatPageController implements Initializable {
     }
 
     //
+    public void getAnnoncment(String Content){
+        System.out.println("client side annoncment is "+Content);
+        annoncmentsField.setText(Content);
+    }
+    public void getNotification(String content,int type){
+    
+        /*Platform.runLater(() -> {
+         TrayNotification tray = new TrayNotification("Notification","Annoncment from Server..Please check your home");        
+         tray.showAndWait();
+        });*/
+    }
     /*Methods added by Hassna  */
     //
     //

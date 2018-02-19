@@ -32,6 +32,7 @@ import java.net.URL;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -55,7 +56,7 @@ public class FriendRequestsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        friendRequests = FXCollections.observableArrayList();
     }
 
     public void setRegistry(Registry registry) {
@@ -150,6 +151,7 @@ public class FriendRequestsController implements Initializable {
                 System.out.println("server is not null");
                 userfriendRequests = server.getfriendRequests(client.getUser().getEmail());
                 for (User friendRequest : userfriendRequests) {
+                    
                     System.out.println(friendRequest.getEmail());
                 }
             } catch (RemoteException ex) {

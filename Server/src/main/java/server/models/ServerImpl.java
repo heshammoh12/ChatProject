@@ -118,7 +118,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
         try {
             conn = DBconnect.getInstance();
             ArrayList<String> frindEmails = conn.getRequests(email);
-            
+
             for (String frindEmail : frindEmails) {
                 User friend = conn.getUserFriendsData(frindEmail);
                 requesters.add(friend);
@@ -250,11 +250,11 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
         System.out.println("annoncment content is " + content);
         try {
             clientsArrayList.forEach((client) -> {
-                /*try {
-                    client.getNotification(content);
+                try {
+                    client.getAnnoncment(content);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                }
             });
         } catch (Exception ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -275,6 +275,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
     @Override
     public ArrayList<User> search(String email1, String email2) throws RemoteException {
         ArrayList<User> names = new ArrayList<>();
+
         DBconnect conn;
         try {
             conn = DBconnect.getInstance();

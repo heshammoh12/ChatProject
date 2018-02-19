@@ -127,10 +127,10 @@ public class DBconnect {
             ps = c.prepareStatement("select EMAIL from FRIENDSREQUESTS where MYFRIENDEMAIL = ?");
             ps.setString(1, recieverEmail);
             ResultSet rs = ps.executeQuery();
-             while (rs.next()) {
-            Requesters.add(rs.getString(1));
-        }
-            
+            while (rs.next()) {
+                Requesters.add(rs.getString(1));
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -145,6 +145,7 @@ public class DBconnect {
         System.out.println(Requesters);
         return Requesters;
     }
+
     public int addFriendRequest(String senderEmail, String recieverEmail) throws SQLException {
         Connection c = null;
 
@@ -483,7 +484,7 @@ public class DBconnect {
         try {
 
             con = this.getConnection();
-            ps = con.prepareStatement("SELECT email,myfriendemail FROM friendsrequests where (email='"+email1+"' and MYFRIENDEMAIL='"+email2+"')or(email='"+email2+"' and MYFRIENDEMAIL='"+email1+"')");
+            ps = con.prepareStatement("SELECT email,myfriendemail FROM friendsrequests where (email='" + email1 + "' and MYFRIENDEMAIL='" + email2 + "')or(email='" + email2 + "' and MYFRIENDEMAIL='" + email1 + "')");
             rs = ps.executeQuery();
             if (rs.next()) {
                 exist = true;
@@ -689,5 +690,21 @@ public class DBconnect {
             }
         }
         return counterRowAffected;
+    }
+
+    public void updateToOffline() {
+        Connection c = null;
+        PreparedStatement ps = null;
+        try {
+            c = getConnection();
+            ps = c.prepareStatement("update USERLOGIN set USERSTATUS=0");
+            ps.executeUpdate();
+            ps.close();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }
