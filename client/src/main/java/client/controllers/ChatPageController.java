@@ -288,10 +288,7 @@ public class ChatPageController implements Initializable {
     
     private void seviceLookUp() {
         try {
-<<<<<<< HEAD
-=======
             //setRegistry(LocateRegistry.getRegistry("10.118.49.2",2000));
->>>>>>> f89960c09e61eceab46079c1522357d5324a1e37
             setRegistry(LocateRegistry.getRegistry(2000));
             setServer((ServerInter) registry.lookup("ChatService"));
         } catch (NotBoundException | RemoteException ex) {
