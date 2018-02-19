@@ -55,6 +55,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 public class ChatPageController implements Initializable {
     
@@ -633,13 +635,15 @@ public class ChatPageController implements Initializable {
     public void getAnnoncment(String Content){
         System.out.println("client side annoncment is "+Content);
         annoncmentsField.setText(Content);
+        this.getNotification(Content,1);
     }
     public void getNotification(String content,int type){
     
-        /*Platform.runLater(() -> {
-         TrayNotification tray = new TrayNotification("Notification","Annoncment from Server..Please check your home");        
+        Platform.runLater(() -> {
+         TrayNotification tray;        
+            tray = new TrayNotification("Notification","Annoncment from server", NotificationType.NOTICE);
          tray.showAndWait();
-        });*/
+        });
     }
     /*Methods added by Hassna  */
     //
