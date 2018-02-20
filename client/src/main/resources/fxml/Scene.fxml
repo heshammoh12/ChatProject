@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
@@ -10,41 +11,32 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="Anchor" prefHeight="381.0" prefWidth="900.0" style="-fx-background-color: #20120f;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="client.controllers.FXMLController">
+<AnchorPane id="AnchorPane" fx:id="Anchor" prefHeight="411.0" prefWidth="821.0" style="-fx-background-color: #dbc9be; -fx-background-insets: 0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.FXMLController">
     <children>
-        <AnchorPane layoutX="589.0" layoutY="48.0" prefHeight="319.0" prefWidth="297.0" style="-fx-background-color: #9c2b27;">
+        <AnchorPane layoutX="391.0" prefHeight="414.0" prefWidth="434.0" style="-fx-background-color: #548685; fx-background-radius: 40; -fx-background-insets: 0;">
             <children>
-                <TextField fx:id="TextFieldUserName" layoutX="26.0" layoutY="107.0" prefHeight="25.0" prefWidth="246.0" promptText="UserName/Email" />
-                <PasswordField fx:id="TextFieldPassword" layoutX="26.0" layoutY="160.0" prefHeight="25.0" prefWidth="246.0" promptText="PassWord" />
-                <Button fx:id="WelcomPage_Button_Login" layoutX="26.0" layoutY="223.0" mnemonicParsing="false" onAction="#logIn" prefHeight="25.0" prefWidth="246.0" text="Login" textFill="#dad5d5" />
-                <Label layoutX="111.0" layoutY="47.0" text="Sign In" textFill="#e8dcdc">
+                
+                <JFXTextField fx:id="TextFieldUserName" focusColor="#261997" layoutX="63.0" layoutY="103.0" prefHeight="25.0" prefWidth="331.0" promptText="UserName/Email" unFocusColor="#2f417c" />
+               <JFXPasswordField fx:id="TextFieldPassword" layoutX="63.0" layoutY="162.0" prefHeight="25.0" prefWidth="331.0" promptText="PassWord" unFocusColor="#1c1c97" />
+                <JFXButton fx:id="WelcomPage_Button_Login" layoutX="125.0" layoutY="353.0" onAction="#logIn" prefHeight="38.0" prefWidth="153.0" style="-fx-background-color: #dbc9be;" text="Login" textFill="#067c69" />
+               
+                <Label layoutX="161.0" layoutY="39.0" text="Sign In" textFill="#eff0ec">
                     <font>
-                        <Font name="System Bold" size="18.0" />
+                        <Font name="System Bold" size="22.0" />
                     </font>
                 </Label>
+                      <JFXButton fx:id="WelcomePage_Button_Close" layoutX="408.0" layoutY="2.0" onAction="#close" style="-fx-background-color: #dbc9be;" text="X" />
+            <JFXButton fx:id="WelcomePage_Button_minimize" layoutX="377.0" layoutY="2.0" onAction="#minimize" prefHeight="25.0" prefWidth="24.0" style="-fx-background-color: #dbc9be;" text="-" />        
             </children>
         </AnchorPane>
-        <ImageView fitHeight="407.0" fitWidth="565.0" layoutY="4.0" opacity="0.3" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="file:/C:/Users/Hesham%20Kadry/Documents/NetBeansProjects/ChatDesign/pics/dark-nature-night-1404.jpg" />
-            </image>
-        </ImageView>
-        <Label layoutX="143.0" layoutY="82.0" text="Welcome To Chat Life" textFill="#cdc9c9">
+        <ImageView fitHeight="414.0" fitWidth="395.0" layoutX="-4.0" layoutY="-1.0" opacity="0.3" pickOnBounds="true" preserveRatio="true" />
+        <Label layoutX="53.0" layoutY="58.0" text="Welcome To Etchat" textFill="#548685">
             <font>
                 <Font size="29.0" />
             </font>
         </Label>
-        <Label layoutX="143.0" layoutY="159.0" text="LabeE-chat is a chat rooms website, where people talk &#10;online with each other on various topics.l" textFill="#e1d8d8" />
-        <Button fx:id="WelcomPage_Button_SignUp" layoutX="143.0" layoutY="235.0" mnemonicParsing="false" onAction="#signUp" prefHeight="25.0" prefWidth="177.0" text="Sign Up" textFill="#dad5d5" />
-        <Button fx:id="WelcomePage_Button_Close" layoutX="834.0" layoutY="-5.0" mnemonicParsing="false" onAction="#close" text="X" textFill="#e1d4d4">
-            <font>
-                <Font size="17.0" />
-            </font>
-        </Button>
-        <Button fx:id="WelcomePage_Button_minimize" layoutX="795.0" layoutY="-4.0" mnemonicParsing="false" onAction="#minimize" text="-" textFill="#ebdede">
-            <font>
-                <Font size="16.0" />
-            </font>
-        </Button>
+        <Label layoutX="64.0" layoutY="174.0" text="LabeE-chat is a chat rooms website, where people talk &#10;online with each other on various topics.l" textFill="#548685" />
+       
+      <JFXButton fx:id="WelcomPage_Button_SignUp" layoutX="129.0" layoutY="331.0" onAction="#signUp" prefHeight="32.0" prefWidth="121.0" style="-fx-background-color: #548685;" text="Sign Up" textFill="#eff0ec" />
     </children>
 </AnchorPane>

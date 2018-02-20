@@ -8,6 +8,10 @@ package client.controllers;
 import client.interfaces.SignUpValidationInter;
 import client.models.ClientImpl;
 import client.models.SignUpValidInterImp;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import iti.chat.common.LogInVerificationInter;
 import iti.chat.common.ServerInter;
 import iti.chat.common.User;
@@ -58,23 +62,23 @@ public class FXMLSignUpPageController implements Initializable {
      */
     //ObservableList<String>Country = FXCollections.observableArrayList("Egypt","Morocco","Tunis","Other");
     @FXML
-    private ComboBox SignUpPage_CompoBox_Country;
+    private JFXComboBox SignUpPage_CompoBox_Country;
     @FXML
     private AnchorPane anchorSignup;
     @FXML
-    private TextField SignUpPage_TextField_FullName;
+    private JFXTextField  SignUpPage_TextField_FullName;
     @FXML
-    private TextField SignUpPage_TextField_UserName;
+    private JFXTextField SignUpPage_TextField_UserName;
     @FXML
-    private TextField SignUpPage_TextField_Email;
+    private JFXTextField  SignUpPage_TextField_Email;
     @FXML
-    private TextField SignUpPage_TextField_Password;
+    private JFXPasswordField SignUpPage_TextField_Password;
     @FXML
     private RadioButton SignUpPage_RadioButton_Male;
     @FXML
     private RadioButton SignUpPage_RadioButton_Female;
     @FXML
-    private Button SignUpPage_btn_SignUp;
+    private JFXButton SignUpPage_btn_SignUp;
 
     private SignUpValidInterImp signUpImpl;
     private Registry registry = null;
