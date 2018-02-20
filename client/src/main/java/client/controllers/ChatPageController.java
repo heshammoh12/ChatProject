@@ -55,6 +55,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 
@@ -201,8 +202,10 @@ public class ChatPageController implements Initializable {
                     } else {
                         cir.setFill(Color.RED);
                     }
+                    getNotification(item.getFullname(),2);
                 } else {
                     cir.setFill(Color.GREY);
+                    //getNotification(item.getFullname(),3);
                 }
                 
                 pictureRegion.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -648,8 +651,22 @@ public class ChatPageController implements Initializable {
     public void getNotification(String content,int type){
     
         Platform.runLater(() -> {
-         TrayNotification tray;        
-            tray = new TrayNotification("Notification","Annoncment from server", NotificationType.NOTICE);
+         TrayNotification tray = null;
+         switch(type)
+         {
+             case 1:
+                tray = new TrayNotification("Notification","Annoncment from server..Please Check Your Home", NotificationType.NOTICE);
+                break;
+             case 2:
+                 tray = new TrayNotification("Notification","Your Friend "+content+" is Online", NotificationType.NOTICE);
+                 break;
+             case 3:
+                 tray = new TrayNotification("Notification","Your Friend "+content+" is Offline", NotificationType.NOTICE);
+                 break;
+             default:
+                 tray = new TrayNotification("Notification","Please Be notified", NotificationType.NOTICE);
+         }
+         tray.setAnimationType(AnimationType.POPUP);
          tray.showAndWait();
         });
     }

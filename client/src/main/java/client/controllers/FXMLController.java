@@ -1,6 +1,7 @@
 package client.controllers;
 
 import client.models.ClientImpl;
+import com.jfoenix.controls.JFXTextField;
 import iti.chat.common.ClientInter;
 import iti.chat.common.LogInVerificationInter;
 import iti.chat.common.ServerInter;
@@ -52,9 +53,9 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
     @FXML
     private AnchorPane Anchor;
     @FXML
-    private TextField TextFieldUserName;
+    private  JFXTextField TextFieldUserName;
     @FXML
-    private TextField TextFieldPassword;
+    private  JFXTextField TextFieldPassword;
 
     public FXMLController() throws RemoteException {
     }
