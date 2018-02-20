@@ -184,8 +184,19 @@ public class ChatPageController implements Initializable {
                 HBox statuse = new HBox();
                 HBox pictureRegion = new HBox();
                 Text text = new Text(item.getFullname());
-                File file = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\CustomList\\src\\customlist\\personal-website-design.png");
-                Image image = new Image(file.toURI().toString());
+//                File file = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\CustomList\\src\\customlist\\personal-website-design.png");
+                Image image=null;
+                try {
+                    if(item.getGender().equalsIgnoreCase("f")){
+                        image = new Image(this.getClass().getResource("/images/User2.png").toURI().toString());
+                    }else{
+                    
+                        image = new Image(this.getClass().getResource("/images/User.png").toURI().toString());
+                    }
+                } catch (URISyntaxException ex) {
+                    Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+;
                 ImageView imageView = new ImageView(image);
                 imageView.setFitHeight(30);
                 imageView.setFitWidth(30);
