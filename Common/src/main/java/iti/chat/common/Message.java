@@ -135,6 +135,17 @@ public class Message implements Serializable {
     
     //
     /*Methods added by Fatma  */
+     public Message(String content, String color, String font, LocalDate time, String tabId, List<String> listoftos, String from, BigInteger fontsize) {
+        this.content = content;
+        this.color = color;
+        this.font = font;
+        this.time = time;
+        this.tabId = tabId;
+        this.listoftos = listoftos;
+        this.from = from;
+      //  this.fontsize = fontsize;
+    }
+
     //
     
     
