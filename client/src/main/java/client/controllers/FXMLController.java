@@ -214,6 +214,7 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
             clientImpl.setChatPageController(chatController);
             chatController.setClient(clientImpl);
             chatController.addNewSearchPane(clientImpl);
+            chatController.addGroupChatPane(clientImpl);
             chatController.addFriendRequestPane(clientImpl,server,registry);
             server.registerClint(clientImpl);
             Stage stage = (Stage) Anchor.getScene().getWindow();

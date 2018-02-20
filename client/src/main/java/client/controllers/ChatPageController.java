@@ -61,6 +61,7 @@ import tray.notification.TrayNotification;
 public class ChatPageController implements Initializable {
     
     private FXMLLoader loader2;
+    private FXMLLoader chatGroupLoader;
     private FXMLLoader requestsLoader;
     private Parent root2;
     @FXML
@@ -69,6 +70,8 @@ public class ChatPageController implements Initializable {
     private TabPane ChatPage_TabPane_Users;
     @FXML
     private Tab tabAllUsers;
+    @FXML
+    private Tab ChatPageGroupChattap;
     @FXML
     private Tab friendRequestTab;
     @FXML
@@ -577,7 +580,7 @@ public class ChatPageController implements Initializable {
             onlineUsers.forEach((t) -> {
                 
                 try {
-                    if (t.getEmail().equals(newOnlineclient.getUser().getEmail())) {
+                    if (t.getEmail().equals(newOnlineclient.getUser().getEmail())){
                         System.out.println("dina is found");
                         t.setStatus(state);
                         System.out.println("friendChangeState ChatPage");
@@ -655,7 +658,8 @@ public class ChatPageController implements Initializable {
     //
     /*Methods added by Hesham  */
     //
-    public void addNewSearchPane(ClientInter clientInter) {
+    public void addNewSearchPane(ClientInter clientInter) 
+    {
         try {
             
             loader2 = new FXMLLoader();
@@ -668,6 +672,24 @@ public class ChatPageController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void addGroupChatPane(ClientInter clientInter)
+    {
+        try {
+            chatGroupLoader = new FXMLLoader();
+            
+            Pane newLoadedPane = chatGroupLoader.load(getClass().getResource("/fxml/ChatGroup.fxml").openStream());
+            ChatGroupController chatGroupController = (ChatGroupController) chatGroupLoader.getController();
+            //chatGroupController.setLoginer(clientInter.getUser());
+            ChatPageGroupChattap.setContent(newLoadedPane);
+            
+        } catch (RemoteException ex) {
+            Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           
     }
     
     public void initializeModeCompoBox() {
