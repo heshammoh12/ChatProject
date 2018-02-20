@@ -11,6 +11,7 @@ import iti.chat.common.ServerInter;
 import iti.chat.common.User;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
@@ -259,18 +260,33 @@ public class ChatBoxController implements Initializable {
     ChatBox_TextField.setFont(Font.font(ChatBox_ComboBox_FontType.getValue().toString()));
     }
     public void buttonImages() {
-        File file = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\ChatProject\\client\\src\\main\\resources\\images\\003-group-.png");
-        Image image = new Image(file.toURI().toString());
-        ChatBox_Button_AddFirendToChat.setGraphic(new ImageView(image));
+//        File file = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\ChatProject\\client\\src\\main\\resources\\images\\003-group-.png");
+        
+        try {
+            Image image = new Image(this.getClass().getResource("/images/group.png").toURI().toString());
+            ImageView image1 =new ImageView(image);
+            image1.setFitWidth(20);image1.setFitHeight(20);      
+            ChatBox_Button_AddFirendToChat.setGraphic(image1);
 
-        //File attach = new File("/images/attach-icon.png");
-        File attach = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\ChatProject\\client\\src\\main\\resources\\images\\004-external.png");
-        Image imgAttach = new Image(attach.toURI().toString());
-        ChatBox_Button_AttachFile.setGraphic(new ImageView(imgAttach));
+            //File attach = new File("/images/attach-icon.png");
+//            File attach = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\ChatProject\\client\\src\\main\\resources\\images\\004-external.png");
+            Image imgAttach = new Image(this.getClass().getResource("/images/external.png").toURI().toString());
+            ImageView imgAttach1 =new ImageView(imgAttach);
+            imgAttach1.setFitWidth(20);imgAttach1.setFitHeight(20); 
+            ChatBox_Button_AttachFile.setGraphic(imgAttach1);
+            
+            
+            Image imgSave = new Image(this.getClass().getResource("/images/Download.png").toURI().toString());
+            ImageView imgSave1 =new ImageView(imgSave);
+            imgSave1.setFitWidth(20);imgSave1.setFitHeight(20); 
+            ChatBox_Button_SaveChat.setGraphic(imgSave1);
 
-        //File email = new File("/images/icon-email-128.png");
-        File email = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\ChatProject\\client\\src\\main\\resources\\images\\note.png");
-        Image imgEmail = new Image(email.toURI().toString());
+            //File email = new File("/images/icon-email-128.png");
+//            File email = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\ChatProject\\client\\src\\main\\resources\\images\\note.png");
+            Image imgEmail = new Image(this.getClass().getResource("/images/note.png").toURI().toString());
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 //        ChatBox_Button_Email.setGraphic(new ImageView(imgEmail));
 
         //

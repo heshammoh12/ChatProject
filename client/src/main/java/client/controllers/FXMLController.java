@@ -1,6 +1,8 @@
 package client.controllers;
 
 import client.models.ClientImpl;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import iti.chat.common.ClientInter;
 import iti.chat.common.LogInVerificationInter;
@@ -55,7 +57,15 @@ public class FXMLController extends UnicastRemoteObject implements Initializable
     @FXML
     private  JFXTextField TextFieldUserName;
     @FXML
-    private  JFXTextField TextFieldPassword;
+    private  JFXPasswordField TextFieldPassword;
+    @FXML
+    private JFXButton WelcomPage_Button_Login;
+    @FXML
+    private JFXButton WelcomePage_Button_Close;
+    @FXML
+    private JFXButton WelcomePage_Button_minimize;
+    @FXML
+    private JFXButton WelcomPage_Button_SignUp;
 
     public FXMLController() throws RemoteException {
     }
