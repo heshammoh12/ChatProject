@@ -701,7 +701,7 @@ public class ChatPageController implements Initializable {
             Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+/*    
     public void addGroupChatPane(ClientInter clientInter)
     {
         try {
@@ -719,7 +719,7 @@ public class ChatPageController implements Initializable {
         }
            
     }
-    
+  */  
     public void initializeModeCompoBox() {
         ChatBox_ComboBox_Mode.getItems().removeAll(ChatBox_ComboBox_Mode.getItems());
         ChatBox_ComboBox_Mode.getItems().addAll("Online", "Busy", "Away");
