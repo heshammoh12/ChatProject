@@ -208,10 +208,13 @@ public class ChatPageController implements Initializable {
                 cir = new Circle(10, 10, 5);
                 if (item.getStatus() == 1) {
                     if (item.getMode() == 1) {
+                        System.out.println("mode +++"+1);
                         cir.setFill(Color.LAWNGREEN);
                     } else if (item.getMode() == 2) {
+                        System.out.println("mode +++"+3);
                         cir.setFill(Color.ORANGE);
                     } else {
+                        System.out.println("mode +++"+2);
                         cir.setFill(Color.RED);
                     }
 //                    getNotification(item.getFullname(),2);

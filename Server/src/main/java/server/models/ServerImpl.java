@@ -71,7 +71,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
                 }
             });
         }
-        notifyOnlineFriendsStatus(client, client.getUser().getEmail(), 2);
+        notifyOnlineFriendsStatus(client, client.getUser().getEmail(), 1);
 
     }
 
@@ -93,7 +93,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
                 }
             });
         }
-        notifyOnlineFriendsStatus(client, client.getUser().getEmail(), 3);
+        notifyOnlineFriendsStatus(client, client.getUser().getEmail(), 2);
     }
 
     @Override
