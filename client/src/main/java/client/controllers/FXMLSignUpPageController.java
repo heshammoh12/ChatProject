@@ -279,7 +279,7 @@ public class FXMLSignUpPageController implements Initializable {
         SignUpPage_CompoBox_Country.getItems().addAll("Other", "Egypt", "Morocco", "Tunis");
         SignUpPage_CompoBox_Country.getSelectionModel().select("Other");
     }
-
+    @FXML
     private void getSignUpData(ActionEvent event) {
         if (validData()) {
             if (isValidMail && isValidUserName && isValidFullName && isValidPass) {

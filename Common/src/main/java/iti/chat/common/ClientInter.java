@@ -30,7 +30,7 @@ public interface ClientInter extends Remote {
     public void getAnnoncment(String Content)throws RemoteException;
 
     /*Methods added by Hassna  */
-    public void getNotification(String content) throws RemoteException;
+    public void getNotification(String content,int type) throws RemoteException;
 
     /*Methods added by Hesham  */
     //
