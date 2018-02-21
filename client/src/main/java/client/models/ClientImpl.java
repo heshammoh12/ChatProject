@@ -127,8 +127,8 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInter {
     }
 
     @Override
-    public void getNotification(String content) throws RemoteException {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void getNotification(String content,int type) throws RemoteException {
+        chatPageController.getNotification(content,type);
     }
 
     /*Methods added by Hesham  */

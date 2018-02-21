@@ -213,7 +213,7 @@ public class ChatPageController implements Initializable {
                     } else {
                         cir.setFill(Color.RED);
                     }
-                    getNotification(item.getFullname(),2);
+//                    getNotification(item.getFullname(),2);
                 } else {
                     cir.setFill(Color.GREY);
                     //getNotification(item.getFullname(),3);
@@ -688,10 +688,16 @@ public class ChatPageController implements Initializable {
                 tray = new TrayNotification("Notification","Annoncment from server..Please Check Your Home", NotificationType.NOTICE);
                 break;
              case 2:
-                 tray = new TrayNotification("Notification","Your Friend "+content+" is Online", NotificationType.NOTICE);
+                 tray = new TrayNotification("Notification","Your Friend "+content+" Is Online", NotificationType.NOTICE);
                  break;
              case 3:
-                 tray = new TrayNotification("Notification","Your Friend "+content+" is Offline", NotificationType.NOTICE);
+                 tray = new TrayNotification("Notification","Your Friend "+content+" Is Offline", NotificationType.NOTICE);
+                 break;
+             case 4:
+                 tray = new TrayNotification("Friend Request ",content+" Is Now Your Friend", NotificationType.NOTICE);
+                 break;
+             case 5:
+                 tray = new TrayNotification("Friend Request ",content+" Wants To Add You As A Friend", NotificationType.NOTICE);
                  break;
              default:
                  tray = new TrayNotification("Notification","Please Be notified", NotificationType.NOTICE);

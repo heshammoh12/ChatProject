@@ -71,7 +71,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
                 }
             });
         }
-        notifyOnlineFriendsStatus(client, client.getUser().getEmail(), 1);
+        notifyOnlineFriendsStatus(client, client.getUser().getEmail(), 2);
 
     }
 
@@ -93,7 +93,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
                 }
             });
         }
-        notifyOnlineFriendsStatus(client, client.getUser().getEmail(), 2);
+        notifyOnlineFriendsStatus(client, client.getUser().getEmail(), 3);
     }
 
     @Override
@@ -124,6 +124,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
                         System.out.println("Clint will be notified");                       
                         User friend = conn.getUserFriendsData(email1);
                         clientInter.appendNewFriend(friend);
+                        clientInter.getNotification(friend.getFullname(), 4);
                     }
 
                 }
@@ -245,6 +246,12 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 
             for (ClientInter onlineClient : onlineClients) {
                 onlineClient.friendChangeState(client, state);
+                System.out.println(state);
+                if(state ==2){
+                
+                onlineClient.getNotification(client.getUser().getFullname(), 2);
+                }
+                else onlineClient.getNotification(client.getUser().getFullname(), 3);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -273,6 +280,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 
             for (ClientInter onlineClient : onlineClients) {
                 onlineClient.friendChangeMode(client, mode);
+                onlineClient.getNotification(client.getUser().getFullname(), 3);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -374,6 +382,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
                         System.out.println("Clint will be notified");                       
                         User friend = conn.getUserFriendsData(sender);
                         clientInter.appendNewFriendRequest(friend);
+                        clientInter.getNotification(friend.getFullname(), 5);
                     }
 
                 }
