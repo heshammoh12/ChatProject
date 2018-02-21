@@ -290,7 +290,7 @@ public class ChatBoxController implements Initializable {
             imgAttach1.setFitHeight(20);
             ChatBox_Button_AttachFile.setGraphic(imgAttach1);
 
-            Image imgSave = new Image(this.getClass().getResource("/images/Download.png").toURI().toString());
+            Image imgSave = new Image(this.getClass().getResource("/images/download.png").toURI().toString());
             ImageView imgSave1 = new ImageView(imgSave);
             imgSave1.setFitWidth(20);
             imgSave1.setFitHeight(20);
