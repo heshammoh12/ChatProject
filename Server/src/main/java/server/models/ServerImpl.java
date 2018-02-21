@@ -280,7 +280,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 
             for (ClientInter onlineClient : onlineClients) {
                 onlineClient.friendChangeMode(client, mode);
-                onlineClient.getNotification(client.getUser().getFullname(), 3);
+//                onlineClient.getNotification(client.getUser().getFullname(), 3);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
