@@ -63,7 +63,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.xml.bind.JAXBException;
-import Savechat.Creatxmlfile;
+//import Savechat.Creatxmlfile;
 
 /**
  * FXML Controller class
@@ -171,7 +171,7 @@ public class ChatBoxController implements Initializable {
             @Override
             public void handle(KeyEvent event) {
 
-                if (event.getCode() == KeyCode.ENTER) {
+                if (event.getCode() == KeyCode.ENTER && !ChatBox_TextField.getText().isEmpty()) {
                     ///////// these code is for testing purpose reblace it with yours  
                     /*
                     System.out.println("tmaaaaaaaaaaaaaaaaam");

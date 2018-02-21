@@ -21,6 +21,7 @@ public interface ClientInter extends Remote {
     public void setChatPageController(Object chatPageController) throws RemoteException;
     public void friendChangeState(ClientInter client,int state) throws RemoteException;
     public void friendChangeMode(ClientInter client,int mode) throws RemoteException;
+    public boolean isAlive() throws RemoteException;
 
     //
     /*Methods added by Dina  */

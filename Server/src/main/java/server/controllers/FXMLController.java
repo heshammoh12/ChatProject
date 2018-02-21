@@ -68,6 +68,7 @@ public class FXMLController implements Initializable {
             }
                 serverInstant=new ServerImpl();
                 serverInstant.setServerController(this);
+                serverInstant.whoIsAlive();
                 registry.rebind("ChatService", serverInstant);
                 registry.rebind("LogInVary", new LogInVerificationImpl());
                 registry.rebind("SignUpVary", new SignUpVerificationImpl());

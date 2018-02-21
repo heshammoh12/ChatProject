@@ -139,4 +139,10 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInter {
     //
     //
     //
+
+    @Override
+    public boolean isAlive() throws RemoteException {
+        System.out.println("Calling IsAlive");
+        return  true;
+    }
 }

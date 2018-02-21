@@ -3,6 +3,9 @@ package server.models;
 import iti.chat.common.ClientInter;
 import iti.chat.common.ServerInter;
 import iti.chat.common.User;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
@@ -121,7 +124,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
             if (updatedRows > 0) {
                 for (ClientInter clientInter : clientsArrayList) {
                     if (clientInter.getUser().getEmail().equals(email2)) {
-                        System.out.println("Clint will be notified");                       
+                        System.out.println("Clint will be notified");
                         User friend = conn.getUserFriendsData(email1);
                         clientInter.appendNewFriend(friend);
                         clientInter.getNotification(friend.getFullname(), 4);
@@ -137,7 +140,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 
     @Override
     public void rejectFriendRequest(String email1, String email2) throws RemoteException {
-        System.out.println("server rejectFriendRequest"); 
+        System.out.println("server rejectFriendRequest");
         DBconnect conn;
         int updatedRows = 0;
         try {
@@ -146,7 +149,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 
         } catch (SQLException ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }   
+        }
     }
 
     @Override
@@ -157,7 +160,6 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
         try {
             conn = DBconnect.getInstance();
             ArrayList<String> frindEmails = conn.getRequests(email);
-            
 
             for (String frindEmail : frindEmails) {
                 System.out.println(frindEmail);
@@ -247,11 +249,12 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
             for (ClientInter onlineClient : onlineClients) {
                 onlineClient.friendChangeState(client, state);
                 System.out.println(state);
-                if(state ==2){
-                
-                onlineClient.getNotification(client.getUser().getFullname(), 2);
+                if (state == 2) {
+
+                    onlineClient.getNotification(client.getUser().getFullname(), 3);
+                } else {
+                    onlineClient.getNotification(client.getUser().getFullname(), 2);
                 }
-                else onlineClient.getNotification(client.getUser().getFullname(), 3);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -376,10 +379,10 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 
         try {
             rowAffected = conn.addFriendRequest(sender, reciever);
-             if (rowAffected > 0) {
+            if (rowAffected > 0) {
                 for (ClientInter clientInter : clientsArrayList) {
                     if (clientInter.getUser().getEmail().equals(reciever)) {
-                        System.out.println("Clint will be notified");                       
+                        System.out.println("Clint will be notified");
                         User friend = conn.getUserFriendsData(sender);
                         clientInter.appendNewFriendRequest(friend);
                         clientInter.getNotification(friend.getFullname(), 5);
@@ -387,15 +390,52 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 
                 }
             }
-            
+
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rowAffected;
     }
+
     //
     /*Methods added by Fatma  */
     //
     //
+    public void whoIsAlive() {
 
+        new Thread(() -> {
+            while (true) {                
+                
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            for (ClientInter onlineClient : clientsArrayList) {
+                try {
+                    if (!onlineClient.isAlive()) {
+                        try {
+//                            boolean isSompleted = signOurServer(onlineClient.getUser().getEmail());
+                              clientsArrayList.remove(onlineClient);
+                        } catch (Exception ex1) {
+//                            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex1);
+                          clientsArrayList.remove(clientsArrayList.indexOf(onlineClient));
+                        System.out.println("can't del 1");                    
+                        }
+                    }
+//                onlineClient.getNotification(client.getUser().getFullname(), 3);
+                } catch (Exception ex) {
+                    try {
+//                        unregisterClint(onlineClient);
+//                          boolean isSompleted = signOurServer(onlineClient.getUser().getEmail());
+                          clientsArrayList.remove(clientsArrayList.indexOf(onlineClient));
+                    } catch (Exception ex1) {
+                        System.out.println("can't del 2");                    
+        }
+                }
+            }
+
+            }
+        }).start();
+    }
 }
