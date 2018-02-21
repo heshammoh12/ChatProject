@@ -69,6 +69,7 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInter {
     @Override
     public void acceptRecieveingFile(ClientInter sender, String tabid) throws RemoteException {
         System.out.println("clint acceptRecieveingFile user name " + this.getUser().getFullname());
+        System.out.println("sender acceptRecieveingFile user name " + sender.getUser().getFullname());
         System.out.println(user.getUsername() + "this clint will chooce to recieve file or not ");
         chatPageController.recievefile(sender, tabid);
     }

@@ -39,6 +39,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
@@ -77,6 +78,8 @@ public class ChatPageController implements Initializable {
     private Tab friendRequestTab;
     @FXML
     private ComboBox ChatBox_ComboBox_Mode;
+    @FXML
+    private Label text_user_name;
 
     @FXML
     private TextField annoncmentsField;
@@ -109,6 +112,9 @@ public class ChatPageController implements Initializable {
 
     public void setLoginer(User loginer) {
         this.loginer = loginer;
+        Platform.runLater(() -> {
+            text_user_name.setText(loginer.getUsername());
+        });
     }
 
     public User getLoginer() {
