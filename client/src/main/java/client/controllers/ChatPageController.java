@@ -335,6 +335,25 @@ public class ChatPageController implements Initializable {
         });
         
     }
+    
+    public void appendNewFriend(User newFriend){
+        Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        onlineUsers.add(newFriend);
+                    }
+
+                });
+    }
+    public void appendNewFriendRequest(User newFriend){
+        Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        requestController.appendNewFriendRequest(newFriend);
+                    }
+
+                });
+    }
 
     //
     /*Methods added by Nagib  */

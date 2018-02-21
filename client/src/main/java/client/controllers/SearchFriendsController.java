@@ -214,12 +214,18 @@ public class SearchFriendsController implements Initializable {
                 hboxButton.getChildren().add(btnAdd);
                 hboxButton.setAlignment(Pos.CENTER_RIGHT);
                 pictureRegion.setHgrow(hboxButton, Priority.ALWAYS);
-                ImageView imageView=null;
-                try {
-                    imageView = new ImageView(this.getClass().getResource("/images/personal.png").toURI().toString());
+                Image image=null;
+               try {
+                    if(item.getGender().equalsIgnoreCase("f")){
+                        image = new Image(this.getClass().getResource("/images/User2.png").toURI().toString());
+                    }else{
+                    
+                        image = new Image(this.getClass().getResource("/images/User.png").toURI().toString());
+                    }
                 } catch (URISyntaxException ex) {
-                    Logger.getLogger(SearchFriendsController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
                 }
+               ImageView imageView = new ImageView(image);
                 imageView.setFitHeight(30);
                 imageView.setFitWidth(30);
                 pictureRegion.getChildren().add(imageView);

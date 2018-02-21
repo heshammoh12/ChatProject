@@ -118,17 +118,19 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
         try {
             conn = DBconnect.getInstance();
             updatedRows = conn.acceptFriendRequest(email1, email2);
+            if (updatedRows > 0) {
+                for (ClientInter clientInter : clientsArrayList) {
+                    if (clientInter.getUser().getEmail().equals(email2)) {
+                        System.out.println("Clint will be notified");                       
+                        User friend = conn.getUserFriendsData(email1);
+                        clientInter.appendNewFriend(friend);
+                    }
 
-        } catch (SQLException ex) {
-            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (updatedRows > 0) {
-            for (ClientInter clientInter : clientsArrayList) {
-                if (clientInter.getUser().getEmail().equals(email2)) {
-                    System.out.println("Clint will be notified");
                 }
-
             }
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -300,6 +302,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 
     }
 
+    @Override
     public void notifyFriendRequest(ClientInter reciever) {
 
     }
@@ -365,7 +368,18 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInter {
 
         try {
             rowAffected = conn.addFriendRequest(sender, reciever);
-        } catch (SQLException ex) {
+             if (rowAffected > 0) {
+                for (ClientInter clientInter : clientsArrayList) {
+                    if (clientInter.getUser().getEmail().equals(reciever)) {
+                        System.out.println("Clint will be notified");                       
+                        User friend = conn.getUserFriendsData(sender);
+                        clientInter.appendNewFriendRequest(friend);
+                    }
+
+                }
+            }
+            
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rowAffected;

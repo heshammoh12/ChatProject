@@ -89,7 +89,15 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInter {
         System.out.println("friendBecameonline ClintImp");
         chatPageController.friendChangeMode(client , mode);
     }
-
+    
+    @Override
+    public void appendNewFriend(User newFriend) throws RemoteException {
+        chatPageController.appendNewFriend( newFriend);
+    }
+    @Override
+    public void appendNewFriendRequest(User newFriend) throws RemoteException {
+        chatPageController.appendNewFriendRequest( newFriend);
+    }
     //
     /*Methods added by Dina  */
     //

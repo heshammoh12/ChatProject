@@ -301,7 +301,7 @@
            
                 <div class="menu">
                     <div class="back">
-                        <img src="http://i.imgur.com/DY6gND0.png" draggable="false"                                                    />
+                        <img src="https://cdn3.iconfinder.com/data/icons/3d-printing-icon-set/512/User.png" draggable="false"                                                    />
                     </div>
                  
                     <div class="logo">Chat Life</div>
@@ -317,7 +317,7 @@
                     height:200px;">
                                 <li class="self">
                                     <div class="avatar">
-                                        <img src="http://i.imgur.com/DY6gND0.png" draggable="false" />
+                                        <img src="https://cdn3.iconfinder.com/data/icons/3d-printing-icon-set/512/User.png" draggable="false" />
                                     </div>
                                      <div><xsl:value-of select="from"/></div>
                      <xsl:for-each select="/chathistory/Msg/to">
@@ -351,7 +351,7 @@
                                               height:200px; clear:both">
                                 <li class="other">
                                     <div class="avatar">
-                                        <img src="http://i.imgur.com/HYcn9xO.png" draggable="false" />
+                                        <img src="https://cdn3.iconfinder.com/data/icons/3d-printing-icon-set/512/User.png" draggable="false" />
                                     </div>
                                     
                                <div><xsl:value-of select="from"/></div>

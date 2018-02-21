@@ -1,5 +1,5 @@
 
-package savechat;
+package Savechat;
 
 /**
  *

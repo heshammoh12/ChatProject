@@ -120,7 +120,10 @@ public class FriendRequestsController implements Initializable {
                         if (server != null) {
                             try {
                                 server.acceptFriendRequest(client.getUser().getEmail(), item.getEmail());
-                                //friendRequests.remove(item);
+                                friendRequests.remove(item);
+                                if(client !=null){
+                                    client.appendNewFriend(item);
+                                }
                             } catch (RemoteException ex) {
                                 showAlert("Sorry currently the server is under maintenance");
                                 Logger.getLogger(FriendRequestsController.class.getName()).log(Level.SEVERE, null, ex);
@@ -150,12 +153,18 @@ public class FriendRequestsController implements Initializable {
                 hboxButton.getChildren().add(rejectBtn);
                 hboxButton.setAlignment(Pos.CENTER_RIGHT);
                 pictureRegion.setHgrow(hboxButton, Priority.ALWAYS);
-                ImageView imageView = null;
-                try {
-                    imageView = new ImageView(this.getClass().getResource("/images/personal.png").toURI().toString());
+                Image image=null;
+               try {
+                    if(item.getGender().equalsIgnoreCase("f")){
+                        image = new Image(this.getClass().getResource("/images/User2.png").toURI().toString());
+                    }else{
+                    
+                        image = new Image(this.getClass().getResource("/images/User.png").toURI().toString());
+                    }
                 } catch (URISyntaxException ex) {
-                    Logger.getLogger(SearchFriendsController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ChatPageController.class.getName()).log(Level.SEVERE, null, ex);
                 }
+               ImageView imageView = new ImageView(image);
                 imageView.setFitHeight(30);
                 imageView.setFitWidth(30);
                 pictureRegion.getChildren().add(imageView);
@@ -184,8 +193,6 @@ public class FriendRequestsController implements Initializable {
                 for (User friendRequest : userfriendRequests) {
 
                     System.out.println(friendRequest.getEmail());
-//                    friendRequests.add(friendRequest);
-
                 }
                 friendRequests = FXCollections.observableArrayList(userfriendRequests);
                 Platform.runLater(new Runnable() {
@@ -210,5 +217,17 @@ public class FriendRequestsController implements Initializable {
         alert.setContentText(s);
         alert.showAndWait();
     }
+    
+
+    public void appendNewFriendRequest(User newFriend){
+        Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                         friendRequests.add(newFriend);
+                    }
+
+                });
+    }
+
 
 }

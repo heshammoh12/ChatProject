@@ -10,7 +10,9 @@ import iti.chat.common.Message;
 import iti.chat.common.ServerInter;
 import iti.chat.common.User;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -23,6 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -59,7 +62,8 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import savechat.Creatxmlfile;
+import javax.xml.bind.JAXBException;
+import Savechat.Creatxmlfile;
 
 /**
  * FXML Controller class
@@ -79,7 +83,7 @@ public class ChatBoxController implements Initializable {
     boolean isSender;
 
     /*variables added by Dina  */
-    boolean acceptFile=false;
+    boolean acceptFile = false;
     //
 
     /*variables added by Hassna  */
@@ -87,17 +91,16 @@ public class ChatBoxController implements Initializable {
     //
 
     /*variables added by Hesham  */
-        Color color=Color.BLACK;
-        String colorString = "#000000";
-        String userLabel;
-        String userLabel2;
-        String fontType="Arial";
-        String fontSize="8"; 
-        LocalDate loc;
-        
-        //LocalDate localDate_1;
-        //DateTimeFormatter formatter_1;
+    Color color = Color.BLACK;
+    String colorString = "#000000";
+    String userLabel;
+    String userLabel2;
+    String fontType = "Arial";
+    String fontSize = "8";
+    LocalDate loc;
 
+    //LocalDate localDate_1;
+    //DateTimeFormatter formatter_1;
     //
 
     /*variables added by Fatma  */
@@ -138,7 +141,7 @@ public class ChatBoxController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         //formatter_1=DateTimeFormatter.ofPattern("dd-MMM-yyyy");
         //make scroll pan scrollable
-        
+
         ChatBoxScrollPane.vvalueProperty().bind(ChatBox_AreaMessages.heightProperty());
         //setCircleMsg();
         smallImageCircle1 = new Circle(10, 10, 5);
@@ -157,9 +160,9 @@ public class ChatBoxController implements Initializable {
             public void handle(ActionEvent event) {
                 System.out.println("color picker value is " + ChatBox_ComboBox_ColorPicker.getValue());
                 color = ChatBox_ComboBox_ColorPicker.getValue();
-                colorString ="#" + Integer.toHexString(color.hashCode()); 
+                colorString = "#" + Integer.toHexString(color.hashCode());
                 ChatBox_TextField.setStyle("-fx-text-inner-color:" + colorString + ";");
-                
+
             }
         });
 
@@ -195,10 +198,10 @@ public class ChatBoxController implements Initializable {
                         }
                     });
                     //
-                     */   
+                     */
                     fontType = ChatBox_ComboBox_FontType.getValue().toString();
                     fontSize = ChatBox_ComboBox_FontSize.getValue().toString();
-                    
+
                     try {
                         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                         Date date = formatter.parse("2018-02-10");
@@ -206,13 +209,11 @@ public class ChatBoxController implements Initializable {
                         cal.setTime(date);
                         XMLGregorianCalendar result = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
                         loc = result.toGregorianCalendar().toZonedDateTime().toLocalDate();
-                        System.out.println("locaaal date is "+loc);
-                        
-                        
-                        
-                        mainClient.getUser().setMessage(new Message(ChatBox_TextField.getText(), mainClient.getUser().getFullname(), usedTabID,colorString,fontType,loc,fontSize));
+                        System.out.println("locaaal date is " + loc);
+
+                        mainClient.getUser().setMessage(new Message(ChatBox_TextField.getText(), mainClient.getUser().getFullname(), usedTabID, colorString, fontType, loc, fontSize));
                         //mainClient.getUser().setMessage(new Message(ChatBox_TextField.getText(), mainClient.getUser().getFullname(), usedTabID,usedTabID));
-                        System.out.println("main client issssssss "+mainClient.getUser().getFullname());
+                        System.out.println("main client issssssss " + mainClient.getUser().getFullname());
                         server.sendMessage(mainClient, recievers.get(0));
                         sendMessage(mainClient.getUser());
                     } catch (RemoteException ex) {
@@ -244,8 +245,18 @@ public class ChatBoxController implements Initializable {
                     fileChooser.getExtensionFilters().add(extFilter);
                     File file = fileChooser.showSaveDialog(ChatBoxScrollPane.getScene().getWindow());
                     System.out.println(file);
-
-                    Creatxmlfile.createFile(file, messags, mainClient.getUser());
+                    if (file != null) {
+                        Creatxmlfile creatxmlfile = new Creatxmlfile();
+                        try {
+                            System.out.println("File is not null");
+                            creatxmlfile.createFile(file, messags, mainClient.getUser());
+                        } catch (FileNotFoundException | JAXBException ex) {
+                            Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                else{
+                        System.out.println("file is null");
+                    }
 
                 } catch (IOException ex) {
                     Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
@@ -254,31 +265,35 @@ public class ChatBoxController implements Initializable {
         });
 
     }
+
     @FXML
     private void comboActionFontType(ActionEvent event) {
-    System.out.println(ChatBox_ComboBox_FontType.getValue());
-    ChatBox_TextField.setFont(Font.font(ChatBox_ComboBox_FontType.getValue().toString()));
+        System.out.println(ChatBox_ComboBox_FontType.getValue());
+        ChatBox_TextField.setFont(Font.font(ChatBox_ComboBox_FontType.getValue().toString()));
     }
+
     public void buttonImages() {
 //        File file = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\ChatProject\\client\\src\\main\\resources\\images\\003-group-.png");
-        
+
         try {
             Image image = new Image(this.getClass().getResource("/images/group.png").toURI().toString());
-            ImageView image1 =new ImageView(image);
-            image1.setFitWidth(20);image1.setFitHeight(20);      
+            ImageView image1 = new ImageView(image);
+            image1.setFitWidth(20);
+            image1.setFitHeight(20);
             ChatBox_Button_AddFirendToChat.setGraphic(image1);
 
             //File attach = new File("/images/attach-icon.png");
 //            File attach = new File("C:\\Users\\Hesham Kadry\\Documents\\NetBeansProjects\\ChatProject\\client\\src\\main\\resources\\images\\004-external.png");
             Image imgAttach = new Image(this.getClass().getResource("/images/external.png").toURI().toString());
-            ImageView imgAttach1 =new ImageView(imgAttach);
-            imgAttach1.setFitWidth(20);imgAttach1.setFitHeight(20); 
+            ImageView imgAttach1 = new ImageView(imgAttach);
+            imgAttach1.setFitWidth(20);
+            imgAttach1.setFitHeight(20);
             ChatBox_Button_AttachFile.setGraphic(imgAttach1);
-            
-            
+
             Image imgSave = new Image(this.getClass().getResource("/images/Download.png").toURI().toString());
-            ImageView imgSave1 =new ImageView(imgSave);
-            imgSave1.setFitWidth(20);imgSave1.setFitHeight(20); 
+            ImageView imgSave1 = new ImageView(imgSave);
+            imgSave1.setFitWidth(20);
+            imgSave1.setFitHeight(20);
             ChatBox_Button_SaveChat.setGraphic(imgSave1);
 
             //File email = new File("/images/icon-email-128.png");
@@ -295,14 +310,13 @@ public class ChatBoxController implements Initializable {
     }
 
     public void Render(User user) {
-        
-        if (isSender) 
-        {
-            
+
+        if (isSender) {
+
             try {
-                System.out.println("sender name issssssssssss  "+mainClient.getUser().getFullname());
+                System.out.println("sender name issssssssssss  " + mainClient.getUser().getFullname());
                 //userLabel = mainClient.getUser().getFullname();
-                userLabel2= mainClient.getUser().getFullname();
+                userLabel2 = mainClient.getUser().getFullname();
                 /*
                 Text t = new Text(userLabel);
                 t.setFill(Color.DARKGRAY);
@@ -315,7 +329,7 @@ public class ChatBoxController implements Initializable {
                     }
                 });
                 
-                */
+                 */
             } catch (RemoteException ex) {
                 Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -324,23 +338,22 @@ public class ChatBoxController implements Initializable {
             data.setFill(Color.DIMGREY);
 
             Text t = new Text(user.getMessage().getContent());
-            t.setStyle("-fx-fill: "+user.getMessage().getColor()+";");
+            t.setStyle("-fx-fill: " + user.getMessage().getColor() + ";");
             //t.setFill(user.getMessage().getColor());
-            System.out.println("color is here in string before style "+user.getMessage().getColor());
-           // t.setStyle("-fx-text-fill:" + user.getMessage().getColor() + ";");    
-           //t.setFill(color.AQUAMARINE);
+            System.out.println("color is here in string before style " + user.getMessage().getColor());
+            // t.setStyle("-fx-text-fill:" + user.getMessage().getColor() + ";");    
+            //t.setFill(color.AQUAMARINE);
             try {
                 NumberFormat nf = NumberFormat.getInstance();
                 double number = nf.parse(user.getMessage().getFontSize()).doubleValue();
-                t.setFont(Font.font (user.getMessage().getFont(), number));
+                t.setFont(Font.font(user.getMessage().getFont(), number));
             } catch (ParseException ex) {
                 Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             //Double size = Double.parseDouble(user.getMessage().getFontSize());
-            
             TextFlow textFlow = new TextFlow(t, data);
-            
+
             //textFlow.setStyle("-fx-background-color: #2196F3; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
             textFlow.setStyle("-fx-background-color: #2196F3; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
 
@@ -353,24 +366,23 @@ public class ChatBoxController implements Initializable {
                     ChatBox_AreaMessages.setSpacing(5);
                     h.setAlignment(Pos.BASELINE_RIGHT);
                     ChatBox_AreaMessages.getChildren().add(h);
-   //                 ChatBox_TextField.setText("");
+                    //                 ChatBox_TextField.setText("");
                 }
             });
 
-        }else if (!isSender) {
-             
+        } else if (!isSender) {
+
             try {
-                if(!user.getFullname().equals(userLabel2)&& !user.getFullname().equals(mainClient.getUser().getFullname()))   
-                {
-                    System.out.println("sender name issssssssssss  "+user.getFullname());
+                if (!user.getFullname().equals(userLabel2) && !user.getFullname().equals(mainClient.getUser().getFullname())) {
+                    System.out.println("sender name issssssssssss  " + user.getFullname());
                     userLabel2 = user.getFullname();
                     Text t2 = new Text(userLabel2);
                     t2.setFill(Color.DARKGRAY);
-                    HBox v2 = new HBox(t2); 
+                    HBox v2 = new HBox(t2);
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                             ChatBox_AreaMessages.getChildren().add(v2);
+                            ChatBox_AreaMessages.getChildren().add(v2);
                         }
                     });
                 }
@@ -378,28 +390,26 @@ public class ChatBoxController implements Initializable {
                 Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-                
-            
-            System.out.println("reciever name issssssssss  "+user.getFullname());
+            System.out.println("reciever name issssssssss  " + user.getFullname());
             Text data = new Text(getDate());
             data.setFont(Font.font("", 10.0));
             data.setFill(Color.DIMGREY);
 
             Text t = new Text(user.getMessage().getContent());
             //t.setFill(user.getMessage().getColor());
-            t.setStyle("-fx-fill: "+user.getMessage().getColor()+";");
-            System.out.println("color is here in string before style222222 "+user.getMessage().getColor());
-            
+            t.setStyle("-fx-fill: " + user.getMessage().getColor() + ";");
+            System.out.println("color is here in string before style222222 " + user.getMessage().getColor());
+
             ///t.setStyle("-fx-text-fill:" + user.getMessage().getColor() + ";");
-            try{
+            try {
                 NumberFormat nf = NumberFormat.getInstance();
                 double number2 = nf.parse(user.getMessage().getFontSize()).doubleValue();
-                t.setFont(Font.font (user.getMessage().getFont(), number2));
-                
-            }catch (ParseException ex) {
+                t.setFont(Font.font(user.getMessage().getFont(), number2));
+
+            } catch (ParseException ex) {
                 Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             //t.setFill(color);
             TextFlow textFlow = new TextFlow(t, data);
             textFlow.setStyle("-fx-background-color: #FF8F00; -fx-background-radius: 25 0 25 25; -fx-padding: 5px; -fx-text-fill:#fff;");
@@ -426,21 +436,34 @@ public class ChatBoxController implements Initializable {
         Render(user);
         System.out.println("send message");
         //
+        try {
+            //code added by nagib
+            //
+//        messags.add(new Message(user.getMessage().getContent(),user.getMessage().getColor(),user.getMessage().getFont(), BigInteger.valueOf(18), new ArrayList<String>().add(recievers.get(0).getUser().getEmail()),mainClient.getUser().getEmail()));
+            ArrayList<String> tos = new ArrayList<>();
+            tos.add(recievers.get(0).getUser().getEmail());
+            messags.add(new Message(user.getMessage().getContent(), user.getMessage().getColor(), user.getMessage().getFont(), user.getMessage().getTime(), usedTabID, tos, mainClient.getUser().getEmail(), BigInteger.valueOf(18)));
+        } catch (RemoteException ex) {
+            Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-        //code added by nagib
-        //
-        messags.add(user.getMessage());
     }
 
     public void recieveMessage(User user) {
-        System.out.println("reciev messgggggg");
-        isSender = false;
-        Render(user);
-        //
+        try {
+            System.out.println("reciev messgggggg");
+            isSender = false;
+            Render(user);
+            //
 
-        //code added by nagib
-        //
-        messags.add(user.getMessage());
+            //code added by nagib
+            ArrayList<String> tos = new ArrayList<>();
+            tos.add(mainClient.getUser().getEmail());
+            messags.add(new Message(user.getMessage().getContent(), user.getMessage().getColor(), user.getMessage().getFont(), user.getMessage().getTime(), usedTabID, tos, user.getEmail(), BigInteger.valueOf(18)));
+//            messags.add(user.getMessage());
+        } catch (RemoteException ex) {
+            Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public String getDate() {
@@ -455,6 +478,7 @@ public class ChatBoxController implements Initializable {
         //code added by nagib
         //
     }
+
     /*
     public LocalDate getLocalDate()
     {
@@ -473,7 +497,7 @@ public class ChatBoxController implements Initializable {
         }
         
     }
-*/
+     */
     public void setCircleMsg() {
         //initialize the node circle
 
@@ -484,7 +508,7 @@ public class ChatBoxController implements Initializable {
 
     public void initializeCompoBoxFontsType() {
         ChatBox_ComboBox_FontType.getItems().removeAll(ChatBox_ComboBox_FontType.getItems());
-        ChatBox_ComboBox_FontType.getItems().addAll("normal", "Verdana", "Serif Bold", "Arial" ,"Algerian","Chiller");
+        ChatBox_ComboBox_FontType.getItems().addAll("normal", "Verdana", "Serif Bold", "Arial", "Algerian", "Chiller");
         ChatBox_ComboBox_FontType.getSelectionModel().select("font type");
         //
 
@@ -520,9 +544,8 @@ public class ChatBoxController implements Initializable {
                 acceptFile = true;
                 try {
                     sender.startSendingFile(usedTabID);
-                    
-                        //this.mainClient.getTransferFile().sendFile(this.recievers.get(0), f);
-                    
+
+                    //this.mainClient.getTransferFile().sendFile(this.recievers.get(0), f);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -534,7 +557,8 @@ public class ChatBoxController implements Initializable {
 
         });
     }
-    public void startSendingFile(){
+
+    public void startSendingFile() {
         System.out.println("ChatBoxController startSendingFile()");
         try {
             this.mainClient.getTransferFile().sendFile(this.recievers.get(0), f);
@@ -600,9 +624,9 @@ public class ChatBoxController implements Initializable {
                 try {
                     System.out.println("the sender of the file is : " + this.mainClient.getUser().getFullname());
                     System.out.println("the reciever of the file is : " + this.recievers.get(0).getUser().getFullname());
-                    this.recievers.get(0).acceptRecieveingFile(mainClient,usedTabID);
-                    System.out.println("accept file is " +acceptFile );
-                    
+                    this.recievers.get(0).acceptRecieveingFile(mainClient, usedTabID);
+                    System.out.println("accept file is " + acceptFile);
+
                 } catch (RemoteException ex) {
                     Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
                 }
